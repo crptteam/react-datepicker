@@ -1,11 +1,10 @@
 {
-  "name": "react-datepicker",
-  "version": "1.0.0",
+  "name": "@crpt/react-datepicker",
+  "version": "0.0.1",
   "description": "react-datepicker React component",
   "main": "lib/index.js",
   "module": "es/index.js",
   "files": [
-    "css",
     "es",
     "lib",
     "umd"
@@ -18,19 +17,62 @@
     "test:coverage": "nwb test-react --coverage",
     "test:watch": "nwb test-react --server"
   },
-  "dependencies": {},
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/crptteam/react-datepicker"
+  },
+  "dependencies": {
+    "datejs": "^1.0.0-rc3",
+    "styled-components": "1.4.6 - 3"
+  },
   "peerDependencies": {
     "react": "16.x"
   },
   "devDependencies": {
     "nwb": "0.21.x",
     "react": "^16.3.2",
-    "react-dom": "^16.3.2"
+    "react-dom": "^16.3.2",
+    "@storybook/addon-actions": "^3.3.15",
+    "@storybook/addon-knobs": "^3.3.15",
+    "@storybook/addon-links": "^3.3.15",
+    "@storybook/addons": "^3.3.15",
+    "@storybook/react": "^3.3.15",
+    "babel-cli": "^6.26.0",
+    "babel-core": "^6.26.0",
+    "babel-eslint": "^8.2.2",
+    "babel-plugin-add-module-exports": "^0.2.1",
+    "babel-plugin-inline-react-svg": "^0.5.2",
+    "babel-plugin-styled-components": "^1.5.1",
+    "babel-plugin-transform-class-properties": "^6.24.1",
+    "babel-plugin-transform-es2015-destructuring": "^6.23.0",
+    "babel-plugin-transform-es2015-modules-commonjs": "^6.26.0",
+    "babel-plugin-transform-inline-environment-variables": "^0.3.0",
+    "babel-plugin-transform-object-rest-spread": "^6.26.0",
+    "babel-preset-env": "^1.6.1",
+    "babel-preset-es2015": "^6.24.1",
+    "babel-preset-react": "^6.24.1",
+    "babel-preset-stage-3": "^6.24.1",
+    "babelify": "^8.0.0",
+    "envify": "^4.1.0",
+    "eslint": "^4.19.1",
+    "eslint-plugin-import": "^2.9.0",
+    "eslint-plugin-jsx-a11y": "^6.0.3",
+    "eslint-plugin-react": "^7.7.0",
+    "eslint-watch": "^3.1.3",
+    "moment": "^2.22.0",
+    "prettier": "^1.11.1",
+    "prop-types": "^15.6.1",
+    "react-hot-loader": "^4.0.1",
+    "storybook-readme": "^3.3.0",
+    "svg-inline-loader": "^0.8.0",
+    "svg-inline-react": "^3.0.0",
+    "svg-react-loader": "^0.4.5"
   },
-  "author": "",
-  "homepage": "",
+  "contributors": [
+    "Nikita Solomennikov",
+    "Alexander Berezovsky"
+  ],
   "license": "MIT",
-  "repository": "",
   "keywords": [
     "react-component"
   ]
