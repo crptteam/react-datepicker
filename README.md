@@ -6,28 +6,36 @@
 
 # DatePicker
 
-Компонент выбора диапазона дат.
-Может работать в режиме выбора даты и в режиме выбора диапазона.
+Компоненты выбора даты DatePicker и диапазона дат RangePicker.
 
 ## Usage
 
 ```javascript
 
-import { DatePicker } from  "@crpt/crpt-react-library";
+import { DatePicker, RangePicker } from  "@crpt/react-datepicker";
 
 
-<DatePicker onChange={newVal => alert("newVal:", newVal)} double from="2012-12-12" to="2014/01/02" />
+<DatePicker onChange={newVal => alert("newVal:", newVal)}  date="12.12.2012" />
 
 ```
 
+### DatePicker
+
 | PropName | Описание | Пример |
 |---|---|---|
-| double: Boolean  | Если равен true, то DatePicker работает в режиме выбора диапазона. |  `<DatePicker double  />` |
-| from: String  | Стартовая дата диапазона в формате ISO 8601.<br/>Используется в режиме double. |  `<DatePicker double from="2012-12-12" />` |
-| to: String | Конечная дата диапазона в формате ISO 8601.<br/>Используется в режиме double. |  `<DatePicker double to="2014/01/02" />` |
 | date: String | Выбранная дата в формате ISO 8601.<br/>Используется в моно-режиме (режим по умолчанию). |  `<DatePicker date="2014/01/02" />` |
-| onChange: Function | Вызывается, когда меняется значение в DatePicker, параметром принимает объект с полями to и from в double-режиме или date. |  `<DatePicker onChange={val => alert(val)} />` |
+| onChange: Function | Вызывается, когда меняется значение в DatePicker, параметром принимает объект с полем date. |  `<DatePicker onChange={val => alert(val)} />` |
 | onUpdate: Function | Вызывается, когда DatePicker теряет фокус или пользователь нажимает Enter. |  `<DatePicker onUpdate={val => alert(val)} />` |
+
+
+### RangePicker
+
+| PropName | Описание | Пример |
+|---|---|---|
+| from: String  | Стартовая дата диапазона в формате ISO 8601. |  `<RangePicker from="2012-12-12" />` |
+| to: String | Конечная дата диапазона в формате ISO 8601. |  `<RangePicker to="2014/01/02" />` |
+| onChange: Function | Вызывается, когда меняется значение в DatePicker, параметром принимает объект с полями to и from. |  `<RangePicker onChange={val => alert(val)} />` |
+| onUpdate: Function | Вызывается, когда RangePicker теряет фокус или пользователь нажимает Enter. |  `<RangePicker onUpdate={val => alert(val)} />` |
 
 
 [build-badge]: https://img.shields.io/travis/user/repo/master.png?style=flat-square

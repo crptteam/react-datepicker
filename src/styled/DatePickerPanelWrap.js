@@ -1,8 +1,8 @@
-import React from 'react';
-import styled from 'styled-components';
+import React from "react";
+import styled from "styled-components";
 
-import { getThemeAsPlainTextByKeys } from '@crpt/utils';
-import defaultTheme from '../theme/defaultTheme';
+import { getThemeAsPlainTextByKeys } from "../utils";
+import defaultTheme from "../theme/defaultTheme";
 
 const Elem = styled.div`
   font-family: ${props => props.fontFamily};
@@ -29,10 +29,10 @@ const Elem = styled.div`
 const DatePickerPanelWrap = props => {
   const theme = getThemeAsPlainTextByKeys(
     props.theme || defaultTheme,
-    props.disabled ? 'disabled' : props.isError ? 'error' : 'main'
+    props.disabled ? "disabled" : props.isError ? "error" : "main"
   );
 
-  return <Elem {...theme} {...props}  />;
+  return <Elem {...theme} {...props} />;
 };
 
 export default DatePickerPanelWrap;
