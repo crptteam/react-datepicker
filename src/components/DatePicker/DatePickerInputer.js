@@ -29,7 +29,7 @@ export class DatePickerInputer extends Component {
   }
 
   componentDidMount() {
-    this.dateMask = this.im.mask(this.dateInput);
+    if (this.dateInput) this.dateMask = this.im.mask(this.dateInput);
   }
 
   onChange(e) {
