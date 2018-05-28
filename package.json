@@ -13,8 +13,8 @@
     "build": "nwb build-react-component",
     "clean": "nwb clean-module && nwb clean-demo",
     "start": "nwb serve-react-demo",
-    "test": "nwb test-react",
-    "test:coverage": "nwb test-react --coverage",
+    "test": "NODE_ENV=test jest --no-cache",
+    "test:coverage": "NODE_ENV=test jest --no-cache --coverage",
     "test:watch": "nwb test-react --server"
   },
   "repository": {
@@ -22,27 +22,32 @@
     "url": "https://github.com/crptteam/react-datepicker"
   },
   "dependencies": {
+    "chroma-js": "^1.3.7",
     "datejs": "^1.0.0-rc3",
+    "inputmask": "^4.0.0",
     "styled-components": "1.4.6 - 3"
   },
   "peerDependencies": {
     "react": "16.x"
   },
   "devDependencies": {
-    "nwb": "0.21.x",
-    "react": "^16.3.2",
-    "react-dom": "^16.3.2",
+    "react-test-renderer": "^16.4.0",
+    "jest": "^23.0.1",
+    "enzyme": "^3.3.0",
+    "enzyme-to-json": "^3.3.4",
     "@storybook/addon-actions": "^3.3.15",
     "@storybook/addon-knobs": "^3.3.15",
     "@storybook/addon-links": "^3.3.15",
     "@storybook/addons": "^3.3.15",
     "@storybook/react": "^3.3.15",
     "babel-cli": "^6.26.0",
-    "babel-core": "^6.26.0",
+    "babel-core": "^6.26.3",
     "babel-eslint": "^8.2.2",
+    "babel-jest": "^23.0.1",
     "babel-plugin-add-module-exports": "^0.2.1",
     "babel-plugin-inline-react-svg": "^0.5.2",
     "babel-plugin-styled-components": "^1.5.1",
+    "babel-plugin-syntax-dynamic-import": "^6.18.0",
     "babel-plugin-transform-class-properties": "^6.24.1",
     "babel-plugin-transform-es2015-destructuring": "^6.23.0",
     "babel-plugin-transform-es2015-modules-commonjs": "^6.26.0",
@@ -54,15 +59,20 @@
     "babel-preset-stage-3": "^6.24.1",
     "babelify": "^8.0.0",
     "envify": "^4.1.0",
+    "enzyme-adapter-react-16": "^1.1.1",
     "eslint": "^4.19.1",
     "eslint-plugin-import": "^2.9.0",
     "eslint-plugin-jsx-a11y": "^6.0.3",
     "eslint-plugin-react": "^7.7.0",
     "eslint-watch": "^3.1.3",
     "moment": "^2.22.0",
+    "nwb": "0.21.x",
     "prettier": "^1.11.1",
     "prop-types": "^15.6.1",
+    "react": "^16.3.2",
+    "react-dom": "^16.3.2",
     "react-hot-loader": "^4.0.1",
+    "regenerator-runtime": "^0.11.1",
     "storybook-readme": "^3.3.0",
     "svg-inline-loader": "^0.8.0",
     "svg-inline-react": "^3.0.0",
@@ -75,5 +85,54 @@
   "license": "MIT",
   "keywords": [
     "react-component"
-  ]
+  ],
+  "jest": {
+    "collectCoverageFrom": [
+      "src/**/*.{js,jsx}"
+    ],
+    "verbose": true,
+    "transformIgnorePatterns": [
+      "/node_modules/(?!react).+(js|jsx)$"
+    ],
+    "moduleDirectories": [
+      "node_modules"
+    ],
+    "setupFiles": [
+      "./tests/jestsetup.js"
+    ],
+    "snapshotSerializers": [
+      "enzyme-to-json/serializer"
+    ]
+  },
+  "babel": {
+    "presets": ["env", "react"],
+    "plugins": [
+      "transform-class-properties",
+      "transform-es2015-destructuring",
+      "transform-object-rest-spread",
+      "transform-inline-environment-variables",
+      "transform-es2015-modules-commonjs",
+      [
+        "styled-components",
+        {
+          "ssr": false,
+          "minify": false,
+          "displayName": true,
+          "preprocess": false,
+          "transpileTemplateLiterals": false
+        }
+      ],
+
+      "inline-react-svg"
+    ],
+    "env": {
+      "production": {
+        "plugins": ["transform-es2015-modules-commonjs"]
+      },
+      "test": {
+        "plugins": ["transform-es2015-modules-commonjs"]
+      }
+    }
+  }
+
 }
