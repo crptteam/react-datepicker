@@ -14,7 +14,7 @@
     "clean": "nwb clean-module && nwb clean-demo",
     "start": "nwb serve-react-demo",
     "test": "NODE_ENV=test jest --no-cache",
-    "test:coverage": "nwb test-react --coverage",
+    "test:coverage": "NODE_ENV=test jest --no-cache --coverage",
     "test:watch": "nwb test-react --server"
   },
   "repository": {
@@ -24,17 +24,17 @@
   "dependencies": {
     "chroma-js": "^1.3.7",
     "datejs": "^1.0.0-rc3",
-    "enzyme": "^3.3.0",
-    "enzyme-to-json": "^3.3.4",
     "inputmask": "^4.0.0",
-    "jest": "^23.0.1",
-    "react-test-renderer": "^16.4.0",
     "styled-components": "1.4.6 - 3"
   },
   "peerDependencies": {
     "react": "16.x"
   },
   "devDependencies": {
+    "react-test-renderer": "^16.4.0",
+    "jest": "^23.0.1",
+    "enzyme": "^3.3.0",
+    "enzyme-to-json": "^3.3.4",
     "@storybook/addon-actions": "^3.3.15",
     "@storybook/addon-knobs": "^3.3.15",
     "@storybook/addon-links": "^3.3.15",
@@ -103,5 +103,36 @@
     "snapshotSerializers": [
       "enzyme-to-json/serializer"
     ]
+  },
+  "babel": {
+    "presets": ["env", "react"],
+    "plugins": [
+      "transform-class-properties",
+      "transform-es2015-destructuring",
+      "transform-object-rest-spread",
+      "transform-inline-environment-variables",
+      "transform-es2015-modules-commonjs",
+      [
+        "styled-components",
+        {
+          "ssr": false,
+          "minify": false,
+          "displayName": true,
+          "preprocess": false,
+          "transpileTemplateLiterals": false
+        }
+      ],
+
+      "inline-react-svg"
+    ],
+    "env": {
+      "production": {
+        "plugins": ["transform-es2015-modules-commonjs"]
+      },
+      "test": {
+        "plugins": ["transform-es2015-modules-commonjs"]
+      }
+    }
   }
+
 }

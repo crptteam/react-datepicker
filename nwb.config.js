@@ -8,8 +8,5 @@ module.exports = {
         react: 'React'
       }
     }
-  },
-  compat: {
-    enzyme: true
   }
 };
