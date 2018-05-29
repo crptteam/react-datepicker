@@ -1,6 +1,6 @@
 {
   "name": "@crpt/react-datepicker",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "react-datepicker React component",
   "main": "lib/index.js",
   "module": "es/index.js",
