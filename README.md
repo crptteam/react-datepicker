@@ -6,7 +6,7 @@
 
 # DatePicker
 
-Компоненты выбора даты DatePicker и диапазона дат RangePicker.
+Components for date picking (DatePicker) and date range picking (RangePicker).
 
 ## Usage
 
@@ -21,16 +21,16 @@ import { DatePicker, RangePicker } from  "@crpt/react-datepicker";
 
 ### DatePicker
 
-| PropName | Описание | Пример |
+| PropName | Description | Example |
 |---|---|---|
-| date: String | Выбранная дата в формате ISO 8601.<br/>Используется в моно-режиме (режим по умолчанию). |  `<DatePicker date="2014/01/02" />` |
-| onChange: Function | Вызывается, когда меняется значение в DatePicker, параметром принимает объект с полем date. |  `<DatePicker onChange={val => alert(val)} />` |
+| date: String | Selected date in ISO 8601 format. |  `<DatePicker date="2014/01/02" />` |
+| onChange: Function | Called, when DatePicker input value changed. |  `<DatePicker onChange={val => alert(val)} />` |
 | onUpdate: Function | Вызывается, когда DatePicker теряет фокус или пользователь нажимает Enter. |  `<DatePicker onUpdate={val => alert(val)} />` |
 
 
 ### RangePicker
 
-| PropName | Описание | Пример |
+| PropName | Description | Example |
 |---|---|---|
 | from: String  | Стартовая дата диапазона в формате ISO 8601. |  `<RangePicker from="2012-12-12" />` |
 | to: String | Конечная дата диапазона в формате ISO 8601. |  `<RangePicker to="2014/01/02" />` |
