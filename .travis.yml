@@ -20,5 +20,6 @@ deploy:
   provider: npm
   email: nikitosgroover@gmail.com
   api_key: $NPM_TOKEN
+  tag: next
   on:
-    tags: true
+    repo: crptteam/react-datepicker
