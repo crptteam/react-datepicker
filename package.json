@@ -4,6 +4,9 @@
   "description": "react-datepicker React component",
   "main": "lib/index.js",
   "module": "es/index.js",
+  "publishConfig": {
+    "access": "public"
+  },
   "files": [
     "es",
     "lib",
