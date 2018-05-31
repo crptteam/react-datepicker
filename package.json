@@ -1,19 +1,15 @@
 {
   "name": "@crpt/react-datepicker",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "react-datepicker React component",
   "main": "lib/index.js",
   "module": "es/index.js",
   "publishConfig": {
     "access": "public"
   },
-  "files": [
-    "es",
-    "lib",
-    "umd"
-  ],
+  "files": ["css", "es", "lib", "umd", "src"],
   "scripts": {
-    "build": "nwb build-react-component",
+    "build": "nwb build-react-component --copy-files",
     "clean": "nwb clean-module && nwb clean-demo",
     "start": "nwb serve-react-demo",
     "test": "NODE_ENV=test jest",
@@ -81,31 +77,16 @@
     "svg-inline-react": "^3.0.0",
     "svg-react-loader": "^0.4.5"
   },
-  "contributors": [
-    "Nikita Solomennikov",
-    "Alexander Berezovsky"
-  ],
+  "contributors": ["Nikita Solomennikov", "Alexander Berezovsky"],
   "license": "MIT",
-  "keywords": [
-    "react-component"
-  ],
+  "keywords": ["react-component"],
   "jest": {
-    "collectCoverageFrom": [
-      "src/**/*.{js,jsx}"
-    ],
+    "collectCoverageFrom": ["src/**/*.{js,jsx}"],
     "verbose": true,
-    "transformIgnorePatterns": [
-      "/node_modules/(?!react).+(js|jsx)$"
-    ],
-    "moduleDirectories": [
-      "node_modules"
-    ],
-    "setupFiles": [
-      "./tests/jestsetup.js"
-    ],
-    "snapshotSerializers": [
-      "enzyme-to-json/serializer"
-    ]
+    "transformIgnorePatterns": ["/node_modules/(?!react).+(js|jsx)$"],
+    "moduleDirectories": ["node_modules"],
+    "setupFiles": ["./tests/jestsetup.js"],
+    "snapshotSerializers": ["enzyme-to-json/serializer"]
   },
   "babel": {
     "presets": ["env", "react"],
@@ -137,5 +118,4 @@
       }
     }
   }
-
 }
