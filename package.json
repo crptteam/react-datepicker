@@ -1,13 +1,19 @@
 {
   "name": "@crpt/react-datepicker",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "react-datepicker React component",
   "main": "lib/index.js",
   "module": "es/index.js",
   "publishConfig": {
     "access": "public"
   },
-  "files": ["css", "es", "lib", "umd", "src"],
+  "files": [
+    "css",
+    "es",
+    "lib",
+    "umd",
+    "src"
+  ],
   "scripts": {
     "build": "nwb build-react-component --copy-files",
     "clean": "nwb clean-module && nwb clean-demo",
@@ -77,19 +83,37 @@
     "svg-inline-react": "^3.0.0",
     "svg-react-loader": "^0.4.5"
   },
-  "contributors": ["Nikita Solomennikov", "Alexander Berezovsky"],
+  "contributors": [
+    "Nikita Solomennikov",
+    "Alexander Berezovsky"
+  ],
   "license": "MIT",
-  "keywords": ["react-component"],
+  "keywords": [
+    "react-component"
+  ],
   "jest": {
-    "collectCoverageFrom": ["src/**/*.{js,jsx}"],
+    "collectCoverageFrom": [
+      "src/**/*.{js,jsx}"
+    ],
     "verbose": true,
-    "transformIgnorePatterns": ["/node_modules/(?!react).+(js|jsx)$"],
-    "moduleDirectories": ["node_modules"],
-    "setupFiles": ["./tests/jestsetup.js"],
-    "snapshotSerializers": ["enzyme-to-json/serializer"]
+    "transformIgnorePatterns": [
+      "/node_modules/(?!react).+(js|jsx)$"
+    ],
+    "moduleDirectories": [
+      "node_modules"
+    ],
+    "setupFiles": [
+      "./tests/jestsetup.js"
+    ],
+    "snapshotSerializers": [
+      "enzyme-to-json/serializer"
+    ]
   },
   "babel": {
-    "presets": ["env", "react"],
+    "presets": [
+      "env",
+      "react"
+    ],
     "plugins": [
       "transform-class-properties",
       "transform-es2015-destructuring",
@@ -106,15 +130,18 @@
           "transpileTemplateLiterals": false
         }
       ],
-
       "inline-react-svg"
     ],
     "env": {
       "production": {
-        "plugins": ["transform-es2015-modules-commonjs"]
+        "plugins": [
+          "transform-es2015-modules-commonjs"
+        ]
       },
       "test": {
-        "plugins": ["transform-es2015-modules-commonjs"]
+        "plugins": [
+          "transform-es2015-modules-commonjs"
+        ]
       }
     }
   }
