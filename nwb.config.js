@@ -11,7 +11,6 @@ module.exports = {
       "transform-es2015-destructuring",
       "transform-object-rest-spread",
       "transform-inline-environment-variables",
-      "transform-es2015-modules-commonjs",
       [
         "styled-components",
         {
@@ -22,7 +21,8 @@ module.exports = {
           transpileTemplateLiterals: false
         }
       ],
-      "inline-react-svg"
+      "inline-react-svg",
+      "transform-es2015-modules-commonjs"
     ],
     env: {
       production: {
