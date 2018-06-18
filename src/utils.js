@@ -45,3 +45,16 @@ export function getThemeAsPlainTextByKeys(theme, ...keys) {
 }
 
 
+export function innerMerge(obj, ...others) {
+  others.forEach(v => {
+    for (const key in v) {
+      if (typeof obj[key] === "object" && typeof v[key] === "object") {
+        obj[key] = innerMerge(obj[key], v[key]);
+      } else {
+        obj[key] = v[key];
+      }
+    }
+  });
+
+  return obj;
+}

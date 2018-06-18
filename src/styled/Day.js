@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 
-import { getThemeAsPlainTextByKeys } from '../utils';
+import { getThemeAsPlainTextByKeys, innerMerge } from '../utils';
 import defaultTheme from '../theme/defaultTheme';
 
 const Elem = styled.div`
@@ -30,12 +30,25 @@ const Elem = styled.div`
 `;
 
 const Day = props => {
-  const theme = getThemeAsPlainTextByKeys(props.theme || defaultTheme);
+
+  const merged = innerMerge(
+    {},
+    defaultTheme.DatePicker,
+    props.theme && props.theme.DatePicker ? props.theme.DatePicker : {}
+  );
+
+  const theme = getThemeAsPlainTextByKeys(merged);
+
+  const mergedDay = innerMerge(
+    {},
+    defaultTheme.DatePicker && defaultTheme.DatePicker.Day || {},
+    props.theme && props.theme.DatePicker && props.theme.DatePicker.Day || {}
+  );
 
   Object.assign(
     theme,
     getThemeAsPlainTextByKeys(
-      (props.theme && props.theme.Day) || defaultTheme.Day,
+      mergedDay,
       props.selected ? 'selected' : props.hovered ? 'hovered' : 'main'
     )
   );

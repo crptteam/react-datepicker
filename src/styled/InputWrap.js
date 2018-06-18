@@ -1,14 +1,14 @@
-import React from 'react';
-import styled from 'styled-components';
+import React from "react";
+import styled from "styled-components";
 
-import { getThemeAsPlainTextByKeys } from '../utils';
-import defaultTheme from '../theme/defaultTheme';
+import { getThemeAsPlainTextByKeys, innerMerge } from "../utils";
+import defaultTheme from "../theme/defaultTheme";
 
 const Elem = styled.label`
-  js-display: ${props => (props.inline ? 'inline-flex' : 'flex')};
-  display: ${props => (props.inline ? 'inline-flex' : 'flex')};
-  width: ${props => (props.inline ? props.width : '100%')};
-  min-width: ${props => (props.inline ? props.width : '100%')};
+  js-display: ${props => (props.inline ? "inline-flex" : "flex")};
+  display: ${props => (props.inline ? "inline-flex" : "flex")};
+  width: ${props => (props.inline ? props.width : "100%")};
+  min-width: ${props => (props.inline ? props.width : "100%")};
   height: ${props => props.height};
   box-sizing: border-box;
   background: ${props => props.background};
@@ -22,14 +22,32 @@ const Elem = styled.label`
 `;
 
 const InputWrap = props => {
-  const theme = getThemeAsPlainTextByKeys(props.theme || defaultTheme);
+  const merged = innerMerge(
+    {},
+    defaultTheme.DatePicker,
+    props.theme && props.theme.DatePicker ? props.theme.DatePicker : {}
+  );
 
-  Object.assign(theme, getThemeAsPlainTextByKeys(
-    (props.theme && props.theme.InputWrap) || defaultTheme.InputWrap,
-    props.disabled ? 'disabled' : props.isError ? 'error' : 'main'
-  ));
+  const theme = getThemeAsPlainTextByKeys(merged);
 
-  return <Elem {...theme} {...props}  />;
+  const mergedInputWrap = innerMerge(
+    {},
+    (defaultTheme.DatePicker && defaultTheme.DatePicker.InputWrap) || {},
+    (props.theme &&
+      props.theme.DatePicker &&
+      props.theme.DatePicker.InputWrap) ||
+      {}
+  );
+
+  Object.assign(
+    theme,
+    getThemeAsPlainTextByKeys(
+      mergedInputWrap,
+      props.disabled ? "disabled" : props.isError ? "error" : "main"
+    )
+  );
+
+  return <Elem {...theme} {...props} />;
 };
 
 export default InputWrap;
