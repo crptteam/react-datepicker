@@ -1,7 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 
-import { getThemeAsPlainTextByKeys } from "../utils";
+import { getThemeAsPlainTextByKeys, innerMerge } from "../utils";
 import defaultTheme from "../theme/defaultTheme";
 
 const Elem = styled.div`
@@ -27,8 +27,15 @@ const Elem = styled.div`
 `;
 
 const DatePickerPanelWrap = props => {
+
+  const merged = innerMerge(
+    {},
+    defaultTheme.DatePicker,
+    props.theme && props.theme.DatePicker ? props.theme.DatePicker : {}
+  );
+
   const theme = getThemeAsPlainTextByKeys(
-    props.theme || defaultTheme,
+    merged,
     props.disabled ? "disabled" : props.isError ? "error" : "main"
   );
 

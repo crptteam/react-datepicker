@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import { withTheme } from "styled-components";
 
 import { DatePickerPanel } from './DatePickerPanel';
 import { DatePickerInputer } from './DatePickerInputer';
@@ -136,4 +137,4 @@ DatePicker.defaultProps = {
 
 DatePicker.displayName = 'DatePicker';
 
-export default DatePicker;
+export default withTheme(DatePicker);

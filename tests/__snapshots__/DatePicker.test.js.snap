@@ -1,104 +1,13 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`DatePicker Should renders without problems 1`] = `
-<DatePickerInputer
-  date={null}
-  onBlur={[Function]}
-  onFocus={[Function]}
-  onMouseDown={[Function]}
-  onValidUpdate={[Function]}
+<DatePicker
+  disabled={false}
+  onChange={[Function]}
+  onUpdate={[Function]}
   theme={
     Object {
-      "Day": Object {
-        "borderRadius": "2px",
-        "height": "24px",
-        "hoverBackground": "#1A99F4",
-        "hoverColor": "#FFFFFF",
-        "hovered": Object {
-          "background": "rgb(95,191,255)",
-          "color": "#FFFFFF",
-        },
-        "main": Object {
-          "background": "rgba(0,0,0,0)",
-          "color": "#212C42",
-        },
-        "selected": Object {
-          "background": "#1A99F4",
-          "color": "#FFFFFF",
-        },
-        "width": "24px",
-      },
-      "InputElem": Object {
-        "disabled": Object {
-          "background": "rgba(0,0,0,0)",
-          "color": "#212C42",
-          "cursor": "not-allowed",
-          "placeholderColor": "#ACADB5",
-        },
-        "error": Object {
-          "background": "rgba(0,0,0,0)",
-          "color": "#212C42",
-          "cursor": "text",
-          "placeholderColor": "#ACADB5",
-        },
-        "main": Object {
-          "background": "rgba(0,0,0,0)",
-          "color": "#212C42",
-          "cursor": "text",
-          "placeholderColor": "#ACADB5",
-        },
-      },
-      "InputWrap": Object {
-        "borderRadius": "2px",
-        "disabled": Object {
-          "background": "#FFFFFF",
-          "border": "1px solid #ABADB5",
-          "cursor": "not-allowed",
-        },
-        "error": Object {
-          "background": "#FFEBEB",
-          "border": "1px solid #FF3C21",
-          "cursor": "normal",
-        },
-        "height": "64px",
-        "main": Object {
-          "background": "#FFFFFF",
-          "border": "1px solid #ABADB5",
-          "cursor": "normal",
-        },
-        "paddingLeft": "16px",
-        "paddingRight": "16px",
-      },
-      "borderRadius": "2px",
-      "disabled": Object {
-        "background": "#FFFFFF",
-        "border": "1px solid #ABADB5",
-        "color": "#212C42",
-        "placeholder": "#ACADB5",
-      },
-      "error": Object {
-        "background": "#FFEBEB",
-        "border": "1px solid #FF3C21",
-        "color": "#212C42",
-        "placeholder": "#ACADB5",
-      },
-      "fontSize": "16px",
-      "fontWeight": 200,
-      "height": "64px",
-      "main": Object {
-        "background": "#FFFFFF",
-        "border": "1px solid #ABADB5",
-        "color": "#212C42",
-        "placeholder": "#ACADB5",
-      },
-    }
-  }
->
-  <DatePickerPanel
-    date={null}
-    select={[Function]}
-    theme={
-      Object {
+      "DatePicker": Object {
         "Day": Object {
           "borderRadius": "2px",
           "height": "24px",
@@ -181,9 +90,8 @@ exports[`DatePicker Should renders without problems 1`] = `
           "color": "#212C42",
           "placeholder": "#ACADB5",
         },
-      }
+      },
     }
-    visible={false}
-  />
-</DatePickerInputer>
+  }
+/>
 `;

@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 
-import { getThemeAsPlainTextByKeys } from '../utils';
+import { getThemeAsPlainTextByKeys, innerMerge } from '../utils';
 import defaultTheme from '../theme/defaultTheme';
 
 const Elem = styled.input`
@@ -34,10 +34,23 @@ const Elem = styled.input`
 `;
 
 const InputElem = props => {
-  const theme = getThemeAsPlainTextByKeys(props.theme || defaultTheme);
+
+  const merged = innerMerge(
+    {},
+    defaultTheme.DatePicker,
+    props.theme && props.theme.DatePicker ? props.theme.DatePicker : {}
+  );
+
+  const theme = getThemeAsPlainTextByKeys(merged);
+
+  const mergedInputElem = innerMerge(
+    {},
+    defaultTheme.DatePicker && defaultTheme.DatePicker.InputElem || {},
+    props.theme && props.theme.DatePicker && props.theme.DatePicker.InputElem || {}
+  );
 
   Object.assign(theme, getThemeAsPlainTextByKeys(
-    (props.theme && props.theme.InputElem) || defaultTheme.InputElem,
+    mergedInputElem,
     props.disabled ? 'disabled' : props.isError ? 'error' : 'main'
   ));
 

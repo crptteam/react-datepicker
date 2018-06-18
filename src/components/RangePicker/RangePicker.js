@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-
+import {withTheme} from 'styled-components';
 import { RangePickerPanel } from './RangePickerPanel';
 import { RangePickerInputer } from './RangePickerInputer';
 import 'datejs';
@@ -184,4 +184,4 @@ RangePicker.defaultProps = {
 
 RangePicker.displayName = 'RangePicker';
 
-export default RangePicker;
+export default withTheme(RangePicker);
