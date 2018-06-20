@@ -107,6 +107,8 @@ class DatePicker extends Component {
         name={name}
         inline={this.props.inline}
         theme={this.props.theme}
+        placeholder={this.props.placeholder}
+        savePlaceholder={this.props.savePlaceholder}
       >
         <DatePickerPanel
           date={this.state.date}

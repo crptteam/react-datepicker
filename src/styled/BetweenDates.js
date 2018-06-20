@@ -6,10 +6,12 @@ import defaultTheme from '../theme/defaultTheme';
 
 const Elem = styled.span`
   display: inline-block;
+  position: relative;
   width: 16px;
   text-align: center;
   font-family: ${props => props.fontFamily};
   font-weight: ${props => props.bodyWeight};
+  top: ${props => (props.centered ? '0' : '8px')};
   opacity: ${props => (props.visible ? 1 : 0)};
 `;
 
