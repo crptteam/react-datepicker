@@ -150,6 +150,8 @@ class RangePicker extends Component {
         to={this.state.to}
         name={name}
         theme={this.props.theme}
+        placeholder={this.props.placeholder}
+        savePlaceholder={this.props.savePlaceholder}
       >
         <RangePickerPanel
           from={this.state.from}

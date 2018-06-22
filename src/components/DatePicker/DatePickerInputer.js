@@ -5,6 +5,7 @@ import Inputmask from 'inputmask';
 import InputWrap from '../../styled/InputWrap';
 import InputContentWrap from '../../styled/InputContentWrap';
 import InputElem from '../../styled/InputElem';
+import Placeholder from '../../styled/Placeholder';
 
 import { CalendarIcon } from '../../svg';
 
@@ -18,11 +19,13 @@ export class DatePickerInputer extends Component {
     super(props);
 
     this.state = {
-      editingValue: null
+      editingValue: null,
+      isFocused: !!this.props.date,
     };
 
     this.onChange = this.onChange.bind(this);
     this.onBlur = this.onBlur.bind(this);
+    this.onFocus = this.onFocus.bind(this);
 
     this.mask = '9999.99.99';
     this.im = new Inputmask(this.mask);
@@ -40,7 +43,8 @@ export class DatePickerInputer extends Component {
     let date = getValidMomentFromISOStringOrNull(e.target.value);
 
     this.setState({
-      date
+      date,
+      isFocused: !!date
     });
 
     if (
@@ -59,10 +63,22 @@ export class DatePickerInputer extends Component {
     return this.props.date ? this.props.date.format('YYYY.MM.DD') : '';
   }
 
+  onFocus() {
+    this.setState({
+      isFocused: true
+    });
+  }
+
   onBlur(e) {
     this.setState({
       editingValue: null
     });
+
+    if (!this.props.date) {
+      this.setState({
+        isFocused: false
+      });
+    }
   }
 
   render() {
@@ -79,13 +95,23 @@ export class DatePickerInputer extends Component {
         component="DatePicker"
       >
         <InputContentWrap>
+          <Placeholder
+            focused={this.state.isFocused}
+            disabled={this.props.disabled}
+            isError={this.props.isError}
+            theme={this.props.theme}
+            isSaved={this.props.savePlaceholder}
+          >
+            {this.props.placeholder || "Дата"}
+          </Placeholder>
+
           <InputElem
-            placeholder="Дата"
+            centered={!this.props.savePlaceholder}
+            onFocus={this.onFocus}
             onChange={this.onChange}
             value={this.getValue()}
             onBlur={this.onBlur}
             innerRef={el => (this.dateInput = el)}
-            centered
             name={name}
             theme={this.props.theme}
             component="DatePicker"

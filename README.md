@@ -26,6 +26,8 @@ import { DatePicker, RangePicker } from  "@crpt/react-datepicker";
 | date: String | Selected date in ISO 8601 format. |  `<DatePicker date="2014/01/02" />` |
 | onChange: Function | Called, when DatePicker input value changed. |  `<DatePicker onChange={val => alert(val)} />` |
 | onUpdate: Function | Вызывается, когда DatePicker теряет фокус или пользователь нажимает Enter. |  `<DatePicker onUpdate={val => alert(val)} />` |
+| placeholder: String | Set placeholder | `<DatePicker placeholder="Order date" />` |
+| savePlaceholder: Boolean | Don't hide placeholder | `<DatePicker savePlaceholder />` |
 
 
 ### RangePicker
@@ -36,6 +38,8 @@ import { DatePicker, RangePicker } from  "@crpt/react-datepicker";
 | to: String | Конечная дата диапазона в формате ISO 8601. |  `<RangePicker to="2014/01/02" />` |
 | onChange: Function | Вызывается, когда меняется значение в DatePicker, параметром принимает объект с полями to и from. |  `<RangePicker onChange={val => alert(val)} />` |
 | onUpdate: Function | Вызывается, когда RangePicker теряет фокус или пользователь нажимает Enter. |  `<RangePicker onUpdate={val => alert(val)} />` |
+| placeholder: String | Set placeholder | `<RangePicker placeholder="Order date" />` |
+| savePlaceholder: Boolean | Don't hide placeholder | `<RangePicker savePlaceholder />` |
 
 
 [build-badge]: https://img.shields.io/travis/user/repo/master.png?style=flat-square

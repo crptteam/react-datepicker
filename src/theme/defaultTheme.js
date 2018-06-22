@@ -45,6 +45,33 @@ export default {
         background: "rgba(0,0,0,0)"
       }
     },
+    placeholder: {
+      normal: "#ACADB5",
+      disabled: "#ACADB5",
+      error: "#ACADB5"
+    },
+    Placeholder: {
+      fontWeight: 200,
+      main: {
+        color: "#abadb6"
+      },
+      error: {
+        color: "#abadb6"
+      },
+      disabled: {
+        color: "#abadb6"
+      },
+      normal: {
+        fontSize: "16px",
+        height: "24px",
+        top: "19px"
+      },
+      focused: {
+        top: "11px",
+        fontSize: "14px",
+        height: "14px"
+      }
+    },
     InputWrap: {
       main: {
         background: "#FFFFFF",
@@ -84,7 +111,8 @@ export default {
         placeholderColor: "#ACADB5",
         cursor: "text",
         background: "rgba(0,0,0,0)"
-      }
+      },
+      height: "24px"
     }
   }
 };
