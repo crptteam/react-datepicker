@@ -7,7 +7,7 @@ import defaultTheme from "../theme/defaultTheme";
 const Elem = styled.div`
   font-family: ${props => props.fontFamily};
   position: absolute;
-  z-index: 2;
+  z-index: 9999;
   border-radius: 2px;
   padding: 30px;
   padding-right: 40px;
