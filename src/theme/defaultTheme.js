@@ -113,6 +113,9 @@ export default {
         background: "rgba(0,0,0,0)"
       },
       height: "24px"
+    },
+    InputContentWrap: {
+      width: 'calc(100% - 32px)'
     }
   }
 };
