@@ -1,13 +1,13 @@
-import React, { Component } from 'react';
-import { getValidMomentFromISOStringOrNull } from '../../utils';
-import Inputmask from 'inputmask';
+import React, { Component } from "react";
+import { getValidMomentFromISOStringOrNull } from "../../utils";
+import Inputmask from "inputmask";
 
-import InputWrap from '../../styled/InputWrap';
-import InputContentWrap from '../../styled/InputContentWrap';
-import InputElem from '../../styled/InputElem';
-import Placeholder from '../../styled/Placeholder';
+import InputWrap from "../../styled/InputWrap";
+import InputContentWrap from "../../styled/InputContentWrap";
+import InputElem from "../../styled/InputElem";
+import Placeholder from "../../styled/Placeholder";
 
-import { CalendarIcon } from '../../svg';
+import { CalendarIcon } from "../../svg";
 
 export class DatePickerInputer extends Component {
   dateInput;
@@ -20,14 +20,14 @@ export class DatePickerInputer extends Component {
 
     this.state = {
       editingValue: null,
-      isFocused: !!this.props.date,
+      isFocused: !!this.props.date
     };
 
     this.onChange = this.onChange.bind(this);
     this.onBlur = this.onBlur.bind(this);
     this.onFocus = this.onFocus.bind(this);
 
-    this.mask = '9999.99.99';
+    this.mask = "9999.99.99";
     this.im = new Inputmask(this.mask);
   }
 
@@ -49,7 +49,7 @@ export class DatePickerInputer extends Component {
 
     if (
       date !== this.props.date ||
-      (date && !date.isSame(this.props.date, 'day'))
+      (date && !date.isSame(this.props.date, "day"))
     ) {
       this.props.onValidUpdate({
         date
@@ -60,7 +60,7 @@ export class DatePickerInputer extends Component {
   getValue() {
     if (this.state.editingValue !== null) return this.state.editingValue;
 
-    return this.props.date ? this.props.date.format('YYYY.MM.DD') : '';
+    return this.props.date ? this.props.date.format("YYYY.MM.DD") : "";
   }
 
   onFocus() {
@@ -94,7 +94,11 @@ export class DatePickerInputer extends Component {
         theme={this.props.theme}
         component="DatePicker"
       >
-        <InputContentWrap>
+        <InputContentWrap
+          theme={this.props.theme}
+          disabled={this.props.disabled}
+          isError={this.props.isError}
+        >
           <Placeholder
             focused={this.state.isFocused}
             disabled={this.props.disabled}

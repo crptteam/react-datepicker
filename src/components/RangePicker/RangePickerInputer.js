@@ -1,16 +1,16 @@
-import React, { Component } from 'react';
-import { getValidMomentFromISOStringOrNull } from '../../utils';
-import Inputmask from 'inputmask';
+import React, { Component } from "react";
+import { getValidMomentFromISOStringOrNull } from "../../utils";
+import Inputmask from "inputmask";
 
-import InputWrap from '../../styled/InputWrap';
-import InputContentWrap from '../../styled/InputContentWrap';
-import InputElem from '../../styled/InputElem';
-import BetweenDates from '../../styled/BetweenDates';
-import IconWrap from '../../styled/IconWrap';
-import Placeholder from '../../styled/Placeholder';
-import 'datejs';
+import InputWrap from "../../styled/InputWrap";
+import InputContentWrap from "../../styled/InputContentWrap";
+import InputElem from "../../styled/InputElem";
+import BetweenDates from "../../styled/BetweenDates";
+import IconWrap from "../../styled/IconWrap";
+import Placeholder from "../../styled/Placeholder";
+import "datejs";
 
-import { CalendarIcon } from '../../svg';
+import { CalendarIcon } from "../../svg";
 
 export class RangePickerInputer extends Component {
   fromInput;
@@ -37,7 +37,7 @@ export class RangePickerInputer extends Component {
     this.onToInputBlur = this.onToInputBlur.bind(this);
     this.onFocus = this.onFocus.bind(this);
 
-    this.mask = '9999.99.99';
+    this.mask = "9999.99.99";
     this.im = new Inputmask(this.mask);
   }
 
@@ -61,11 +61,11 @@ export class RangePickerInputer extends Component {
 
     let from = getValidMomentFromISOStringOrNull(Date.parse(e.target.value));
 
-    if (from && this.props.to && from.isAfter(this.props.to, 'day')) {
+    if (from && this.props.to && from.isAfter(this.props.to, "day")) {
       from = null;
 
       this.setState({
-        editingFromValue: ''
+        editingFromValue: ""
       });
     }
 
@@ -80,7 +80,7 @@ export class RangePickerInputer extends Component {
 
       this.setState({
         isFocused: true
-      })
+      });
     }
   }
 
@@ -91,10 +91,10 @@ export class RangePickerInputer extends Component {
 
     let to = getValidMomentFromISOStringOrNull(Date.parse(e.target.value));
 
-    if (to && this.props.from && to.isBefore(this.props.from, 'day')) {
+    if (to && this.props.from && to.isBefore(this.props.from, "day")) {
       to = null;
       this.setState({
-        editingToValue: ''
+        editingToValue: ""
       });
     }
 
@@ -130,7 +130,7 @@ export class RangePickerInputer extends Component {
     if (this.state.editingFromValue !== null)
       return this.state.editingFromValue;
 
-    return this.props.from ? this.props.from.format('YYYY.MM.DD') : '';
+    return this.props.from ? this.props.from.format("YYYY.MM.DD") : "";
   }
 
   onFromInputBlur(e) {
@@ -160,13 +160,13 @@ export class RangePickerInputer extends Component {
   onFocus(e) {
     this.setState({
       isFocused: true
-    })
+    });
   }
 
   getToInputValue() {
     if (this.state.editingToValue !== null) return this.state.editingToValue;
 
-    return this.props.to ? this.props.to.format('YYYY.MM.DD') : '';
+    return this.props.to ? this.props.to.format("YYYY.MM.DD") : "";
   }
 
   render() {
@@ -182,7 +182,11 @@ export class RangePickerInputer extends Component {
         theme={this.props.theme}
         component="DatePicker"
       >
-        <InputContentWrap>
+        <InputContentWrap
+          theme={this.props.theme}
+          disabled={this.props.disabled}
+          isError={this.props.isError}
+        >
           <Placeholder
             focused={this.state.isFocused}
             disabled={this.props.disabled}
@@ -232,7 +236,6 @@ export class RangePickerInputer extends Component {
           <IconWrap right>
             <CalendarIcon />
           </IconWrap>
-
         </InputContentWrap>
 
         {this.props.children}
