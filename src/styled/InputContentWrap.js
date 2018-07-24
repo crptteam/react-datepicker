@@ -33,8 +33,6 @@ const InputContentWrap = props => {
     props.disabled ? "disabled" : props.isError ? "error" : "main"
   );
 
-  console.log("THEME IN INPUT CONTENT WRAP", theme);
-
   return <Elem {...theme} {...props} />;
 };
 
