@@ -25,7 +25,7 @@ const InputContentWrap = props => {
     (props.theme &&
       props.theme.DatePicker &&
       props.theme.DatePicker.InputContentWrap) ||
-      {}
+    defaultTheme.DatePicker.InputContentWrap
   );
 
   const theme = getThemeAsPlainTextByKeys(
