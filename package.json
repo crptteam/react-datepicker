@@ -1,6 +1,6 @@
 {
   "name": "@crpt/react-datepicker",
-  "version": "1.0.14",
+  "version": "1.0.15",
   "description": "react-datepicker React component",
   "main": "lib/index.js",
   "module": "es/index.js",
@@ -96,6 +96,7 @@
       "src/**/*.{js,jsx}"
     ],
     "verbose": true,
+    "testURL": "http://localhost/",
     "transformIgnorePatterns": [
       "/node_modules/(?!react).+(js|jsx)$"
     ],
