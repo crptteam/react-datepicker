@@ -96,6 +96,7 @@
       "src/**/*.{js,jsx}"
     ],
     "verbose": true,
+    "testURL": "http://localhost/",
     "transformIgnorePatterns": [
       "/node_modules/(?!react).+(js|jsx)$"
     ],
