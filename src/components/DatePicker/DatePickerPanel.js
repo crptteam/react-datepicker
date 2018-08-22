@@ -95,10 +95,14 @@ export class DatePickerPanel extends Component {
   }
 
   render() {
+    const { theme, visible, positionX, positionY } = this.props;
+
     return (
       <DatePickerPanelWrap
-        theme={this.props.theme}
-        visible={this.props.visible}
+        theme={theme}
+        visible={visible}
+        positionX={positionX}
+        positionY={positionY}
       >
         <HalfC theme={this.props.theme}>
           <TopWithPickers>

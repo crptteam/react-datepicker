@@ -1,13 +1,13 @@
 import React, {Component} from 'react'
 import {render} from 'react-dom'
 
-import Example from '../../src'
+import { DatePicker } from '../../src'
 
 class Demo extends Component {
   render() {
-    return <div>
+    return <div style={{textAlign: 'center'}}>
       <h1>react-datepicker Demo</h1>
-      <Example/>
+      <DatePicker  positionX="left"  positionY="bottom" />
     </div>
   }
 }

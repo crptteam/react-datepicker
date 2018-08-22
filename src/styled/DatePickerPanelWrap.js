@@ -12,8 +12,13 @@ const Elem = styled.div`
   padding: 30px;
   padding-right: 40px;
   padding-bottom: 25px;
-  top: 62px;
-  left: -1px;
+  ${props => (props.positionX && props.positionX === 'left'
+    ? 'right: -1px'
+    : 'left: -1px')};
+  ${props => (props.positionY && props.positionY === 'top'
+  ? 'bottom: 62px'
+  : 'top: 62px')};
+  
   display: ${props => (props.visible ? "block" : "none")};
   font-size: 0px;
   white-space: nowrap;

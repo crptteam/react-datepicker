@@ -159,6 +159,8 @@ class RangePicker extends Component {
           visible={this.state.isOpen}
           select={this.select}
           theme={this.props.theme}
+          positionX={this.props.positionX}
+          positionY={this.props.positionY}
         />
       </RangePickerInputer>
     );
@@ -172,7 +174,9 @@ RangePicker.propTypes = {
   from: PropTypes.string,
   to: PropTypes.string,
   onChange: PropTypes.func,
-  onUpdate: PropTypes.func
+  onUpdate: PropTypes.func,
+  positionalX: PropTypes.string,
+  positionalY: PropTypes.string,
 };
 
 RangePicker.defaultProps = {
@@ -180,6 +184,8 @@ RangePicker.defaultProps = {
   theme: defaultTheme,
   from: null,
   to: null,
+  positionX: '',
+  positionY: '',
   onChange: val => null,
   onUpdate: val => null
 };
