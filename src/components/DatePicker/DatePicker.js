@@ -7,6 +7,7 @@ import { DatePickerInputer } from './DatePickerInputer';
 
 import moment from 'moment';
 import defaultTheme from '../../theme/defaultTheme';
+import { RangePickerPanel } from '../RangePicker/RangePickerPanel';
 
 moment.locale('ru');
 
@@ -115,6 +116,8 @@ class DatePicker extends Component {
           visible={this.state.isOpen}
           select={this.select}
           theme={this.props.theme}
+          positionX={this.props.positionX}
+          positionY={this.props.positionY}
         />
       </DatePickerInputer>
     );
@@ -127,14 +130,18 @@ DatePicker.propTypes = {
   disabled: PropTypes.bool,
   date: PropTypes.string,
   onChange: PropTypes.func,
-  onUpdate: PropTypes.func
+  onUpdate: PropTypes.func,
+  positionalX: PropTypes.string,
+  positionalY: PropTypes.string,
 };
 
 DatePicker.defaultProps = {
   disabled: false,
   theme: defaultTheme,
+  positionX: '',
+  positionY: '',
   onChange: val => null,
-  onUpdate: val => null
+  onUpdate: val => null,
 };
 
 DatePicker.displayName = 'DatePicker';

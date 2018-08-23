@@ -28,6 +28,8 @@ import { DatePicker, RangePicker } from  "@crpt/react-datepicker";
 | onUpdate: Function | Вызывается, когда DatePicker теряет фокус или пользователь нажимает Enter. |  `<DatePicker onUpdate={val => alert(val)} />` |
 | placeholder: String | Set placeholder | `<DatePicker placeholder="Order date" />` |
 | savePlaceholder: Boolean | Don't hide placeholder | `<DatePicker savePlaceholder />` |
+| positionX: string | if value is "left" calendar is showed at the left, otherwise - right | | 
+| positionY: string | if value is "top" calendar is showed at the top, otherwise - bottom | | 
 
 
 ### RangePicker
@@ -40,6 +42,8 @@ import { DatePicker, RangePicker } from  "@crpt/react-datepicker";
 | onUpdate: Function | Вызывается, когда RangePicker теряет фокус или пользователь нажимает Enter. |  `<RangePicker onUpdate={val => alert(val)} />` |
 | placeholder: String | Set placeholder | `<RangePicker placeholder="Order date" />` |
 | savePlaceholder: Boolean | Don't hide placeholder | `<RangePicker savePlaceholder />` |
+| positionX: string | if value is "left" calendar is showed at the left, otherwise - right | | 
+| positionY: string | if value is "top" calendar is showed at the top, otherwise - bottom | | 
 
 
 [build-badge]: https://img.shields.io/travis/user/repo/master.png?style=flat-square
