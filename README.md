@@ -30,6 +30,7 @@ import { DatePicker, RangePicker } from  "@crpt/react-datepicker";
 | savePlaceholder: Boolean | Don't hide placeholder | `<DatePicker savePlaceholder />` |
 | positionX: string | if value is "left" calendar is showed at the left, otherwise - right | | 
 | positionY: string | if value is "top" calendar is showed at the top, otherwise - bottom | | 
+| monthView: bool | Switches to month view | |
 
 
 ### RangePicker
