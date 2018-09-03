@@ -1,20 +1,22 @@
-import moment from 'moment/moment';
-import React, { Component } from 'react';
-import { getDaysArrayFromMomentDate } from '../../utils';
+import moment from "moment/moment";
+import React, { Component } from "react";
+import { getDaysArrayFromMomentDate } from "../../utils";
 
-import DatePickerPanelWrap from '../../styled/DatePickerPanelWrap';
-import HalfC from '../../styled/HalfC';
-import TopWithPickers from '../../styled/TopWithPickers';
-import PickerWrap from '../../styled/PickerWrap';
-import MonthValueWrap from '../../styled/MonthValueWrap';
-import YearValueWrap from '../../styled/YearValueWrap';
-import BottomWithDays from '../../styled/BottomWithDays';
-import IconWrap from '../../styled/IconWrap';
-import Day from '../../styled/Day';
-import { LeftDatepickerArrow } from '../../svg';
-import { RightDatepickerArrow } from '../../svg';
+import DatePickerPanelWrap from "../../styled/DatePickerPanelWrap";
+import HalfC from "../../styled/HalfC";
+import TopWithPickers from "../../styled/TopWithPickers";
+import PickerWrap from "../../styled/PickerWrap";
+import MonthValueWrap from "../../styled/MonthValueWrap";
+import YearValueWrap from "../../styled/YearValueWrap";
+import BottomWithDays from "../../styled/BottomWithDays";
+import IconWrap from "../../styled/IconWrap";
+import Day from "../../styled/Day";
+import Months from "../../styled/Months";
+import Month from "../../styled/Month";
+import { LeftDatepickerArrow } from "../../svg";
+import { RightDatepickerArrow } from "../../svg";
 
-moment.locale('ru');
+moment.locale("ru");
 
 export class DatePickerPanel extends Component {
   constructor(props) {
@@ -32,6 +34,7 @@ export class DatePickerPanel extends Component {
     this.increaseMonth = this.increaseMonth.bind(this);
     this.decreaseYear = this.decreaseYear.bind(this);
     this.increaseYear = this.increaseYear.bind(this);
+    this.onMonthClick = this.onMonthClick.bind(this);
   }
 
   componentWillReceiveProps(props) {
@@ -60,22 +63,52 @@ export class DatePickerPanel extends Component {
       [name]: newDate,
       [days]: getDaysArrayFromMomentDate(newDate)
     });
+
+    return newDate;
   }
 
   decreaseMonth() {
-    this.transformAndUpdateDate('date', 'days', -1, 'month', newDate => false);
+    const newDate = this.transformAndUpdateDate(
+      "date",
+      "days",
+      -1,
+      "month",
+      newDate => false
+    );
+    if (this.props.monthView) this.props.select({ date: newDate });
   }
 
   increaseMonth() {
-    this.transformAndUpdateDate('date', 'days', 1, 'month', newDate => false);
+    const newDate = this.transformAndUpdateDate(
+      "date",
+      "days",
+      1,
+      "month",
+      newDate => false
+    );
+    if (this.props.monthView) this.props.select({ date: newDate });
   }
 
   decreaseYear() {
-    this.transformAndUpdateDate('date', 'days', -1, 'year', newDate => false);
+    const newDate = this.transformAndUpdateDate(
+      "date",
+      "days",
+      -1,
+      "year",
+      newDate => false
+    );
+    if (this.props.monthView) this.props.select({ date: newDate });
   }
 
   increaseYear() {
-    this.transformAndUpdateDate('date', 'days', 1, 'year', newDate => false);
+    const newDate = this.transformAndUpdateDate(
+      "date",
+      "days",
+      1,
+      "year",
+      newDate => false
+    );
+    if (this.props.monthView) this.props.select({ date: newDate });
   }
 
   onDayMouseEnter(e, date) {
@@ -90,12 +123,26 @@ export class DatePickerPanel extends Component {
     });
   }
 
+  onMonthClick(m) {
+    if (this.props.monthView) this.props.select({ date: m });
+  }
+
   isOneOfSelected(date) {
-    return this.props.date && this.props.date.isSame(date, 'day');
+    return this.props.date && this.props.date.isSame(date, "day");
   }
 
   render() {
-    const { theme, visible, positionX, positionY } = this.props;
+    const { theme, visible, positionX, positionY, monthView } = this.props;
+
+    const monthes = [
+      moment(this.state.date).add(-3, "month"),
+      moment(this.state.date).add(-2, "month"),
+      moment(this.state.date).add(-1, "month"),
+      moment(this.state.date),
+      moment(this.state.date).add(1, "month"),
+      moment(this.state.date).add(2, "month"),
+      moment(this.state.date).add(3, "month")
+    ];
 
     return (
       <DatePickerPanelWrap
@@ -111,7 +158,7 @@ export class DatePickerPanel extends Component {
                 <LeftDatepickerArrow />
               </IconWrap>
               <MonthValueWrap theme={this.props.theme}>
-                {this.state.date.format('MMMM')}
+                {this.state.date.format("MMMM")}
               </MonthValueWrap>
               <IconWrap onClick={this.increaseMonth}>
                 <RightDatepickerArrow />
@@ -123,7 +170,7 @@ export class DatePickerPanel extends Component {
                 <LeftDatepickerArrow />
               </IconWrap>
               <YearValueWrap theme={this.props.theme}>
-                {this.state.date.format('YYYY')}
+                {this.state.date.format("YYYY")}
               </YearValueWrap>
               <IconWrap onClick={this.increaseYear}>
                 <RightDatepickerArrow />
@@ -131,25 +178,35 @@ export class DatePickerPanel extends Component {
             </PickerWrap>
           </TopWithPickers>
 
-          <BottomWithDays>
-            {this.state.days.map(
-              (d, i) =>
-                d.val === 0 ? (
-                  <Day key={i} theme={this.props.theme} />
-                ) : (
-                  <Day
-                    theme={this.props.theme}
-                    onMouseEnter={e => this.onDayMouseEnter(e, d.date)}
-                    onMouseOut={e => this.onDayMouseOut(e, d.date)}
-                    selected={this.isOneOfSelected(d.date)}
-                    onMouseDown={e => this.props.select(d)}
-                    key={i}
-                  >
-                    {d.val}
-                  </Day>
-                )
-            )}
-          </BottomWithDays>
+          {monthView ? (
+            <Months>
+              {monthes.map((m, i) => (
+                <Month onClick={e => this.onMonthClick(m)} key={i} selected={this.state.date.isSame(m, "month")}>
+                  {m.format("MMMM")}
+                </Month>
+              ))}
+            </Months>
+          ) : (
+            <BottomWithDays>
+              {this.state.days.map(
+                (d, i) =>
+                  d.val === 0 ? (
+                    <Day key={i} theme={this.props.theme} />
+                  ) : (
+                    <Day
+                      theme={this.props.theme}
+                      onMouseEnter={e => this.onDayMouseEnter(e, d.date)}
+                      onMouseOut={e => this.onDayMouseOut(e, d.date)}
+                      selected={this.isOneOfSelected(d.date)}
+                      onMouseDown={e => this.props.select(d)}
+                      key={i}
+                    >
+                      {d.val}
+                    </Day>
+                  )
+              )}
+            </BottomWithDays>
+          )}
         </HalfC>
       </DatePickerPanelWrap>
     );
