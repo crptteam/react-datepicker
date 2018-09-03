@@ -8,16 +8,17 @@ const Elem = styled.div`
   font-family: ${props => props.fontFamily};
   position: absolute;
   z-index: 9999;
-  border-radius: 2px;
-  padding: 30px;
-  padding-right: 40px;
-  padding-bottom: 25px;
+  border-radius: ${props => props.borderRadius};
+  padding-top: ${props => props.paddingTop};
+  padding-left: ${props => props.paddingLeft};
+  padding-right: ${props => props.paddingRight};
+  padding-bottom: ${props => props.paddingBottom};
   ${props => (props.positionX && props.positionX === 'left'
     ? 'right: -1px'
     : 'left: -1px')};
   ${props => (props.positionY && props.positionY === 'top'
-  ? 'bottom: 62px'
-  : 'top: 62px')};
+  ? `bottom: ${props.bottom}`
+  : `top: ${props.top}`)};
   
   display: ${props => (props.visible ? "block" : "none")};
   font-size: 0px;
@@ -38,6 +39,8 @@ const DatePickerPanelWrap = props => {
     defaultTheme.DatePicker,
     props.theme && props.theme.DatePicker ? props.theme.DatePicker : {}
   );
+
+  innerMerge(merged, defaultTheme.DatePicker.DatePickerPanelWrap, (props.theme && props.theme.DatePicker && props.theme.DatePicker.DatePickerPanelWrap) || {});
 
   const theme = getThemeAsPlainTextByKeys(
     merged,

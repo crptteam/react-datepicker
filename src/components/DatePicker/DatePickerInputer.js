@@ -27,15 +27,24 @@ export class DatePickerInputer extends Component {
     this.onBlur = this.onBlur.bind(this);
     this.onFocus = this.onFocus.bind(this);
 
-    this.mask = "9999.99.99";
-    this.im = new Inputmask(this.mask);
+    if (!this.props.monthView) {
+      this.mask = "9999.99.99";
+      this.im = new Inputmask(this.mask);
+    }
   }
 
   componentDidMount() {
-    if (this.dateInput) this.dateMask = this.im.mask(this.dateInput);
+    if (this.dateInput && !this.props.monthView) this.dateMask = this.im.mask(this.dateInput);
   }
 
   onChange(e) {
+    if (this.props.monthView) {
+      this.setState({
+        isFocused: true
+      });
+      return;
+    }
+
     this.setState({
       editingValue: e.target.value
     });
@@ -60,7 +69,11 @@ export class DatePickerInputer extends Component {
   getValue() {
     if (this.state.editingValue !== null) return this.state.editingValue;
 
-    return this.props.date ? this.props.date.format("YYYY.MM.DD") : "";
+    return this.props.date
+      ? this.props.date.format(
+          this.props.monthView ? "MMMM YYYY" : "YYYY.MM.DD"
+        )
+      : "";
   }
 
   onFocus() {
@@ -117,6 +130,7 @@ export class DatePickerInputer extends Component {
             onBlur={this.onBlur}
             innerRef={el => (this.dateInput = el)}
             name={name}
+            noCaret={this.props.monthView}
             theme={this.props.theme}
             component="DatePicker"
           />

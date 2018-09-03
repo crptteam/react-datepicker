@@ -1,15 +1,15 @@
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
+import React, { Component } from "react";
+import PropTypes from "prop-types";
 import { withTheme } from "styled-components";
 
-import { DatePickerPanel } from './DatePickerPanel';
-import { DatePickerInputer } from './DatePickerInputer';
+import { DatePickerPanel } from "./DatePickerPanel";
+import { DatePickerInputer } from "./DatePickerInputer";
 
-import moment from 'moment';
-import defaultTheme from '../../theme/defaultTheme';
-import { RangePickerPanel } from '../RangePicker/RangePickerPanel';
+import moment from "moment";
+import defaultTheme from "../../theme/defaultTheme";
+import { RangePickerPanel } from "../RangePicker/RangePickerPanel";
 
-moment.locale('ru');
+moment.locale("ru");
 
 class DatePicker extends Component {
   blurTimeout;
@@ -76,8 +76,8 @@ class DatePicker extends Component {
     let date = this.state.date;
 
     if (date) {
-      if (day.date.isSame(date, 'day')) {
-        date = null;
+      if (day.date.isSame(date, "day")) {
+        if (!this.props.monthView) date = null;
       } else {
         date = moment(day.date);
       }
@@ -110,6 +110,7 @@ class DatePicker extends Component {
         theme={this.props.theme}
         placeholder={this.props.placeholder}
         savePlaceholder={this.props.savePlaceholder}
+        monthView={this.props.monthView}
       >
         <DatePickerPanel
           date={this.state.date}
@@ -118,6 +119,7 @@ class DatePicker extends Component {
           theme={this.props.theme}
           positionX={this.props.positionX}
           positionY={this.props.positionY}
+          monthView={this.props.monthView}
         />
       </DatePickerInputer>
     );
@@ -133,17 +135,18 @@ DatePicker.propTypes = {
   onUpdate: PropTypes.func,
   positionalX: PropTypes.string,
   positionalY: PropTypes.string,
+  monthView: PropTypes.bool
 };
 
 DatePicker.defaultProps = {
   disabled: false,
   theme: defaultTheme,
-  positionX: '',
-  positionY: '',
+  positionX: "",
+  positionY: "",
   onChange: val => null,
-  onUpdate: val => null,
+  onUpdate: val => null
 };
 
-DatePicker.displayName = 'DatePicker';
+DatePicker.displayName = "DatePicker";
 
 export default withTheme(DatePicker);

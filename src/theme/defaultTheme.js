@@ -116,6 +116,18 @@ export default {
     },
     InputContentWrap: {
       width: 'calc(100% - 32px)'
+    },
+    DatePickerPanelWrap: {
+      top: '62px',
+      bottom: '62px',
+      borderRadius: '2px',
+      paddingTop: '30px',
+      paddingLeft: '30px',
+      paddingRight: '30px',
+      paddingBottom: '25px',
+      main: {
+        border: '1px solid #ABADB5'
+      }
     }
   }
 };
