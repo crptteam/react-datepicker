@@ -24,6 +24,7 @@ import { DatePicker, RangePicker } from  "@crpt/react-datepicker";
 | PropName | Description | Example |
 |---|---|---|
 | date: String | Selected date in ISO 8601 format. |  `<DatePicker date="2014/01/02" />` |
+| format: string | Date input format | `<DatePicker date="10.09.2014" format="DD.MM.YYYY">` |
 | onChange: Function | Called, when DatePicker input value changed. |  `<DatePicker onChange={val => alert(val)} />` |
 | onUpdate: Function | Вызывается, когда DatePicker теряет фокус или пользователь нажимает Enter. |  `<DatePicker onUpdate={val => alert(val)} />` |
 | placeholder: String | Set placeholder | `<DatePicker placeholder="Order date" />` |
@@ -39,6 +40,7 @@ import { DatePicker, RangePicker } from  "@crpt/react-datepicker";
 |---|---|---|
 | from: String  | Стартовая дата диапазона в формате ISO 8601. |  `<RangePicker from="2012-12-12" />` |
 | to: String | Конечная дата диапазона в формате ISO 8601. |  `<RangePicker to="2014/01/02" />` |
+| format: string | Date input format | `<RangePicker from="10.09.2014" to="20.09.2014" format="DD.MM.YYYY">` |
 | onChange: Function | Вызывается, когда меняется значение в DatePicker, параметром принимает объект с полями to и from. |  `<RangePicker onChange={val => alert(val)} />` |
 | onUpdate: Function | Вызывается, когда RangePicker теряет фокус или пользователь нажимает Enter. |  `<RangePicker onUpdate={val => alert(val)} />` |
 | placeholder: String | Set placeholder | `<RangePicker placeholder="Order date" />` |

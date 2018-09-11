@@ -18,7 +18,9 @@ class DatePicker extends Component {
   constructor(props) {
     super(props);
 
-    const date = this.props.date ? moment(this.props.date) : null;
+    const date = this.props.date
+      ? moment(this.props.date, this.props.format)
+      : null;
 
     this.state = {
       isOpen: false,
@@ -111,6 +113,7 @@ class DatePicker extends Component {
         placeholder={this.props.placeholder}
         savePlaceholder={this.props.savePlaceholder}
         monthView={this.props.monthView}
+        format={this.props.format}
       >
         <DatePickerPanel
           date={this.state.date}
@@ -135,7 +138,8 @@ DatePicker.propTypes = {
   onUpdate: PropTypes.func,
   positionalX: PropTypes.string,
   positionalY: PropTypes.string,
-  monthView: PropTypes.bool
+  monthView: PropTypes.bool,
+  format: PropTypes.string
 };
 
 DatePicker.defaultProps = {
@@ -144,7 +148,8 @@ DatePicker.defaultProps = {
   positionX: "",
   positionY: "",
   onChange: val => null,
-  onUpdate: val => null
+  onUpdate: val => null,
+  format: null,
 };
 
 DatePicker.displayName = "DatePicker";

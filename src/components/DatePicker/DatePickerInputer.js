@@ -28,7 +28,11 @@ export class DatePickerInputer extends Component {
     this.onFocus = this.onFocus.bind(this);
 
     if (!this.props.monthView) {
-      this.mask = "9999.99.99";
+      const mask = this.props.format
+        ? this.props.format.replace(/\w/g, '9')
+        : "9999.99.99";
+
+      this.mask = mask;
       this.im = new Inputmask(this.mask);
     }
   }
@@ -49,7 +53,7 @@ export class DatePickerInputer extends Component {
       editingValue: e.target.value
     });
 
-    let date = getValidMomentFromISOStringOrNull(e.target.value);
+    let date = getValidMomentFromISOStringOrNull(e.target.value, this.props.format);
 
     this.setState({
       date,
@@ -68,11 +72,12 @@ export class DatePickerInputer extends Component {
 
   getValue() {
     if (this.state.editingValue !== null) return this.state.editingValue;
+    const format = this.props.monthView
+      ? "MMMM YYYY"
+      : (this.props.format || "YYYY.MM.DD");
 
     return this.props.date
-      ? this.props.date.format(
-          this.props.monthView ? "MMMM YYYY" : "YYYY.MM.DD"
-        )
+      ? this.props.date.format(format)
       : "";
   }
 

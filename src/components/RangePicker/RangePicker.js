@@ -15,10 +15,12 @@ class RangePicker extends Component {
 
   constructor(props) {
     super(props);
-    const start = this.props.from ? moment(Date.parse(this.props.from)) : moment();
+    const start = this.props.from
+      ? moment(this.props.from, this.props.format)
+      : moment();
 
     const end = this.props.to
-      ? moment(Date.parse(this.props.to))
+      ? moment(this.props.to, this.props.format)
       : moment(start).add(1, 'month');
 
     this.state = {
@@ -152,6 +154,7 @@ class RangePicker extends Component {
         theme={this.props.theme}
         placeholder={this.props.placeholder}
         savePlaceholder={this.props.savePlaceholder}
+        format={this.props.format}
       >
         <RangePickerPanel
           from={this.state.from}
@@ -177,6 +180,7 @@ RangePicker.propTypes = {
   onUpdate: PropTypes.func,
   positionalX: PropTypes.string,
   positionalY: PropTypes.string,
+  format: PropTypes.string,
 };
 
 RangePicker.defaultProps = {
@@ -187,7 +191,8 @@ RangePicker.defaultProps = {
   positionX: '',
   positionY: '',
   onChange: val => null,
-  onUpdate: val => null
+  onUpdate: val => null,
+  format: null,
 };
 
 RangePicker.displayName = 'RangePicker';
