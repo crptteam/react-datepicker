@@ -37,7 +37,11 @@ export class RangePickerInputer extends Component {
     this.onToInputBlur = this.onToInputBlur.bind(this);
     this.onFocus = this.onFocus.bind(this);
 
-    this.mask = "9999.99.99";
+    const mask = this.props.format
+      ? this.props.format.replace(/\w/g, '9')
+      : "9999.99.99";
+
+    this.mask = mask;
     this.im = new Inputmask(this.mask);
   }
 
@@ -59,7 +63,7 @@ export class RangePickerInputer extends Component {
       editingFromValue: e.target.value
     });
 
-    let from = getValidMomentFromISOStringOrNull(Date.parse(e.target.value));
+    let from = getValidMomentFromISOStringOrNull(e.target.value, this.props.format);
 
     if (from && this.props.to && from.isAfter(this.props.to, "day")) {
       from = null;
@@ -89,7 +93,7 @@ export class RangePickerInputer extends Component {
       editingToValue: e.target.value
     });
 
-    let to = getValidMomentFromISOStringOrNull(Date.parse(e.target.value));
+    let to = getValidMomentFromISOStringOrNull(e.target.value, this.props.format);
 
     if (to && this.props.from && to.isBefore(this.props.from, "day")) {
       to = null;
@@ -130,7 +134,9 @@ export class RangePickerInputer extends Component {
     if (this.state.editingFromValue !== null)
       return this.state.editingFromValue;
 
-    return this.props.from ? this.props.from.format("YYYY.MM.DD") : "";
+    const format = this.props.format || "YYYY.MM.DD";
+
+    return this.props.from ? this.props.from.format(format) : "";
   }
 
   onFromInputBlur(e) {
@@ -166,7 +172,9 @@ export class RangePickerInputer extends Component {
   getToInputValue() {
     if (this.state.editingToValue !== null) return this.state.editingToValue;
 
-    return this.props.to ? this.props.to.format("YYYY.MM.DD") : "";
+    const format = this.props.format || "YYYY.MM.DD";
+
+    return this.props.to ? this.props.to.format(format) : "";
   }
 
   render() {

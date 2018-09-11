@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { render } from "react-dom";
 
-import { DatePicker } from "../../src";
+import { DatePicker, RangePicker } from "../../src";
 import chroma from "chroma-js";
 
 const customTheme = {
@@ -124,9 +124,26 @@ class Demo extends Component {
       <div style={{ textAlign: "center" }}>
         <h1>react-datepicker Demo</h1>
         <DatePicker
+          format="DD.MM.YYYY"
+          date="09.10.2018"
           positionX="left"
           positionY="bottom"
-          monthView
+          theme={customTheme}
+        />
+        <h1>react-datepicker Demo</h1>
+        <DatePicker
+          date="2018-10-01"
+          positionX="left"
+          positionY="bottom"
+          theme={customTheme}
+        />
+        <h1>react-datepicker Demo</h1>
+        <RangePicker
+          format="DD.MM.YYYY"
+          from="09.10.2018"
+          to="10.12.2018"
+          positionX="left"
+          positionY="bottom"
           theme={customTheme}
         />
       </div>

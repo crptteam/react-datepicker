@@ -2,8 +2,8 @@ import moment from 'moment';
 
 moment.locale('ru');
 
-export function getValidMomentFromISOStringOrNull(str) {
-  const m = moment(str);
+export function getValidMomentFromISOStringOrNull(str, format) {
+  const m = moment(str, format);
   return m.isValid() ? m : null;
 }
 
