@@ -15,6 +15,8 @@ import Months from "../../styled/Months";
 import Month from "../../styled/Month";
 import { LeftDatepickerArrow } from "../../svg";
 import { RightDatepickerArrow } from "../../svg";
+import ActionsWrapper from "../../styled/ActionsWrapper";
+import { Button } from "@crpt/react-button";
 
 moment.locale("ru");
 
@@ -25,6 +27,7 @@ export class DatePickerPanel extends Component {
     const date = this.props.date ? moment(this.props.date) : moment();
 
     this.state = {
+      monthDate: date,
       date,
       days: getDaysArrayFromMomentDate(date),
       hovered: null
@@ -35,6 +38,9 @@ export class DatePickerPanel extends Component {
     this.decreaseYear = this.decreaseYear.bind(this);
     this.increaseYear = this.increaseYear.bind(this);
     this.onMonthClick = this.onMonthClick.bind(this);
+    this.accept = this.accept.bind(this);
+    this.reset = this.reset.bind(this);
+    this.onSelect = this.onSelect.bind(this);
   }
 
   componentWillReceiveProps(props) {
@@ -69,7 +75,7 @@ export class DatePickerPanel extends Component {
 
   decreaseMonth() {
     const newDate = this.transformAndUpdateDate(
-      "date",
+      "monthDate",
       "days",
       -1,
       "month",
@@ -80,7 +86,7 @@ export class DatePickerPanel extends Component {
 
   increaseMonth() {
     const newDate = this.transformAndUpdateDate(
-      "date",
+      "monthDate",
       "days",
       1,
       "month",
@@ -91,7 +97,7 @@ export class DatePickerPanel extends Component {
 
   decreaseYear() {
     const newDate = this.transformAndUpdateDate(
-      "date",
+      "monthDate",
       "days",
       -1,
       "year",
@@ -102,7 +108,7 @@ export class DatePickerPanel extends Component {
 
   increaseYear() {
     const newDate = this.transformAndUpdateDate(
-      "date",
+      "monthDate",
       "days",
       1,
       "year",
@@ -123,16 +129,61 @@ export class DatePickerPanel extends Component {
     });
   }
 
-  onMonthClick(m) {
-    if (this.props.monthView) this.props.select({ date: m });
+  onMonthClick(date) {
+    this.setState(
+      { date },
+      () => {
+        if (!this.props.controls) {
+          this.props.accept(date);
+        }
+      }
+    );
+  }
+
+  reset() {
+    this.props.reset();
+  }
+
+  accept() {
+    this.props.accept(this.state.date);
+  }
+
+  onSelect(day) {
+    let date = this.state.date;
+
+    if (date) {
+      if (day.date.isSame(date, "day")) {
+        if (!this.props.monthView) date = null;
+      } else {
+        date = moment(day.date);
+      }
+    } else {
+      date = moment(day.date);
+    }
+
+    this.setState(
+      { date },
+      () => {
+        if (!this.props.controls) {
+          this.props.accept(date);
+        }
+      }
+    );
   }
 
   isOneOfSelected(date) {
-    return this.props.date && this.props.date.isSame(date, "day");
+    return this.state.date && this.state.date.isSame(date, "day");
   }
 
   render() {
-    const { theme, visible, positionX, positionY, monthView } = this.props;
+    const {
+      theme,
+      visible,
+      positionX,
+      positionY,
+      monthView,
+      controls
+    } = this.props;
 
     const monthes = [
       moment(this.state.date).add(-3, "month"),
@@ -158,7 +209,7 @@ export class DatePickerPanel extends Component {
                 <LeftDatepickerArrow />
               </IconWrap>
               <MonthValueWrap theme={this.props.theme}>
-                {this.state.date.format("MMMM")}
+                {this.state.monthDate.format("MMMM")}
               </MonthValueWrap>
               <IconWrap onClick={this.increaseMonth}>
                 <RightDatepickerArrow />
@@ -170,7 +221,7 @@ export class DatePickerPanel extends Component {
                 <LeftDatepickerArrow />
               </IconWrap>
               <YearValueWrap theme={this.props.theme}>
-                {this.state.date.format("YYYY")}
+                {this.state.monthDate.format("YYYY")}
               </YearValueWrap>
               <IconWrap onClick={this.increaseYear}>
                 <RightDatepickerArrow />
@@ -198,7 +249,7 @@ export class DatePickerPanel extends Component {
                       onMouseEnter={e => this.onDayMouseEnter(e, d.date)}
                       onMouseOut={e => this.onDayMouseOut(e, d.date)}
                       selected={this.isOneOfSelected(d.date)}
-                      onMouseDown={e => this.props.select(d)}
+                      onMouseDown={e => this.onSelect(d)}
                       key={i}
                     >
                       {d.val}
@@ -208,6 +259,22 @@ export class DatePickerPanel extends Component {
             </BottomWithDays>
           )}
         </HalfC>
+        {controls && (
+          <ActionsWrapper>
+            <Button
+              onClick={this.reset}
+              theme={theme.DatePicker.DatePickerPanelWrap.Reset}
+            >
+              {this.props.resetText}
+            </Button>
+            <Button
+              onClick={this.accept}
+              theme={theme.DatePicker.DatePickerPanelWrap.Accept}
+            >
+              {this.props.acceptText}
+            </Button>
+          </ActionsWrapper>
+        )}
       </DatePickerPanelWrap>
     );
   }

@@ -1,4 +1,5 @@
 import chroma from "chroma-js";
+import { themes } from '@crpt/react-button';
 
 export default {
   DatePicker: {
@@ -127,6 +128,17 @@ export default {
       paddingBottom: '25px',
       main: {
         border: '1px solid #ABADB5'
+      },
+      Accept: {
+        Button: {
+          ...themes.bgWhiteTheme.Button,
+        }
+      },
+      Reset: {
+        Button: {
+          ...themes.whiteTheme.Button,
+          marginRight: 30,
+        }
       }
     }
   }

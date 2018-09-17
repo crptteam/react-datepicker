@@ -34,6 +34,7 @@ class RangePicker extends Component {
     this.onMouseDown = this.onMouseDown.bind(this);
     this.select = this.select.bind(this);
     this.onValidUpdate = this.onValidUpdate.bind(this);
+    this.reset = this.reset.bind(this);
   }
 
   componentDidMount() {
@@ -78,60 +79,22 @@ class RangePicker extends Component {
     }, 200);
   }
 
-  select(day) {
-    let from = this.state.from;
-    let to = this.state.to;
+  select(from, to) {
+    const isOpen = !(from && to);
+    this.setState({ from, to, isOpen });
+    this.props.onChange({ from, to });
+  }
 
-    if (from && to) {
-      const diffFrom = Math.abs(this.state.from.diff(day.date, 'day'));
-      const diffTo = Math.abs(this.state.to.diff(day.date, 'day'));
+  reset() {
+    const from = this.props.from
+      ? moment(this.props.from, this.props.format)
+      : moment();
 
-      if (from.isSame(day.date, 'day')) {
-        from = null;
-      } else if (to.isSame(day.date, 'day')) {
-        to = null;
-      } else if (
-        day.date.isAfter(from, 'day') &&
-        day.date.isBefore(to, 'day')
-      ) {
-        if (diffFrom > diffTo) {
-          from = moment(day.date);
-        } else {
-          to = moment(day.date);
-        }
-      } else if (day.date.isAfter(to, 'day')) {
-        from = moment(to);
-        to = moment(day.date);
-      } else if (day.date.isBefore(from, 'day')) {
-        to = moment(from);
-        from = moment(day.date);
-      }
-    } else if (from) {
-      if (day.date.isSame(from, 'day')) {
-        from = null;
-      } else if (day.date.isAfter(from, 'day')) {
-        to = moment(day.date);
-      } else if (day.date.isBefore(from, 'day')) {
-        to = moment(from);
-        from = moment(day.date);
-      }
-    } else if (to) {
-      if (day.date.isSame(to, 'day')) {
-        to = null;
-      } else if (day.date.isAfter(to, 'day')) {
-        from = moment(to);
-        to = moment(day.date);
-      } else if (day.date.isBefore(to, 'day')) {
-        from = moment(day.date);
-      }
-    } else {
-      from = moment(day.date);
-    }
+    const to = this.props.to
+      ? moment(this.props.to, this.props.format)
+      : moment(start).add(1, 'month');
 
-    const update = { to, from };
-
-    this.setState({ ...update });
-    this.props.onChange(update);
+    this.setState({ from, to });
   }
 
   onMouseDown(e) {
@@ -160,10 +123,14 @@ class RangePicker extends Component {
           from={this.state.from}
           to={this.state.to}
           visible={this.state.isOpen}
-          select={this.select}
           theme={this.props.theme}
           positionX={this.props.positionX}
           positionY={this.props.positionY}
+          reset={this.reset}
+          accept={this.select}
+          controls={this.props.controls}
+          acceptText={this.props.acceptText}
+          resetText={this.props.resetText}
         />
       </RangePickerInputer>
     );
@@ -181,6 +148,9 @@ RangePicker.propTypes = {
   positionalX: PropTypes.string,
   positionalY: PropTypes.string,
   format: PropTypes.string,
+  controls: PropTypes.bool,
+  acceptText: PropTypes.string,
+  resetText: PropTypes.string,
 };
 
 RangePicker.defaultProps = {
@@ -193,6 +163,9 @@ RangePicker.defaultProps = {
   onChange: val => null,
   onUpdate: val => null,
   format: null,
+  controls: false,
+  acceptText: "Accept",
+  resetText: "Reset",
 };
 
 RangePicker.displayName = 'RangePicker';

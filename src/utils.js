@@ -8,17 +8,16 @@ export function getValidMomentFromISOStringOrNull(str, format) {
 }
 
 export function getDaysArrayFromMomentDate(date) {
-  const count = date.daysInMonth();
-  const startOfMonth = date.startOf('month');
+  const count = moment(date).daysInMonth();
+  const startOfMonth = moment(date).startOf('month');
   const dayNumber = startOfMonth.isoWeekday();
-  let currentDay;
   const days = [];
 
   for (let i = 2; i <= count + dayNumber; i++) {
     if (i < dayNumber) {
       days.push({ val: 0 });
     } else {
-      currentDay = moment(startOfMonth).add(i - dayNumber - 1, 'day');
+      const currentDay = moment(startOfMonth).add(i - dayNumber - 1, 'day');
 
       days.push({
         val: i - dayNumber,
