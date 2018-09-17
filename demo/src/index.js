@@ -140,6 +140,7 @@ class Demo extends Component {
           date="09.10.2018"
           positionX="left"
           positionY="bottom"
+          monthView={true}
           theme={customTheme}
         />
         <h1>react-datepicker Demo</h1>
@@ -148,6 +149,10 @@ class Demo extends Component {
           positionX="left"
           positionY="bottom"
           theme={customTheme}
+          monthView={true}
+          controls={true}
+          acceptText="Применить"
+          resetText="Сбросить"
         />
         <h1>react-datepicker Demo</h1>
         <RangePicker
@@ -160,6 +165,15 @@ class Demo extends Component {
           controls={true}
           acceptText="Применить"
           resetText="Сбросить"
+        />
+        <h1>react-datepicker Demo</h1>
+        <RangePicker
+          format="DD.MM.YYYY"
+          from="09.10.2018"
+          to="10.12.2018"
+          positionX="left"
+          positionY="bottom"
+          theme={customTheme}
         />
       </div>
     );

@@ -32,6 +32,9 @@ import { DatePicker, RangePicker } from  "@crpt/react-datepicker";
 | positionX: string | if value is "left" calendar is showed at the left, otherwise - right | | 
 | positionY: string | if value is "top" calendar is showed at the top, otherwise - bottom | | 
 | monthView: bool | Switches to month view | |
+| controls: bool | Show panel Accept and Reset buttons | |
+| acceptText: string | Accept control text. Default: 'Accept' | |
+| resetText: string | Reset control text. Default: 'Reset' | |
 
 
 ### RangePicker
@@ -47,6 +50,9 @@ import { DatePicker, RangePicker } from  "@crpt/react-datepicker";
 | savePlaceholder: Boolean | Don't hide placeholder | `<RangePicker savePlaceholder />` |
 | positionX: string | if value is "left" calendar is showed at the left, otherwise - right | | 
 | positionY: string | if value is "top" calendar is showed at the top, otherwise - bottom | | 
+| controls: bool | Show panel Accept and Reset buttons | |
+| acceptText: string | Accept control text. Default: 'Accept' | |
+| resetText: string | Reset control text. Default: 'Reset' | |
 
 
 [build-badge]: https://img.shields.io/travis/user/repo/master.png?style=flat-square

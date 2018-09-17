@@ -32,6 +32,7 @@ class DatePicker extends Component {
     this.onMouseDown = this.onMouseDown.bind(this);
     this.select = this.select.bind(this);
     this.onValidUpdate = this.onValidUpdate.bind(this);
+    this.reset = this.reset.bind(this);
   }
 
   componentDidMount() {
@@ -74,23 +75,18 @@ class DatePicker extends Component {
     }, 200);
   }
 
-  select(day) {
-    let date = this.state.date;
+  select(date) {
+    const isOpen = !(date);
+    this.setState({ date, isOpen });
+    this.props.onChange({ date });
+  }
 
-    if (date) {
-      if (day.date.isSame(date, "day")) {
-        if (!this.props.monthView) date = null;
-      } else {
-        date = moment(day.date);
-      }
-    } else {
-      date = moment(day.date);
-    }
+  reset() {
+    const date = this.props.date
+      ? moment(this.props.date, this.props.format)
+      : null;
 
-    const update = { date };
-
-    this.setState(update);
-    this.props.onChange(update);
+    this.setState({ date });
   }
 
   onMouseDown(e) {
@@ -118,11 +114,15 @@ class DatePicker extends Component {
         <DatePickerPanel
           date={this.state.date}
           visible={this.state.isOpen}
-          select={this.select}
           theme={this.props.theme}
           positionX={this.props.positionX}
           positionY={this.props.positionY}
           monthView={this.props.monthView}
+          reset={this.reset}
+          accept={this.select}
+          controls={this.props.controls}
+          acceptText={this.props.acceptText}
+          resetText={this.props.resetText}
         />
       </DatePickerInputer>
     );
@@ -139,7 +139,10 @@ DatePicker.propTypes = {
   positionalX: PropTypes.string,
   positionalY: PropTypes.string,
   monthView: PropTypes.bool,
-  format: PropTypes.string
+  format: PropTypes.string,
+  controls: PropTypes.bool,
+  acceptText: PropTypes.string,
+  resetText: PropTypes.string,
 };
 
 DatePicker.defaultProps = {
@@ -150,6 +153,9 @@ DatePicker.defaultProps = {
   onChange: val => null,
   onUpdate: val => null,
   format: null,
+  controls: false,
+  acceptText: "Accept",
+  resetText: "Reset",
 };
 
 DatePicker.displayName = "DatePicker";
