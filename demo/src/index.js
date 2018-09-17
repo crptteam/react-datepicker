@@ -3,6 +3,7 @@ import { render } from "react-dom";
 
 import { DatePicker, RangePicker } from "../../src";
 import chroma from "chroma-js";
+import { themes } from "@crpt/react-button";
 
 const customTheme = {
   DatePicker: {
@@ -113,6 +114,17 @@ const customTheme = {
       paddingBottom: '15px',
       main: {
         border: "1px solid rgba(196, 196, 196, 0.25)",
+      },
+      Accept: {
+        Button: {
+          ...themes.bgWhiteTheme.Button,
+        }
+      },
+      Reset: {
+        Button: {
+          ...themes.whiteTheme.Button,
+          marginRight: 30,
+        }
       }
     }
   }
@@ -145,6 +157,9 @@ class Demo extends Component {
           positionX="left"
           positionY="bottom"
           theme={customTheme}
+          controls={true}
+          acceptText="Применить"
+          resetText="Сбросить"
         />
       </div>
     );
