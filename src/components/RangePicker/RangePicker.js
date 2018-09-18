@@ -117,6 +117,7 @@ class RangePicker extends Component {
         theme={this.props.theme}
         placeholder={this.props.placeholder}
         savePlaceholder={this.props.savePlaceholder}
+        monthView={this.props.monthView}
         format={this.props.format}
       >
         <RangePickerPanel
@@ -124,6 +125,7 @@ class RangePicker extends Component {
           to={this.state.to}
           visible={this.state.isOpen}
           theme={this.props.theme}
+          monthView={this.props.monthView}
           positionX={this.props.positionX}
           positionY={this.props.positionY}
           reset={this.reset}
@@ -145,6 +147,7 @@ RangePicker.propTypes = {
   to: PropTypes.string,
   onChange: PropTypes.func,
   onUpdate: PropTypes.func,
+  monthView: PropTypes.bool,
   positionalX: PropTypes.string,
   positionalY: PropTypes.string,
   format: PropTypes.string,

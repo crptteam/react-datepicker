@@ -168,12 +168,13 @@ class Demo extends Component {
         />
         <h1>react-datepicker Demo</h1>
         <RangePicker
-          format="DD.MM.YYYY"
           from="09.10.2018"
           to="10.12.2018"
           positionX="left"
           positionY="bottom"
           theme={customTheme}
+          monthView
+          onChange={vals => console.log('VALS', vals)}
         />
       </div>
     );
