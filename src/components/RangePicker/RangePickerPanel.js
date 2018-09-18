@@ -76,10 +76,13 @@ export class RangePickerPanel extends Component {
 
   onLeftMonthClick(leftDate) {
     this.setState({ leftDate });
+    this.props.accept(leftDate, this.state.rightDate);
   }
 
   onRightMonthClick(rightDate) {
     this.setState({ rightDate });
+    this.props.accept(this.state.leftDate, rightDate);
+
   }
 
   onSelect(day) {
