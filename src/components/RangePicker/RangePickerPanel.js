@@ -1,23 +1,25 @@
-import moment from 'moment/moment';
-import React, { Component } from 'react';
-import { Button } from '@crpt/react-button';
-import { getDaysArrayFromMomentDate } from '../../utils';
+import moment from "moment/moment";
+import React, { Component } from "react";
+import { Button } from "@crpt/react-button";
+import { getDaysArrayFromMomentDate } from "../../utils";
 
-import DatePickerPanelWrap from '../../styled/DatePickerPanelWrap';
-import HalfC from '../../styled/HalfC';
-import TopWithPickers from '../../styled/TopWithPickers';
-import PickerWrap from '../../styled/PickerWrap';
-import MonthValueWrap from '../../styled/MonthValueWrap';
-import YearValueWrap from '../../styled/YearValueWrap';
-import BottomWithDays from '../../styled/BottomWithDays';
-import Day from '../../styled/Day';
-import Divider from '../../styled/Divider';
-import IconWrap from '../../styled/IconWrap';
-import { LeftDatepickerArrow } from '../../svg';
-import { RightDatepickerArrow } from '../../svg';
+import DatePickerPanelWrap from "../../styled/DatePickerPanelWrap";
+import HalfC from "../../styled/HalfC";
+import TopWithPickers from "../../styled/TopWithPickers";
+import PickerWrap from "../../styled/PickerWrap";
+import MonthValueWrap from "../../styled/MonthValueWrap";
+import YearValueWrap from "../../styled/YearValueWrap";
+import BottomWithDays from "../../styled/BottomWithDays";
+import Day from "../../styled/Day";
+import Divider from "../../styled/Divider";
+import IconWrap from "../../styled/IconWrap";
+import Months from "../../styled/Months";
+import Month from "../../styled/Month";
+import { LeftDatepickerArrow } from "../../svg";
+import { RightDatepickerArrow } from "../../svg";
 import ActionsWrapper from "../../styled/ActionsWrapper";
 
-moment.locale('ru');
+moment.locale("ru");
 
 export class RangePickerPanel extends Component {
   constructor(props) {
@@ -26,11 +28,11 @@ export class RangePickerPanel extends Component {
     const startDate = this.props.from ? moment(this.props.from) : moment();
     const endDate = this.props.to
       ? moment(this.props.to)
-      : moment(startDate).add(1, 'month');
+      : moment(startDate).add(1, "month");
 
     const leftDate = startDate;
-    const rightDate = startDate.isSame(endDate, 'month')
-      ? moment(endDate).add(1, 'month')
+    const rightDate = startDate.isSame(endDate, "month")
+      ? moment(endDate).add(1, "month")
       : endDate;
 
     this.state = {
@@ -51,6 +53,8 @@ export class RangePickerPanel extends Component {
     this.increaseEndMonth = this.increaseEndMonth.bind(this);
     this.decreaseEndYear = this.decreaseEndYear.bind(this);
     this.increaseEndYear = this.increaseEndYear.bind(this);
+    this.onLeftMonthClick = this.onLeftMonthClick.bind(this);
+    this.onRightMonthClick = this.onRightMonthClick.bind(this);
     this.reset = this.reset.bind(this);
     this.accept = this.accept.bind(this);
     this.onSelect = this.onSelect.bind(this);
@@ -70,87 +74,88 @@ export class RangePickerPanel extends Component {
     this.props.accept(this.state.startDate, this.state.endDate);
   }
 
+  onLeftMonthClick(leftDate) {
+    this.setState({ leftDate });
+  }
+
+  onRightMonthClick(rightDate) {
+    this.setState({ rightDate });
+  }
+
   onSelect(day) {
     let from = this.state.startDate;
     let to = this.state.endDate;
 
     if (from && to) {
-      const diffFrom = Math.abs(from.diff(day.date, 'day'));
-      const diffTo = Math.abs(to.diff(day.date, 'day'));
+      const diffFrom = Math.abs(from.diff(day.date, "day"));
+      const diffTo = Math.abs(to.diff(day.date, "day"));
 
-      if (from.isSame(day.date, 'day')) {
-        from = null;
-      } else if (to.isSame(day.date, 'day')) {
-        to = null;
+      if (from.isSame(day.date, "day")) {
+        if (!this.props.monthView) from = null;
+      } else if (to.isSame(day.date, "day")) {
+        if (!this.props.monthView) to = null;
       } else if (
-        day.date.isAfter(from, 'day') &&
-        day.date.isBefore(to, 'day')
+        day.date.isAfter(from, "day") &&
+        day.date.isBefore(to, "day")
       ) {
         if (diffFrom > diffTo) {
           from = moment(day.date);
         } else {
           to = moment(day.date);
         }
-      } else if (day.date.isAfter(to, 'day')) {
+      } else if (day.date.isAfter(to, "day")) {
         from = moment(to);
         to = moment(day.date);
-      } else if (day.date.isBefore(from, 'day')) {
+      } else if (day.date.isBefore(from, "day")) {
         to = moment(from);
         from = moment(day.date);
       }
     } else if (from) {
-      if (day.date.isSame(from, 'day')) {
+      if (day.date.isSame(from, "day")) {
         from = null;
-      } else if (day.date.isAfter(from, 'day')) {
+      } else if (day.date.isAfter(from, "day")) {
         to = moment(day.date);
-      } else if (day.date.isBefore(from, 'day')) {
+      } else if (day.date.isBefore(from, "day")) {
         to = moment(from);
         from = moment(day.date);
       }
     } else if (to) {
-      if (day.date.isSame(to, 'day')) {
+      if (day.date.isSame(to, "day")) {
         to = null;
-      } else if (day.date.isAfter(to, 'day')) {
+      } else if (day.date.isAfter(to, "day")) {
         from = moment(to);
         to = moment(day.date);
-      } else if (day.date.isBefore(to, 'day')) {
+      } else if (day.date.isBefore(to, "day")) {
         from = moment(day.date);
       }
     } else {
       from = moment(day.date);
     }
 
-    this.setState(
-      { startDate: from, endDate: to },
-      () => {
-        if (!this.props.controls) {
-          this.props.accept(from, to);
-        }
+    this.setState({ startDate: from, endDate: to }, () => {
+      if (!this.props.controls) {
+        this.props.accept(from, to);
       }
-    );
+    });
   }
 
   updateSelectedDatesToSeeSelectedDays(nextProps) {
     const props = nextProps || this.props;
 
-    const startDate = props.from
-      ? moment(props.from)
-      : this.state.startDate;
+    const startDate = props.from ? moment(props.from) : this.state.startDate;
 
-    const endDate = props.to
-      ? moment(props.to)
-      : this.state.endDate;
+    const endDate = props.to ? moment(props.to) : this.state.endDate;
 
     if (startDate && endDate) {
-      if (startDate.isSame(endDate, 'month')) {
-        const rightDate = moment(startDate).add(1, 'month');
+      if (startDate.isSame(endDate, "month")) {
+        const rightDate = moment(startDate).add(1, "month");
         this.setState({
           startDate,
           endDate,
           leftDate: moment(startDate),
           rightDate,
           startDays: getDaysArrayFromMomentDate(startDate),
-          endDays: getDaysArrayFromMomentDate(rightDate),
+          endDays: getDaysArrayFromMomentDate(rightDate)
         });
       } else {
         this.setState({
@@ -159,7 +164,7 @@ export class RangePickerPanel extends Component {
           leftDate: moment(startDate),
           rightDate: moment(endDate),
           startDays: getDaysArrayFromMomentDate(startDate),
-          endDays: getDaysArrayFromMomentDate(endDate),
+          endDays: getDaysArrayFromMomentDate(endDate)
         });
       }
     }
@@ -173,58 +178,120 @@ export class RangePickerPanel extends Component {
       [name]: newDate,
       [days]: getDaysArrayFromMomentDate(newDate)
     });
+
+    return newDate;
   }
 
   decreaseStartMonth() {
-    this.transformAndUpdateDate(
-      'leftDate',
-      'startDays',
+    const newDate = this.transformAndUpdateDate(
+      "leftDate",
+      "startDays",
       -1,
-      'month',
-      newDate => newDate.isSameOrAfter(this.state.rightDate, 'month')
+      "month",
+      newDate => newDate.isSameOrAfter(this.state.rightDate, "month")
     );
+
+    if (this.props.monthView && newDate) {
+      this.props.accept(moment(newDate), moment(this.state.rightDate));
+    }
   }
 
   increaseStartMonth() {
-    this.transformAndUpdateDate('leftDate', 'startDays', 1, 'month', newDate =>
-      newDate.isSameOrAfter(this.state.rightDate, 'month')
+    const newDate = this.transformAndUpdateDate(
+      "leftDate",
+      "startDays",
+      1,
+      "month",
+      newDate => newDate.isSameOrAfter(this.state.rightDate, "month")
     );
+
+    if (this.props.monthView && newDate) {
+      this.props.accept(moment(newDate), moment(this.state.rightDate));
+    }
   }
 
   decreaseStartYear() {
-    this.transformAndUpdateDate('leftDate', 'startDays', -1, 'year', newDate =>
-      newDate.isSameOrAfter(this.state.rightDate, 'month')
+    const newDate = this.transformAndUpdateDate(
+      "leftDate",
+      "startDays",
+      -1,
+      "year",
+      newDate => newDate.isSameOrAfter(this.state.rightDate, "month")
     );
+
+    if (this.props.monthView && newDate) {
+      this.props.accept(moment(newDate), moment(this.state.rightDate));
+    }
   }
 
   increaseStartYear() {
-    this.transformAndUpdateDate('leftDate', 'startDays', 1, 'year', newDate =>
-      newDate.isSameOrAfter(this.state.rightDate, 'month')
+    const newDate = this.transformAndUpdateDate(
+      "leftDate",
+      "startDays",
+      1,
+      "year",
+      newDate => newDate.isSameOrAfter(this.state.rightDate, "month")
     );
+
+    if (this.props.monthView && newDate) {
+      this.props.accept(moment(newDate), moment(this.state.rightDate));
+    }
   }
 
   decreaseEndMonth() {
-    this.transformAndUpdateDate('rightDate', 'endDays', -1, 'month', newDate =>
-      newDate.isSameOrBefore(this.state.leftDate, 'month')
+    const newDate = this.transformAndUpdateDate(
+      "rightDate",
+      "endDays",
+      -1,
+      "month",
+      newDate => newDate.isSameOrBefore(this.state.leftDate, "month")
     );
+
+    if (this.props.monthView && newDate) {
+      this.props.accept(moment(this.state.leftDate), moment(newDate));
+    }
   }
 
   increaseEndMonth() {
-    this.transformAndUpdateDate('rightDate', 'endDays', 1, 'month', newDate =>
-      newDate.isSameOrBefore(this.state.leftDate, 'month')
+    const newDate = this.transformAndUpdateDate(
+      "rightDate",
+      "endDays",
+      1,
+      "month",
+      newDate => newDate.isSameOrBefore(this.state.leftDate, "month")
     );
+
+    if (this.props.monthView && newDate) {
+      this.props.accept(moment(this.state.leftDate), moment(newDate));
+    }
   }
 
   decreaseEndYear() {
-    this.transformAndUpdateDate('rightDate', 'endDays', -1, 'year', newDate =>
-      newDate.isSameOrBefore(this.state.leftDate, 'month')
+    const newDate = this.transformAndUpdateDate(
+      "rightDate",
+      "endDays",
+      -1,
+      "year",
+      newDate => newDate.isSameOrBefore(this.state.leftDate, "month")
     );
+
+    if (this.props.monthView && newDate) {
+      this.props.accept(moment(this.state.leftDate), moment(newDate));
+    }
   }
 
   increaseEndYear() {
-    this.transformAndUpdateDate('rightDate', 'endDays', 1, 'year', newDate =>
-      newDate.isSameOrBefore(this.state.leftDate, 'month')
+    const newDate = this.transformAndUpdateDate(
+      "rightDate",
+      "endDays",
+      1,
+      "year",
+      newDate => newDate.isSameOrBefore(this.state.leftDate, "month")
     );
+
+    if (this.props.monthView && newDate) {
+      this.props.accept(moment(this.state.leftDate), moment(newDate));
+    }
   }
 
   onDayMouseEnter(e, date) {
@@ -241,102 +308,127 @@ export class RangePickerPanel extends Component {
 
   isOneOfSelected(date, monthDate) {
     const { startDate, endDate } = this.state;
-    if (!date.isSame(monthDate, 'month')) return false;
+    if (!date.isSame(monthDate, "month")) return false;
 
     return (
-      (startDate && startDate.isSame(date, 'day')) ||
-      (endDate && endDate.isSame(date, 'day'))
+      (startDate && startDate.isSame(date, "day")) ||
+      (endDate && endDate.isSame(date, "day"))
     );
   }
 
   isBetweenSelected(date, monthDate) {
     if (!this.state.endDate && !this.state.startDate) return false;
-    if (!date.isSame(monthDate, 'month')) return false;
+    if (!date.isSame(monthDate, "month")) return false;
 
     if (this.state.hovered) {
       if (this.state.endDate && this.state.startDate) {
         if (this.isOneOfSelected(this.state.hovered)) {
           return (
-            date.isBefore(this.state.endDate, 'day') &&
-            date.isAfter(this.state.startDate, 'day')
+            date.isBefore(this.state.endDate, "day") &&
+            date.isAfter(this.state.startDate, "day")
           );
         }
 
         const diffFrom = Math.abs(
-          this.state.startDate.diff(this.state.hovered, 'day')
+          this.state.startDate.diff(this.state.hovered, "day")
         );
-        const diffTo = Math.abs(this.state.endDate.diff(this.state.hovered, 'day'));
+        const diffTo = Math.abs(
+          this.state.endDate.diff(this.state.hovered, "day")
+        );
 
-        if (this.state.hovered.isSameOrAfter(this.state.endDate, 'day')) {
+        if (this.state.hovered.isSameOrAfter(this.state.endDate, "day")) {
           return (
-            date.isAfter(this.state.endDate, 'day') &&
-            date.isBefore(this.state.hovered, 'day')
-          );
-        } else if (this.state.hovered.isSameOrBefore(this.state.startDate, 'day')) {
-          return (
-            date.isAfter(this.state.hovered, 'day') &&
-            date.isBefore(this.state.startDate, 'day')
+            date.isAfter(this.state.endDate, "day") &&
+            date.isBefore(this.state.hovered, "day")
           );
         } else if (
-          this.state.hovered.isAfter(this.state.startDate, 'day') &&
-          this.state.hovered.isBefore(this.state.endDate, 'day')
+          this.state.hovered.isSameOrBefore(this.state.startDate, "day")
+        ) {
+          return (
+            date.isAfter(this.state.hovered, "day") &&
+            date.isBefore(this.state.startDate, "day")
+          );
+        } else if (
+          this.state.hovered.isAfter(this.state.startDate, "day") &&
+          this.state.hovered.isBefore(this.state.endDate, "day")
         ) {
           if (diffFrom > diffTo) {
             return (
-              date.isBefore(this.state.endDate, 'day') &&
-              date.isAfter(this.state.hovered, 'day')
+              date.isBefore(this.state.endDate, "day") &&
+              date.isAfter(this.state.hovered, "day")
             );
           } else {
             return (
-              date.isBefore(this.state.hovered, 'day') &&
-              date.isAfter(this.state.startDate, 'day')
+              date.isBefore(this.state.hovered, "day") &&
+              date.isAfter(this.state.startDate, "day")
             );
           }
         }
       } else if (this.state.endDate) {
-        if (this.state.hovered.isAfter(this.state.endDate, 'day')) {
+        if (this.state.hovered.isAfter(this.state.endDate, "day")) {
           return (
-            date.isAfter(this.state.endDate, 'day') &&
-            date.isBefore(this.state.hovered, 'day')
+            date.isAfter(this.state.endDate, "day") &&
+            date.isBefore(this.state.hovered, "day")
           );
-        } else if (this.state.hovered.isBefore(this.state.endDate, 'day')) {
+        } else if (this.state.hovered.isBefore(this.state.endDate, "day")) {
           return (
-            date.isBefore(this.state.endDate, 'day') &&
-            date.isAfter(this.state.hovered, 'day')
+            date.isBefore(this.state.endDate, "day") &&
+            date.isAfter(this.state.hovered, "day")
           );
         }
       } else if (this.state.startDate) {
-        if (this.state.hovered.isAfter(this.state.startDate, 'day')) {
+        if (this.state.hovered.isAfter(this.state.startDate, "day")) {
           return (
-            date.isAfter(this.state.startDate, 'day') &&
-            date.isBefore(this.state.hovered, 'day')
+            date.isAfter(this.state.startDate, "day") &&
+            date.isBefore(this.state.hovered, "day")
           );
-        } else if (this.state.hovered.isBefore(this.state.startDate, 'day')) {
+        } else if (this.state.hovered.isBefore(this.state.startDate, "day")) {
           return (
-            date.isBefore(this.state.startDate, 'day') &&
-            date.isAfter(this.state.hovered, 'day')
+            date.isBefore(this.state.startDate, "day") &&
+            date.isAfter(this.state.hovered, "day")
           );
         }
       }
     } else {
       if (this.state.endDate && this.state.startDate) {
         return (
-          date.isBefore(this.state.endDate, 'day') &&
-          date.isAfter(this.state.startDate, 'day')
+          date.isBefore(this.state.endDate, "day") &&
+          date.isAfter(this.state.startDate, "day")
         );
       }
     }
   }
 
   render() {
-    const { theme, visible, positionX, positionY, controls } = this.props;
     const {
-      leftDate,
-      rightDate,
-      startDays,
-      endDays
-    } = this.state;
+      theme,
+      visible,
+      positionX,
+      positionY,
+      controls,
+      monthView
+    } = this.props;
+    const { leftDate, rightDate, startDays, endDays } = this.state;
 
+    const leftMonthes = [
+      moment(leftDate).add(-3, "month"),
+      moment(leftDate).add(-2, "month"),
+      moment(leftDate).add(-1, "month"),
+      moment(leftDate),
+      moment(leftDate).add(1, "month"),
+      moment(leftDate).add(2, "month"),
+      moment(leftDate).add(3, "month")
+    ];
+
+    const rightMonthes = [
+      moment(rightDate).add(-3, "month"),
+      moment(rightDate).add(-2, "month"),
+      moment(rightDate).add(-1, "month"),
+      moment(rightDate),
+      moment(rightDate).add(1, "month"),
+      moment(rightDate).add(2, "month"),
+      moment(rightDate).add(3, "month")
+    ];
 
     return (
       <DatePickerPanelWrap
@@ -353,7 +445,7 @@ export class RangePickerPanel extends Component {
               </IconWrap>
 
               <MonthValueWrap theme={theme}>
-                {leftDate && leftDate.format('MMMM')}
+                {leftDate && leftDate.format("MMMM")}
               </MonthValueWrap>
 
               <IconWrap onClick={this.increaseStartMonth}>
@@ -367,7 +459,7 @@ export class RangePickerPanel extends Component {
               </IconWrap>
 
               <YearValueWrap theme={theme}>
-                {leftDate && leftDate.format('YYYY')}
+                {leftDate && leftDate.format("YYYY")}
               </YearValueWrap>
               <IconWrap onClick={this.increaseStartYear}>
                 <RightDatepickerArrow />
@@ -375,26 +467,40 @@ export class RangePickerPanel extends Component {
             </PickerWrap>
           </TopWithPickers>
 
-          <BottomWithDays>
-            {startDays.map(
-              (d, i) =>
-                d.val === 0 ? (
-                  <Day theme={theme} key={i} />
-                ) : (
-                  <Day
-                    theme={theme}
-                    onMouseEnter={e => this.onDayMouseEnter(e, d.date)}
-                    onMouseOut={e => this.onDayMouseOut(e, d.date)}
-                    hovered={this.isBetweenSelected(d.date, leftDate)}
-                    selected={this.isOneOfSelected(d.date, leftDate)}
-                    onMouseDown={e => this.onSelect(d)}
-                    key={i}
-                  >
-                    {d.val}
-                  </Day>
-                )
-            )}
-          </BottomWithDays>
+          {monthView ? (
+            <Months>
+              {leftMonthes.map((m, i) => (
+                <Month
+                  onClick={this.state.rightDate.isSameOrBefore(m, "month") ? null : e => this.onLeftMonthClick(m)}
+                  key={i}
+                  selected={this.state.leftDate.isSame(m, "month")}
+                >
+                  {this.state.rightDate.isSameOrBefore(m, "month") ? null : m.format("MMMM")}
+                </Month>
+              ))}
+            </Months>
+          ) : (
+            <BottomWithDays>
+              {startDays.map(
+                (d, i) =>
+                  d.val === 0 ? (
+                    <Day theme={theme} key={i} />
+                  ) : (
+                    <Day
+                      theme={theme}
+                      onMouseEnter={e => this.onDayMouseEnter(e, d.date)}
+                      onMouseOut={e => this.onDayMouseOut(e, d.date)}
+                      hovered={this.isBetweenSelected(d.date, leftDate)}
+                      selected={this.isOneOfSelected(d.date, leftDate)}
+                      onMouseDown={e => this.onSelect(d)}
+                      key={i}
+                    >
+                      {d.val}
+                    </Day>
+                  )
+              )}
+            </BottomWithDays>
+          )}
         </HalfC>
 
         <Divider theme={theme}>по</Divider>
@@ -406,7 +512,7 @@ export class RangePickerPanel extends Component {
                 <LeftDatepickerArrow />
               </IconWrap>
               <MonthValueWrap theme={theme}>
-                {rightDate && rightDate.format('MMMM')}
+                {rightDate && rightDate.format("MMMM")}
               </MonthValueWrap>
               <IconWrap onClick={this.increaseEndMonth}>
                 <RightDatepickerArrow />
@@ -418,7 +524,7 @@ export class RangePickerPanel extends Component {
                 <LeftDatepickerArrow />
               </IconWrap>
               <YearValueWrap theme={theme}>
-                {rightDate && rightDate.format('YYYY')}
+                {rightDate && rightDate.format("YYYY")}
               </YearValueWrap>
               <IconWrap onClick={this.decreaseEndYear}>
                 <RightDatepickerArrow />
@@ -426,26 +532,40 @@ export class RangePickerPanel extends Component {
             </PickerWrap>
           </TopWithPickers>
 
-          <BottomWithDays>
-            {endDays.map(
-              (d, i) =>
-                d.val === 0 ? (
-                  <Day key={i} theme={theme} />
-                ) : (
-                  <Day
-                    theme={theme}
-                    onMouseEnter={e => this.onDayMouseEnter(e, d.date)}
-                    onMouseOut={e => this.onDayMouseOut(e, d.date)}
-                    hovered={this.isBetweenSelected(d.date, rightDate)}
-                    selected={this.isOneOfSelected(d.date, rightDate)}
-                    onMouseDown={e => this.onSelect(d)}
-                    key={i}
-                  >
-                    {d.val}
-                  </Day>
-                )
-            )}
-          </BottomWithDays>
+          {monthView ? (
+            <Months>
+              {rightMonthes.map((m, i) => (
+                <Month
+                  onClick={this.state.leftDate.isSameOrAfter(m, "month") ? null : e => this.onRightMonthClick(m)}
+                  key={i}
+                  selected={this.state.rightDate.isSame(m, "month")}
+                >
+                  {this.state.leftDate.isSameOrAfter(m, "month") ? '' : m.format("MMMM")}
+                </Month>
+              ))}
+            </Months>
+          ) : (
+            <BottomWithDays>
+              {endDays.map(
+                (d, i) =>
+                  d.val === 0 ? (
+                    <Day key={i} theme={theme} />
+                  ) : (
+                    <Day
+                      theme={theme}
+                      onMouseEnter={e => this.onDayMouseEnter(e, d.date)}
+                      onMouseOut={e => this.onDayMouseOut(e, d.date)}
+                      hovered={this.isBetweenSelected(d.date, rightDate)}
+                      selected={this.isOneOfSelected(d.date, rightDate)}
+                      onMouseDown={e => this.onSelect(d)}
+                      key={i}
+                    >
+                      {d.val}
+                    </Day>
+                  )
+              )}
+            </BottomWithDays>
+          )}
         </HalfC>
         {controls && (
           <ActionsWrapper>
