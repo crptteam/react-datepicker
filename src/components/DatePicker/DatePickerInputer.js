@@ -55,10 +55,7 @@ export class DatePickerInputer extends Component {
 
     let date = getValidMomentFromISOStringOrNull(e.target.value, this.props.format);
 
-    this.setState({
-      date,
-      isFocused: !!date
-    });
+    this.setState({ date });
 
     if (
       date !== this.props.date ||

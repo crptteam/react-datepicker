@@ -56,6 +56,7 @@ export class DatePickerPanel extends Component {
 
       this.setState({
         date,
+        monthDate: date,
         days: getDaysArrayFromMomentDate(date)
       });
     }
