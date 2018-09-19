@@ -98,11 +98,13 @@ export class RangePickerInputer extends Component {
 
     let to = getValidMomentFromISOStringOrNull(e.target.value, this.props.format);
 
-    if (to && this.props.from && to.isBefore(this.props.from, "day")) {
-      to = null;
-      this.setState({
-        editingToValue: ""
-      });
+    if (to && this.props.from) {
+      if (e.target.value.indexOf('_') === -1 && to.isBefore(this.props.from)) {
+        to = null;
+        this.setState({
+          editingToValue: ""
+        });
+      }
     }
 
     this.props.onValidUpdate({
@@ -116,7 +118,7 @@ export class RangePickerInputer extends Component {
 
   onKeyFromDown(e) {
     if (e.which === 39 || (this.props.from && e.which !== 37)) {
-      if (e.target.selectionEnd === 9 || e.target.selectionEnd === 10) {
+      if (e.target.selectionEnd === 10) {
         this.toInput.focus();
         if (e.which === 39)
           setTimeout(() => this.toInput.setSelectionRange(0, 0), 0);
