@@ -82,7 +82,7 @@ export class DatePickerPanel extends Component {
       "month",
       newDate => false
     );
-    if (this.props.monthView) this.props.accept({ date: newDate });
+    if (this.props.monthView) this.props.accept(newDate);
   }
 
   increaseMonth() {
@@ -93,7 +93,7 @@ export class DatePickerPanel extends Component {
       "month",
       newDate => false
     );
-    if (this.props.monthView) this.props.accept({ date: newDate });
+    if (this.props.monthView) this.props.accept(newDate);
   }
 
   decreaseYear() {
@@ -104,7 +104,7 @@ export class DatePickerPanel extends Component {
       "year",
       newDate => false
     );
-    if (this.props.monthView) this.props.accept({ date: newDate });
+    if (this.props.monthView) this.props.accept(newDate);
   }
 
   increaseYear() {
@@ -115,7 +115,7 @@ export class DatePickerPanel extends Component {
       "year",
       newDate => false
     );
-    if (this.props.monthView) this.props.accept({ date: newDate });
+    if (this.props.monthView) this.props.accept(newDate);
   }
 
   onDayMouseEnter(e, date) {
