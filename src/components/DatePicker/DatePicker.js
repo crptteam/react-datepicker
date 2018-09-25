@@ -98,6 +98,7 @@ class DatePicker extends Component {
 
     return (
       <DatePickerInputer
+        disabled={this.props.disabled}
         onFocus={this.onFocus}
         onBlur={this.onBlur}
         onMouseDown={this.onMouseDown}

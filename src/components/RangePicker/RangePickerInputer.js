@@ -192,6 +192,7 @@ export class RangePickerInputer extends Component {
     return (
       <InputWrap
         inline={this.props.inline === false ? this.props.inline : true}
+        disabled={this.props.disabled}
         width={"256px"}
         onFocus={this.props.onFocus}
         onBlur={this.props.onBlur}
@@ -216,6 +217,7 @@ export class RangePickerInputer extends Component {
 
           <InputElem
             centered={!this.props.savePlaceholder}
+            disabled={this.props.disabled}
             onFocus={this.onFocus}
             onChange={this.onFromInputChange}
             onKeyDown={this.onKeyFromDown}
@@ -239,6 +241,7 @@ export class RangePickerInputer extends Component {
 
           <InputElem
             centered={!this.props.savePlaceholder}
+            disabled={this.props.disabled}
             onFocus={this.onFocus}
             onChange={this.onToInputChange}
             noCaret={this.props.monthView}

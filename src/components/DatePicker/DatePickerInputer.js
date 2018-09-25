@@ -102,6 +102,7 @@ export class DatePickerInputer extends Component {
     return (
       <InputWrap
         inline={this.props.inline === false ? this.props.inline : true}
+        disabled={this.props.disabled}
         width={"256px"}
         onFocus={this.props.onFocus}
         onBlur={this.props.onBlur}
@@ -126,6 +127,7 @@ export class DatePickerInputer extends Component {
 
           <InputElem
             centered={!this.props.savePlaceholder}
+            disabled={this.props.disabled}
             onFocus={this.onFocus}
             onChange={this.onChange}
             value={this.getValue()}
