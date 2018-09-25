@@ -6,6 +6,7 @@ import { RangePickerInputer } from './RangePickerInputer';
 import 'datejs';
 import moment from 'moment';
 import defaultTheme from '../../theme/defaultTheme';
+import Placeholder from "../../styled/Placeholder";
 
 moment.locale('ru');
 
@@ -107,6 +108,7 @@ class RangePicker extends Component {
     return (
       <RangePickerInputer
         inline={this.props.inline}
+        disabled={this.props.disabled}
         onFocus={this.onFocus}
         onBlur={this.onBlur}
         onMouseDown={this.onMouseDown}
