@@ -6,6 +6,7 @@ const BottomWithDays = styled.div`
   font-size: 0px;
   white-space: normal;
   margin-top: 20px;
+  text-align: left;
 `;
 
 export default BottomWithDays;

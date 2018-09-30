@@ -19,7 +19,7 @@ const Elem = styled.div`
   margin-right: 5px;
   margin-bottom: 5px;
   cursor: ${props => (props.children ? 'pointer' : 'none')};
-  pointer-events: ${props => (props.children ? 'all' : 'none')};
+  pointer-events: ${props => (props.disabled ? 'none' : props.children ? 'all' : 'none')};
   :nth-child(7n + 1) {
     margin-left: 4px;
   }

@@ -13,6 +13,8 @@ moment.locale('ru');
 class RangePicker extends Component {
   blurTimeout;
   im;
+  main;
+  inputer;
 
   constructor(props) {
     super(props);
@@ -25,25 +27,44 @@ class RangePicker extends Component {
       : moment(start).add(1, 'month');
 
     this.state = {
-      isOpen: false,
+      isLeftOpen: false,
+      isRightOpen: false,
       from: this.props.from ? moment(start) : null,
       to: this.props.to ? moment(end) : null
     };
 
-    this.onFocus = this.onFocus.bind(this);
+    this.onRightFocus = this.onRightFocus.bind(this);
+    this.onLeftFocus = this.onLeftFocus.bind(this);
     this.onBlur = this.onBlur.bind(this);
     this.onMouseDown = this.onMouseDown.bind(this);
     this.select = this.select.bind(this);
     this.onValidUpdate = this.onValidUpdate.bind(this);
     this.reset = this.reset.bind(this);
+    this.onLeftSelected = this.onLeftSelected.bind(this);
+    this.onRightSelected = this.onRightSelected.bind(this);
+    this.handleClick = this.handleClick.bind(this);
   }
 
   componentDidMount() {
     this.props.onRef && this.props.onRef(this);
+    document.addEventListener('mousedown', this.handleClick, true);
   }
 
   componentWillUnmount() {
     this.props.onRef && this.props.onRef(undefined);
+    document.removeEventListener('mousedown', this.handleClick, true);
+
+  }
+
+  handleClick(e) {
+    if (this.main.contains(e.target)) {
+      return;
+    }
+
+    this.setState({
+      isLeftOpen: false,
+      isRightOpen: false
+    });
   }
 
   clear() {
@@ -62,9 +83,20 @@ class RangePicker extends Component {
     this.props.onUpdate({ ...this.state, ...state });
   }
 
-  onFocus(e) {
+  onLeftFocus(e) {
+
     this.setState({
-      isOpen: true
+      isLeftOpen: true,
+      isRightOpen: false
+    });
+
+    if (this.blurTimeout) clearTimeout(this.blurTimeout);
+  }
+
+  onRightFocus(e) {
+    this.setState({
+      isRightOpen: true,
+      isLeftOpen: false
     });
 
     if (this.blurTimeout) clearTimeout(this.blurTimeout);
@@ -102,6 +134,23 @@ class RangePicker extends Component {
     if (this.blurTimeout) clearTimeout(this.blurTimeout);
   }
 
+  onLeftSelected() {
+    this.setState({
+      isLeftOpen: false,
+      isRightOpen: true
+    });
+
+    console.log('onLeftSelected', this.inputer);
+    this.inputer.focusRight();
+  }
+
+  onRightSelected() {
+    this.setState({
+      isLeftOpen: false,
+      isRightOpen: false
+    });
+  }
+
   render() {
     const name = this.props.name;
 
@@ -109,13 +158,16 @@ class RangePicker extends Component {
       <RangePickerInputer
         inline={this.props.inline}
         disabled={this.props.disabled}
-        onFocus={this.onFocus}
+        onLeftFocus={this.onLeftFocus}
+        onRightFocus={this.onRightFocus}
         onBlur={this.onBlur}
         onMouseDown={this.onMouseDown}
         onValidUpdate={this.onValidUpdate}
+        onRef={inputer => this.inputer = inputer}
         from={this.state.from}
         to={this.state.to}
         name={name}
+        mainRef={el => this.main = el}
         theme={this.props.theme}
         placeholder={this.props.placeholder}
         savePlaceholder={this.props.savePlaceholder}
@@ -123,9 +175,12 @@ class RangePicker extends Component {
         format={this.props.format}
       >
         <RangePickerPanel
+          onLeftSelected={this.onLeftSelected}
+          onRightSelected={this.onRightSelected}
           from={this.state.from}
           to={this.state.to}
-          visible={this.state.isOpen}
+          isLeftOpen={this.state.isLeftOpen}
+          isRightOpen={this.state.isRightOpen}
           theme={this.props.theme}
           monthView={this.props.monthView}
           positionX={this.props.positionX}
