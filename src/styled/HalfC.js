@@ -5,7 +5,7 @@ import { getThemeAsPlainTextByKeys, innerMerge } from '../utils';
 import defaultTheme from '../theme/defaultTheme';
 
 const Elem = styled.div`
-  display: inline-block;
+  display: ${props => props.hidden ? 'none' : 'inline-block'};
   width: 208px;
   font-size: ${props => props.fontSize};
   vertical-align: top;

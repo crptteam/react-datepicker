@@ -35,22 +35,32 @@ export class RangePickerInputer extends Component {
     this.onKeyToDown = this.onKeyToDown.bind(this);
     this.onFromInputBlur = this.onFromInputBlur.bind(this);
     this.onToInputBlur = this.onToInputBlur.bind(this);
+    this.onLeftFocus = this.onLeftFocus.bind(this);
+    this.onRightFocus = this.onRightFocus.bind(this);
     this.onFocus = this.onFocus.bind(this);
 
     if (!this.props.monthView) {
       const mask = this.props.format
-        ? this.props.format.replace(/\w/g, '9')
+        ? this.props.format.replace(/\w/g, "9")
         : "9999.99.99";
 
       this.mask = mask;
       this.im = new Inputmask(this.mask);
     }
+  }
 
+  focusRight() {
+    console.log("FOCUS RIGHT CALLED");
+    setTimeout(() => this.toInput.focus(), 0);
+    console.log("this.toInput", this.toInput);
   }
 
   componentDidMount() {
-    if (this.toInput && !this.props.monthView) this.toMask = this.im.mask(this.toInput);
-    if (this.fromInput && !this.props.monthView) this.fromMask = this.im.mask(this.fromInput);
+    if (this.toInput && !this.props.monthView)
+      this.toMask = this.im.mask(this.toInput);
+    if (this.fromInput && !this.props.monthView)
+      this.fromMask = this.im.mask(this.fromInput);
+    if (this.props.onRef) this.props.onRef(this);
   }
 
   isDividerVisible() {
@@ -62,11 +72,16 @@ export class RangePickerInputer extends Component {
   }
 
   onFromInputChange(e) {
+    console.log("onFromInputChange");
+
     this.setState({
       editingFromValue: e.target.value
     });
 
-    let from = getValidMomentFromISOStringOrNull(e.target.value, this.props.format);
+    let from = getValidMomentFromISOStringOrNull(
+      e.target.value,
+      this.props.format
+    );
 
     if (from && this.props.to && from.isAfter(this.props.to, "day")) {
       from = null;
@@ -96,10 +111,13 @@ export class RangePickerInputer extends Component {
       editingToValue: e.target.value
     });
 
-    let to = getValidMomentFromISOStringOrNull(e.target.value, this.props.format);
+    let to = getValidMomentFromISOStringOrNull(
+      e.target.value,
+      this.props.format
+    );
 
     if (to && this.props.from) {
-      if (e.target.value.indexOf('_') === -1 && to.isBefore(this.props.from)) {
+      if (e.target.value.indexOf("_") === -1 && to.isBefore(this.props.from)) {
         to = null;
         this.setState({
           editingToValue: ""
@@ -141,7 +159,7 @@ export class RangePickerInputer extends Component {
 
     const format = this.props.monthView
       ? "MM.YYYY"
-      : (this.props.format || "YYYY.MM.DD");
+      : this.props.format || "YYYY.MM.DD";
 
     return this.props.from ? this.props.from.format(format) : "";
   }
@@ -176,18 +194,28 @@ export class RangePickerInputer extends Component {
     });
   }
 
+  onLeftFocus(e) {
+    this.onFocus(e);
+    this.props.onLeftFocus();
+  }
+
+  onRightFocus(e) {
+    this.onFocus(e);
+    this.props.onRightFocus();
+  }
+
   getToInputValue() {
     if (this.state.editingToValue !== null) return this.state.editingToValue;
 
     const format = this.props.monthView
       ? "MM.YYYY"
-      : (this.props.format || "YYYY.MM.DD");
+      : this.props.format || "YYYY.MM.DD";
 
     return this.props.to ? this.props.to.format(format) : "";
   }
 
   render() {
-    const name = this.props.name;
+    const { name, mainRef } = this.props;
 
     return (
       <InputWrap
@@ -198,6 +226,7 @@ export class RangePickerInputer extends Component {
         onBlur={this.props.onBlur}
         onMouseDown={this.props.onMouseDown}
         theme={this.props.theme}
+        innerRef={el => mainRef(el)}
         component="DatePicker"
       >
         <InputContentWrap
@@ -218,7 +247,7 @@ export class RangePickerInputer extends Component {
           <InputElem
             centered={!this.props.savePlaceholder}
             disabled={this.props.disabled}
-            onFocus={this.onFocus}
+            onFocus={this.onLeftFocus}
             onChange={this.onFromInputChange}
             onKeyDown={this.onKeyFromDown}
             value={this.getFromInputValue()}
@@ -242,7 +271,7 @@ export class RangePickerInputer extends Component {
           <InputElem
             centered={!this.props.savePlaceholder}
             disabled={this.props.disabled}
-            onFocus={this.onFocus}
+            onFocus={this.onRightFocus}
             onChange={this.onToInputChange}
             noCaret={this.props.monthView}
             onKeyDown={this.onKeyToDown}

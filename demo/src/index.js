@@ -158,11 +158,10 @@ class Demo extends Component {
         <RangePicker
           format="DD.MM.YYYY"
           from="09.10.2018"
-          to="10.12.2018"
+          to="20.10.2018"
           positionX="left"
           positionY="bottom"
           theme={customTheme}
-          controls={true}
           acceptText="Применить"
           resetText="Сбросить"
         />
