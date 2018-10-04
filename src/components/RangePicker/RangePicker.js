@@ -112,10 +112,16 @@ class RangePicker extends Component {
     }, 200);
   }
 
-  select(from, to) {
+  select(from, to, close) {
     const isOpen = !(from && to);
     this.setState({ from, to, isOpen });
     this.props.onChange({ from, to });
+    if (close) {
+      this.setState({
+        isLeftOpen: false,
+        isRightOpen: false
+      });
+    }
   }
 
   reset() {
@@ -128,6 +134,7 @@ class RangePicker extends Component {
       : null;
 
     this.setState({ from, to });
+    this.inputer.focusLeft();
   }
 
   onMouseDown(e) {
