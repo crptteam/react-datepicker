@@ -121,11 +121,11 @@ class RangePicker extends Component {
   reset() {
     const from = this.props.from
       ? moment(this.props.from, this.props.format)
-      : moment();
+      : null;
 
     const to = this.props.to
       ? moment(this.props.to, this.props.format)
-      : moment(start).add(1, 'month');
+      : null;
 
     this.setState({ from, to });
   }
