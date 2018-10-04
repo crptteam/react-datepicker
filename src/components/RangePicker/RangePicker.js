@@ -125,13 +125,9 @@ class RangePicker extends Component {
   }
 
   reset() {
-    const from = this.props.from
-      ? moment(this.props.from, this.props.format)
-      : null;
+    const from = null;
 
-    const to = this.props.to
-      ? moment(this.props.to, this.props.format)
-      : null;
+    const to = null;
 
     this.setState({ from, to });
     this.inputer.focusLeft();
