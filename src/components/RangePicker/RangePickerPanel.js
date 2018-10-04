@@ -55,7 +55,6 @@ export class RangePickerPanel extends Component {
     this.onRightMonthClick = this.onRightMonthClick.bind(this);
     this.reset = this.reset.bind(this);
     this.accept = this.accept.bind(this);
-    this.onSelect = this.onSelect.bind(this);
     this.onTopLevelClick = this.onTopLevelClick.bind(this);
   }
 
@@ -71,7 +70,7 @@ export class RangePickerPanel extends Component {
   }
 
   accept() {
-    this.props.accept(this.state.startDate, this.state.endDate);
+    this.props.accept(this.state.startDate, this.state.endDate, true);
   }
 
   onTopLevelClick(e) {
@@ -88,63 +87,6 @@ export class RangePickerPanel extends Component {
   onRightMonthClick(rightDate) {
     this.setState({ rightDate });
     this.props.accept(this.state.leftDate, rightDate);
-  }
-
-  onSelect(day) {
-    let from = this.state.startDate;
-    let to = this.state.endDate;
-
-    if (from && to) {
-      const diffFrom = Math.abs(from.diff(day.date, "day"));
-      const diffTo = Math.abs(to.diff(day.date, "day"));
-
-      if (from.isSame(day.date, "day")) {
-        if (!this.props.monthView) from = null;
-      } else if (to.isSame(day.date, "day")) {
-        if (!this.props.monthView) to = null;
-      } else if (
-        day.date.isAfter(from, "day") &&
-        day.date.isBefore(to, "day")
-      ) {
-        if (diffFrom > diffTo) {
-          from = moment(day.date);
-        } else {
-          to = moment(day.date);
-        }
-      } else if (day.date.isAfter(to, "day")) {
-        from = moment(to);
-        to = moment(day.date);
-      } else if (day.date.isBefore(from, "day")) {
-        to = moment(from);
-        from = moment(day.date);
-      }
-    } else if (from) {
-      if (day.date.isSame(from, "day")) {
-        from = null;
-      } else if (day.date.isAfter(from, "day")) {
-        to = moment(day.date);
-      } else if (day.date.isBefore(from, "day")) {
-        to = moment(from);
-        from = moment(day.date);
-      }
-    } else if (to) {
-      if (day.date.isSame(to, "day")) {
-        to = null;
-      } else if (day.date.isAfter(to, "day")) {
-        from = moment(to);
-        to = moment(day.date);
-      } else if (day.date.isBefore(to, "day")) {
-        from = moment(day.date);
-      }
-    } else {
-      from = moment(day.date);
-    }
-
-    this.setState({ startDate: from, endDate: to }, () => {
-      if (!this.props.controls) {
-        this.props.accept(from, to);
-      }
-    });
   }
 
   updateSelectedDatesToSeeSelectedDays(nextProps) {
@@ -346,89 +288,6 @@ export class RangePickerPanel extends Component {
       (startDate && startDate.isSame(date, "day")) ||
       (endDate && endDate.isSame(date, "day"))
     );
-  }
-
-  isBetweenSelected(date, monthDate) {
-    if (!this.state.endDate && !this.state.startDate) return false;
-    if (!date.isSame(monthDate, "month")) return false;
-
-    if (this.state.hovered) {
-      if (this.state.endDate && this.state.startDate) {
-        if (this.isOneOfSelected(this.state.hovered)) {
-          return (
-            date.isBefore(this.state.endDate, "day") &&
-            date.isAfter(this.state.startDate, "day")
-          );
-        }
-
-        const diffFrom = Math.abs(
-          this.state.startDate.diff(this.state.hovered, "day")
-        );
-        const diffTo = Math.abs(
-          this.state.endDate.diff(this.state.hovered, "day")
-        );
-
-        if (this.state.hovered.isSameOrAfter(this.state.endDate, "day")) {
-          return (
-            date.isAfter(this.state.endDate, "day") &&
-            date.isBefore(this.state.hovered, "day")
-          );
-        } else if (
-          this.state.hovered.isSameOrBefore(this.state.startDate, "day")
-        ) {
-          return (
-            date.isAfter(this.state.hovered, "day") &&
-            date.isBefore(this.state.startDate, "day")
-          );
-        } else if (
-          this.state.hovered.isAfter(this.state.startDate, "day") &&
-          this.state.hovered.isBefore(this.state.endDate, "day")
-        ) {
-          if (diffFrom > diffTo) {
-            return (
-              date.isBefore(this.state.endDate, "day") &&
-              date.isAfter(this.state.hovered, "day")
-            );
-          } else {
-            return (
-              date.isBefore(this.state.hovered, "day") &&
-              date.isAfter(this.state.startDate, "day")
-            );
-          }
-        }
-      } else if (this.state.endDate) {
-        if (this.state.hovered.isAfter(this.state.endDate, "day")) {
-          return (
-            date.isAfter(this.state.endDate, "day") &&
-            date.isBefore(this.state.hovered, "day")
-          );
-        } else if (this.state.hovered.isBefore(this.state.endDate, "day")) {
-          return (
-            date.isBefore(this.state.endDate, "day") &&
-            date.isAfter(this.state.hovered, "day")
-          );
-        }
-      } else if (this.state.startDate) {
-        if (this.state.hovered.isAfter(this.state.startDate, "day")) {
-          return (
-            date.isAfter(this.state.startDate, "day") &&
-            date.isBefore(this.state.hovered, "day")
-          );
-        } else if (this.state.hovered.isBefore(this.state.startDate, "day")) {
-          return (
-            date.isBefore(this.state.startDate, "day") &&
-            date.isAfter(this.state.hovered, "day")
-          );
-        }
-      }
-    } else {
-      if (this.state.endDate && this.state.startDate) {
-        return (
-          date.isBefore(this.state.endDate, "day") &&
-          date.isAfter(this.state.startDate, "day")
-        );
-      }
-    }
   }
 
   isLeftHovered(date) {

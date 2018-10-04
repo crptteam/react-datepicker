@@ -50,9 +50,11 @@ export class RangePickerInputer extends Component {
   }
 
   focusRight() {
-    console.log("FOCUS RIGHT CALLED");
     setTimeout(() => this.toInput.focus(), 0);
-    console.log("this.toInput", this.toInput);
+  }
+
+  focusLeft() {
+    setTimeout(() => this.fromInput.focus(), 0);
   }
 
   componentDidMount() {
