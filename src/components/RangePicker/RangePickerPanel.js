@@ -22,21 +22,16 @@ import ActionsWrapper from "../../styled/ActionsWrapper";
 moment.locale("ru");
 
 export class RangePickerPanel extends Component {
-
   rightBottomDays;
 
   constructor(props) {
     super(props);
 
-    const startDate = this.props.from ? moment(this.props.from) : moment();
-    const endDate = this.props.to
-      ? moment(this.props.to)
-      : moment(startDate).add(1, "month");
+    const startDate = this.props.from ? moment(this.props.from) : null;
+    const endDate = this.props.to ? moment(this.props.to) : null;
 
-    const leftDate = startDate;
-    const rightDate = startDate.isSame(endDate, "month")
-      ? moment(endDate)
-      : endDate;
+    const leftDate = startDate ? moment(startDate) : moment();
+    const rightDate = endDate ? moment(endDate) : moment().add(1, "month");
 
     this.state = {
       startDate,
@@ -72,6 +67,7 @@ export class RangePickerPanel extends Component {
 
   reset() {
     this.props.reset();
+    setTimeout(() => this.setState({ startDate: null, endDate: null }), 0);
   }
 
   accept() {
@@ -497,44 +493,40 @@ export class RangePickerPanel extends Component {
     let startDate = this.state.startDate;
     let endDate = this.state.endDate;
 
-    if (this.state.startDate && this.state.startDate.isSame(date, 'day')) {
+    if (this.state.startDate && this.state.startDate.isSame(date, "day")) {
       startDate = null;
-    }
-
-    else if (this.state.endDate && this.state.endDate.isSame(date, 'day') || this.state.endDate && this.state.endDate.isBefore(date, 'day')) {
+    } else if (
+      (this.state.endDate && this.state.endDate.isSame(date, "day")) ||
+      (this.state.endDate && this.state.endDate.isBefore(date, "day"))
+    ) {
       startDate = moment(date);
       endDate = null;
-    }
-
-    else {
+    } else {
       startDate = moment(date);
     }
 
     this.setState({ startDate, endDate }, () => {
+      this.props.onLeftSelected();
       if (!this.props.controls) {
-        this.props.onLeftSelected();
         this.props.accept(startDate, endDate);
       }
     });
 
     e.preventDefault();
     e.stopPropagation();
-
   }
 
   isRightDisabled(date) {
-    return this.state.startDate && date.isBefore(this.state.startDate, 'day');
+    return this.state.startDate && date.isBefore(this.state.startDate, "day");
   }
 
   onRightSelect(date, e) {
     let startDate = this.state.startDate;
     let endDate = this.state.endDate;
 
-    if (this.state.endDate && this.state.endDate.isSame(date, 'day')) {
+    if (this.state.endDate && this.state.endDate.isSame(date, "day")) {
       endDate = null;
-    }
-
-    else {
+    } else {
       endDate = moment(date);
     }
 
@@ -547,7 +539,6 @@ export class RangePickerPanel extends Component {
 
     e.preventDefault();
     e.stopPropagation();
-
   }
 
   render() {
@@ -708,7 +699,7 @@ export class RangePickerPanel extends Component {
               ))}
             </Months>
           ) : (
-            <BottomWithDays innerRef={el => this.rightBottomDays = el}>
+            <BottomWithDays innerRef={el => (this.rightBottomDays = el)}>
               {endDays.map(
                 (d, i) =>
                   d.val === 0 ? (
