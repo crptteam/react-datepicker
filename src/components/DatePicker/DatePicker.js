@@ -1,15 +1,15 @@
-import React, { Component } from "react";
-import PropTypes from "prop-types";
-import { withTheme } from "styled-components";
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import { withTheme } from 'styled-components';
 
-import { DatePickerPanel } from "./DatePickerPanel";
-import { DatePickerInputer } from "./DatePickerInputer";
+import { DatePickerPanel } from './DatePickerPanel';
+import { DatePickerInputer } from './DatePickerInputer';
 
-import moment from "moment";
-import defaultTheme from "../../theme/defaultTheme";
-import { RangePickerPanel } from "../RangePicker/RangePickerPanel";
+import moment from 'moment';
+import defaultTheme from '../../theme/defaultTheme';
+import { RangePickerPanel } from '../RangePicker/RangePickerPanel';
 
-moment.locale("ru");
+moment.locale('ru');
 
 class DatePicker extends Component {
   blurTimeout;
@@ -41,6 +41,13 @@ class DatePicker extends Component {
 
   componentWillUnmount() {
     this.props.onRef && this.props.onRef(undefined);
+  }
+
+  componentDidUpdate(prevProps) {
+    const { defaultValue } = this.props;
+    if (defaultValue !== prevProps.defaultValue) {
+      this.setState({ date: defaultValue });
+    }
   }
 
   clear() {
@@ -76,7 +83,7 @@ class DatePicker extends Component {
   }
 
   select(date) {
-    const isOpen = !(date);
+    const isOpen = !date;
     this.setState({ date, isOpen });
     this.props.onChange({ date });
   }
@@ -143,22 +150,22 @@ DatePicker.propTypes = {
   format: PropTypes.string,
   controls: PropTypes.bool,
   acceptText: PropTypes.string,
-  resetText: PropTypes.string,
+  resetText: PropTypes.string
 };
 
 DatePicker.defaultProps = {
   disabled: false,
   theme: defaultTheme,
-  positionX: "",
-  positionY: "",
+  positionX: '',
+  positionY: '',
   onChange: val => null,
   onUpdate: val => null,
   format: null,
   controls: false,
-  acceptText: "Accept",
-  resetText: "Reset",
+  acceptText: 'Accept',
+  resetText: 'Reset'
 };
 
-DatePicker.displayName = "DatePicker";
+DatePicker.displayName = 'DatePicker';
 
 export default withTheme(DatePicker);
