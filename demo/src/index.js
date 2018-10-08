@@ -140,7 +140,6 @@ class Demo extends Component {
           date="09.10.2018"
           positionX="left"
           positionY="bottom"
-          monthView={true}
           theme={customTheme}
         />
         <h1>react-datepicker Demo</h1>

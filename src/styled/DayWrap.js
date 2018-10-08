@@ -3,29 +3,27 @@ import styled from 'styled-components';
 
 import { getThemeAsPlainTextByKeys, innerMerge } from '../utils';
 import defaultTheme from '../theme/defaultTheme';
+import {Elem as DayElem} from './Day';
 
-export const Elem = styled.div`
+const Elem = styled.div`
   width: ${props => props.width};
-  min-width: ${props => props.width};
   height: ${props => props.height};
-  display: inline-block;
-  border-radius: ${props => props.borderRadius};
-  font-size: ${props => props.fontSize};
-  text-align: center;
-  line-height: 24px;
-  font-weight: ${props => props.fontWeight};
-  background: ${props => props.background};
-  color: ${props => props.color};
+  display: inline-flex;
   vertical-align: top;
-  cursor: ${props => (props.children ? 'pointer' : 'none')};
-  pointer-events: none;
-  :hover {
+  align-items: center;
+  justify-content: center;
+  cursor: ${props => (props.value ? 'pointer' : 'none')};
+  pointer-events: ${props => (props.disabled ? 'none' : props.children ? 'all' : 'none')};
+  :nth-child(7n + 1) {
+    margin-left: 4px;
+  }
+  :hover ${DayElem} {
     background: ${props => props.hoverBackground};
     color: ${props => props.hoverColor};
   }
 `;
 
-const Day = props => {
+const DayWrap = props => {
 
   const merged = innerMerge(
     {},
@@ -37,8 +35,8 @@ const Day = props => {
 
   const mergedDay = innerMerge(
     {},
-    defaultTheme.DatePicker && defaultTheme.DatePicker.Day || {},
-    props.theme && props.theme.DatePicker && props.theme.DatePicker.Day || {}
+    defaultTheme.DatePicker && defaultTheme.DatePicker.DayWrap || {},
+    props.theme && props.theme.DatePicker && props.theme.DatePicker.DayWrap || {}
   );
 
   Object.assign(
@@ -52,4 +50,4 @@ const Day = props => {
   return <Elem {...theme} {...props} />;
 };
 
-export default Day;
+export default DayWrap;

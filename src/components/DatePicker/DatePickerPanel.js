@@ -11,6 +11,7 @@ import YearValueWrap from "../../styled/YearValueWrap";
 import BottomWithDays from "../../styled/BottomWithDays";
 import IconWrap from "../../styled/IconWrap";
 import Day from "../../styled/Day";
+import DayWrap from "../../styled/DayWrap";
 import Months from "../../styled/Months";
 import Month from "../../styled/Month";
 import { LeftDatepickerArrow } from "../../svg";
@@ -131,14 +132,11 @@ export class DatePickerPanel extends Component {
   }
 
   onMonthClick(date) {
-    this.setState(
-      { date },
-      () => {
-        if (!this.props.controls) {
-          this.props.accept(date);
-        }
+    this.setState({ date }, () => {
+      if (!this.props.controls) {
+        this.props.accept(date);
       }
-    );
+    });
   }
 
   reset() {
@@ -162,14 +160,11 @@ export class DatePickerPanel extends Component {
       date = moment(day.date);
     }
 
-    this.setState(
-      { date },
-      () => {
-        if (!this.props.controls) {
-          this.props.accept(date);
-        }
+    this.setState({ date }, () => {
+      if (!this.props.controls) {
+        this.props.accept(date);
       }
-    );
+    });
   }
 
   isOneOfSelected(date) {
@@ -233,7 +228,11 @@ export class DatePickerPanel extends Component {
           {monthView ? (
             <Months>
               {monthes.map((m, i) => (
-                <Month onClick={e => this.onMonthClick(m)} key={i} selected={this.state.date.isSame(m, "month")}>
+                <Month
+                  onClick={e => this.onMonthClick(m)}
+                  key={i}
+                  selected={this.state.date.isSame(m, "month")}
+                >
                   {m.format("MMMM")}
                 </Month>
               ))}
@@ -243,18 +242,25 @@ export class DatePickerPanel extends Component {
               {this.state.days.map(
                 (d, i) =>
                   d.val === 0 ? (
-                    <Day key={i} theme={this.props.theme} />
+                    <DayWrap key={i}>
+                      <Day theme={this.props.theme} />
+                    </DayWrap>
                   ) : (
-                    <Day
+                    <DayWrap
+                      key={i}
+                      value={d.val}
                       theme={this.props.theme}
+                      onMouseDown={e => this.onSelect(d)}
                       onMouseEnter={e => this.onDayMouseEnter(e, d.date)}
                       onMouseOut={e => this.onDayMouseOut(e, d.date)}
-                      selected={this.isOneOfSelected(d.date)}
-                      onMouseDown={e => this.onSelect(d)}
-                      key={i}
                     >
-                      {d.val}
-                    </Day>
+                      <Day
+                        theme={this.props.theme}
+                        selected={this.isOneOfSelected(d.date)}
+                      >
+                        {d.val}
+                      </Day>
+                    </DayWrap>
                   )
               )}
             </BottomWithDays>

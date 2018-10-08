@@ -11,6 +11,7 @@ import MonthValueWrap from "../../styled/MonthValueWrap";
 import YearValueWrap from "../../styled/YearValueWrap";
 import BottomWithDays from "../../styled/BottomWithDays";
 import Day from "../../styled/Day";
+import DayWrap from "../../styled/DayWrap";
 import Divider from "../../styled/Divider";
 import IconWrap from "../../styled/IconWrap";
 import Months from "../../styled/Months";
@@ -275,6 +276,8 @@ export class RangePickerPanel extends Component {
   }
 
   onDayMouseOut(e, date) {
+    console.log('out');
+
     this.setState({
       hovered: null
     });
@@ -493,19 +496,28 @@ export class RangePickerPanel extends Component {
               {startDays.map(
                 (d, i) =>
                   d.val === 0 ? (
-                    <Day theme={theme} key={i} />
+                    <DayWrap theme={theme} key={i}>
+                      <Day theme={theme} />
+                    </DayWrap>
                   ) : (
-                    <Day
+                    <DayWrap
+                      value={d.val}
                       theme={theme}
+                      key={i}
+                      onClick={e => this.onLeftSelect(d.date, e)}
                       onMouseEnter={e => this.onDayMouseEnter(e, d.date)}
                       onMouseOut={e => this.onDayMouseOut(e, d.date)}
                       hovered={this.isLeftHovered(d.date)}
                       selected={this.isLeftSelected(d.date)}
-                      onClick={e => this.onLeftSelect(d.date, e)}
-                      key={i}
                     >
-                      {d.val}
-                    </Day>
+                      <Day
+                        theme={theme}
+                        hovered={this.isLeftHovered(d.date)}
+                        selected={this.isLeftSelected(d.date)}
+                      >
+                        {d.val}
+                      </Day>
+                    </DayWrap>
                   )
               )}
             </BottomWithDays>
@@ -562,20 +574,29 @@ export class RangePickerPanel extends Component {
               {endDays.map(
                 (d, i) =>
                   d.val === 0 ? (
-                    <Day key={i} theme={theme} />
+                    <DayWrap theme={theme} key={i} disabled>
+                      <Day theme={theme} />
+                    </DayWrap>
                   ) : (
-                    <Day
-                      theme={theme}
+                    <DayWrap
+                      disabled={this.isRightDisabled(d.date)}
+                      onClick={e => this.onRightSelect(d.date, e)}
                       onMouseEnter={e => this.onDayMouseEnter(e, d.date)}
                       onMouseOut={e => this.onDayMouseOut(e, d.date)}
+                      value={d.val}
                       hovered={this.isRightHovered(d.date)}
                       selected={this.isRightSelected(d.date)}
-                      onClick={e => this.onRightSelect(d.date, e)}
-                      disabled={this.isRightDisabled(d.date)}
                       key={i}
                     >
-                      {d.val}
-                    </Day>
+                      <Day
+                        theme={theme}
+                        hovered={this.isRightHovered(d.date)}
+                        selected={this.isRightSelected(d.date)}
+                        disabled={this.isRightDisabled(d.date)}
+                      >
+                        {d.val}
+                      </Day>
+                    </DayWrap>
                   )
               )}
             </BottomWithDays>
