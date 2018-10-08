@@ -25,6 +25,18 @@ export default {
     borderRadius: "2px",
     fontSize: "16px",
     fontWeight: 200,
+    DayWrap: {
+      width: '28px',
+      height: '28px',
+      hoverBackground: "#1A99F4",
+      hoverColor: "#FFFFFF",
+      hovered: {
+        background: chroma("#1A99F4")
+          .brighten(0.8)
+          .css(),
+        color: "#FFFFFF"
+      },
+    },
     Day: {
       width: "24px",
       height: "24px",
