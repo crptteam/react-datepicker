@@ -106,6 +106,7 @@ class DatePicker extends Component {
     return (
       <DatePickerInputer
         disabled={this.props.disabled}
+        isError={this.props.isError}
         onFocus={this.onFocus}
         onBlur={this.onBlur}
         onMouseDown={this.onMouseDown}
@@ -141,6 +142,7 @@ DatePicker.propTypes = {
   className: PropTypes.string,
   theme: PropTypes.object,
   disabled: PropTypes.bool,
+  isError: PropTypes.bool,
   date: PropTypes.string,
   onChange: PropTypes.func,
   onUpdate: PropTypes.func,
@@ -155,6 +157,7 @@ DatePicker.propTypes = {
 
 DatePicker.defaultProps = {
   disabled: false,
+  isError: false,
   theme: defaultTheme,
   positionX: '',
   positionY: '',
