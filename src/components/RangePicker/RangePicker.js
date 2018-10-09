@@ -160,6 +160,7 @@ class RangePicker extends Component {
       <RangePickerInputer
         inline={this.props.inline}
         disabled={this.props.disabled}
+        isError={this.props.isError}
         onLeftFocus={this.onLeftFocus}
         onRightFocus={this.onRightFocus}
         onBlur={this.onBlur}
@@ -202,6 +203,7 @@ RangePicker.propTypes = {
   className: PropTypes.string,
   theme: PropTypes.object,
   disabled: PropTypes.bool,
+  isError: PropTypes.bool,
   from: PropTypes.string,
   to: PropTypes.string,
   onChange: PropTypes.func,
@@ -217,6 +219,7 @@ RangePicker.propTypes = {
 
 RangePicker.defaultProps = {
   disabled: false,
+  isError: false,
   theme: defaultTheme,
   from: null,
   to: null,

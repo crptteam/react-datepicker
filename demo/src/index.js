@@ -140,6 +140,9 @@ class Demo extends Component {
           date="09.10.2018"
           positionX="left"
           positionY="bottom"
+          placeholder="Date"
+          savePlaceholder
+          isError={true}
           theme={customTheme}
         />
         <h1>react-datepicker Demo</h1>
@@ -170,6 +173,9 @@ class Demo extends Component {
           positionX="left"
           positionY="bottom"
           theme={customTheme}
+          isError={true}
+          placeholder="Date"
+          savePlaceholder
           onChange={vals => console.log('VALS', vals)}
         />
       </div>
