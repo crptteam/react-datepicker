@@ -455,7 +455,7 @@ export class RangePickerPanel extends Component {
                     <LeftDatepickerArrow />
                   </ArrowWrap>
                 </IconWrap>
-                <YearValueWrap theme={this.props.theme}>
+                <YearValueWrap theme={theme}>
                   {leftDate && leftDate.format("YYYY")}
                 </YearValueWrap>
                 <IconWrap onClick={this.increaseStartYear}>
