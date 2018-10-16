@@ -4,11 +4,14 @@ import styled from 'styled-components';
 const IconWrap = styled.div`
   cursor: ${props => props.disabled ? 'not-allowed' : 'pointer'};
   display: inline-flex;
-  height: 24px;
-  width: 15px;
+  
   align-items: center;
   justify-content: center;
   margin-left: ${props => props.right ? "auto" : 0};
 `;
 
+
+//
+// height: 24px;
+// width: 15px;
 export default IconWrap;

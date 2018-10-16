@@ -5,7 +5,7 @@ import { getThemeAsPlainTextByKeys, innerMerge } from '../utils';
 import defaultTheme from '../theme/defaultTheme';
 
 const Elem = styled.div`
-  width: 70px;
+  width: 74%;
   text-align: center;
   display: inline-block;
   font-size: ${props => props.fontSize};
