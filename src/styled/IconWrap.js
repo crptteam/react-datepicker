@@ -10,8 +10,4 @@ const IconWrap = styled.div`
   margin-left: ${props => props.right ? "auto" : 0};
 `;
 
-
-//
-// height: 24px;
-// width: 15px;
 export default IconWrap;
