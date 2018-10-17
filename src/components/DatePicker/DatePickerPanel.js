@@ -11,13 +11,18 @@ import YearValueWrap from "../../styled/YearValueWrap";
 import BottomWithDays from "../../styled/BottomWithDays";
 import IconWrap from "../../styled/IconWrap";
 import Day from "../../styled/Day";
+import Circle from "../../styled/Circle";
+import ArrowWrap from "../../styled/ArrowWrap";
 import DayWrap from "../../styled/DayWrap";
 import Months from "../../styled/Months";
 import Month from "../../styled/Month";
-import { LeftDatepickerArrow } from "../../svg";
-import { RightDatepickerArrow } from "../../svg";
+import { LeftDatepickerArrow,
+  RightDatepickerArrow,
+} from "../../svg";
+
 import ActionsWrapper from "../../styled/ActionsWrapper";
 import { Button } from "@crpt/react-button";
+import styled from 'styled-components';
 
 moment.locale("ru");
 
@@ -199,28 +204,43 @@ export class DatePickerPanel extends Component {
         positionY={positionY}
       >
         <HalfC theme={this.props.theme}>
+
           <TopWithPickers>
             <PickerWrap>
-              <IconWrap onClick={this.decreaseMonth}>
-                <LeftDatepickerArrow />
-              </IconWrap>
-              <MonthValueWrap theme={this.props.theme}>
-                {this.state.monthDate.format("MMMM")}
-              </MonthValueWrap>
-              <IconWrap onClick={this.increaseMonth}>
-                <RightDatepickerArrow />
-              </IconWrap>
-            </PickerWrap>
-
-            <PickerWrap right>
               <IconWrap onClick={this.decreaseYear}>
-                <LeftDatepickerArrow />
+                <Circle />
+                <ArrowWrap>
+                  <LeftDatepickerArrow />
+                </ArrowWrap>
               </IconWrap>
               <YearValueWrap theme={this.props.theme}>
                 {this.state.monthDate.format("YYYY")}
               </YearValueWrap>
               <IconWrap onClick={this.increaseYear}>
-                <RightDatepickerArrow />
+                <ArrowWrap right>
+                  <RightDatepickerArrow />
+                </ArrowWrap>
+                <Circle />
+              </IconWrap>
+            </PickerWrap>
+          </TopWithPickers>
+
+          <TopWithPickers>
+            <PickerWrap>
+              <IconWrap onClick={this.decreaseMonth}>
+                <Circle />
+                <ArrowWrap>
+                  <LeftDatepickerArrow />
+                </ArrowWrap>
+              </IconWrap>
+              <MonthValueWrap theme={this.props.theme}>
+                {this.state.monthDate.format("MMMM")}
+              </MonthValueWrap>
+              <IconWrap onClick={this.increaseMonth}>
+                <ArrowWrap right>
+                  <RightDatepickerArrow />
+                </ArrowWrap>
+                <Circle />
               </IconWrap>
             </PickerWrap>
           </TopWithPickers>

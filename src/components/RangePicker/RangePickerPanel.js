@@ -16,6 +16,8 @@ import Divider from "../../styled/Divider";
 import IconWrap from "../../styled/IconWrap";
 import Months from "../../styled/Months";
 import Month from "../../styled/Month";
+import Circle from "../../styled/Circle";
+import ArrowWrap from "../../styled/ArrowWrap";
 import { LeftDatepickerArrow } from "../../svg";
 import { RightDatepickerArrow } from "../../svg";
 import ActionsWrapper from "../../styled/ActionsWrapper";
@@ -444,34 +446,46 @@ export class RangePickerPanel extends Component {
         onClick={this.onTopLevelClick}
       >
         <HalfC hidden={!isLeftOpen} theme={theme}>
-          <TopWithPickers>
-            <PickerWrap>
-              <IconWrap onClick={this.decreaseStartMonth}>
-                <LeftDatepickerArrow />
-              </IconWrap>
 
-              <MonthValueWrap theme={theme}>
-                {leftDate && leftDate.format("MMMM")}
-              </MonthValueWrap>
+            <TopWithPickers>
+              <PickerWrap>
+                <IconWrap onClick={this.decreaseStartYear}>
+                  <Circle />
+                  <ArrowWrap>
+                    <LeftDatepickerArrow />
+                  </ArrowWrap>
+                </IconWrap>
+                <YearValueWrap theme={theme}>
+                  {leftDate && leftDate.format("YYYY")}
+                </YearValueWrap>
+                <IconWrap onClick={this.increaseStartYear}>
+                  <ArrowWrap right>
+                    <RightDatepickerArrow />
+                  </ArrowWrap>
+                  <Circle />
+                </IconWrap>
+              </PickerWrap>
+            </TopWithPickers>
 
-              <IconWrap onClick={this.increaseStartMonth}>
-                <RightDatepickerArrow />
-              </IconWrap>
-            </PickerWrap>
-
-            <PickerWrap right>
-              <IconWrap onClick={this.decreaseStartYear}>
-                <LeftDatepickerArrow />
-              </IconWrap>
-
-              <YearValueWrap theme={theme}>
-                {leftDate && leftDate.format("YYYY")}
-              </YearValueWrap>
-              <IconWrap onClick={this.increaseStartYear}>
-                <RightDatepickerArrow />
-              </IconWrap>
-            </PickerWrap>
-          </TopWithPickers>
+            <TopWithPickers>
+              <PickerWrap>
+                <IconWrap onClick={this.decreaseStartMonth}>
+                  <Circle />
+                  <ArrowWrap>
+                    <LeftDatepickerArrow />
+                  </ArrowWrap>
+                </IconWrap>
+                <MonthValueWrap theme={theme}>
+                  {leftDate && leftDate.format("MMMM")}
+                </MonthValueWrap>
+                <IconWrap onClick={this.increaseStartMonth}>
+                  <ArrowWrap right>
+                    <RightDatepickerArrow />
+                  </ArrowWrap>
+                  <Circle />
+                </IconWrap>
+              </PickerWrap>
+            </TopWithPickers>
 
           {monthView ? (
             <Months>
@@ -525,28 +539,43 @@ export class RangePickerPanel extends Component {
         </HalfC>
 
         <HalfC hidden={!isRightOpen} theme={theme}>
+
+          <TopWithPickers>
+            <PickerWrap>
+              <IconWrap onClick={this.decreaseEndYear}>
+                <Circle />
+                <ArrowWrap>
+                  <LeftDatepickerArrow />
+                </ArrowWrap>
+              </IconWrap>
+              <YearValueWrap theme={theme}>
+                {rightDate && rightDate.format("YYYY")}
+              </YearValueWrap>
+              <IconWrap onClick={this.increaseEndYear}>
+                <ArrowWrap right>
+                  <RightDatepickerArrow />
+                </ArrowWrap>
+                <Circle />
+              </IconWrap>
+            </PickerWrap>
+          </TopWithPickers>
+
           <TopWithPickers>
             <PickerWrap>
               <IconWrap onClick={this.decreaseEndMonth}>
-                <LeftDatepickerArrow />
+                <Circle />
+                <ArrowWrap>
+                  <LeftDatepickerArrow />
+                </ArrowWrap>
               </IconWrap>
               <MonthValueWrap theme={theme}>
                 {rightDate && rightDate.format("MMMM")}
               </MonthValueWrap>
               <IconWrap onClick={this.increaseEndMonth}>
-                <RightDatepickerArrow />
-              </IconWrap>
-            </PickerWrap>
-
-            <PickerWrap right>
-              <IconWrap onClick={this.decreaseEndYear}>
-                <LeftDatepickerArrow />
-              </IconWrap>
-              <YearValueWrap theme={theme}>
-                {rightDate && rightDate.format("YYYY")}
-              </YearValueWrap>
-              <IconWrap onClick={this.decreaseEndYear}>
-                <RightDatepickerArrow />
+                <ArrowWrap right>
+                  <RightDatepickerArrow />
+                </ArrowWrap>
+                <Circle />
               </IconWrap>
             </PickerWrap>
           </TopWithPickers>
