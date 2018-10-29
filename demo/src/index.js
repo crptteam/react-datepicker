@@ -49,7 +49,7 @@ const customTheme = {
         color: "#abadb6"
       },
       normal: {
-        fontSize: "0px",
+        fontSize: "16px",
         height: "24px",
         top: "11px"
       },
@@ -162,8 +162,10 @@ class Demo extends Component {
           positionX="left"
           positionY="bottom"
           theme={customTheme}
+          placeholder={'Что не так?'}
           acceptText="Применить"
           resetText="Сбросить"
+          savePlaceholder
           controls
         />
         <h1>react-datepicker Demo</h1>

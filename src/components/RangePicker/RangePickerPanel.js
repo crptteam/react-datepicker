@@ -32,7 +32,7 @@ export class RangePickerPanel extends Component {
     const endDate = this.props.to ? moment(this.props.to) : null;
 
     const leftDate = startDate ? moment(startDate) : moment();
-    const rightDate = endDate ? moment(endDate) : moment().add(1, "month");
+    const rightDate = endDate ? moment(endDate) : moment();
 
     this.state = {
       startDate,
@@ -98,26 +98,14 @@ export class RangePickerPanel extends Component {
     const endDate = props.to ? moment(props.to) : this.state.endDate;
 
     if (startDate && endDate) {
-      if (startDate.isSame(endDate, "month")) {
-        const rightDate = moment(startDate).add(1, "month");
-        this.setState({
-          startDate,
-          endDate,
-          leftDate: moment(startDate),
-          rightDate,
-          startDays: getDaysArrayFromMomentDate(startDate),
-          endDays: getDaysArrayFromMomentDate(rightDate)
-        });
-      } else {
-        this.setState({
-          startDate,
-          endDate,
-          leftDate: moment(startDate),
-          rightDate: moment(endDate),
-          startDays: getDaysArrayFromMomentDate(startDate),
-          endDays: getDaysArrayFromMomentDate(endDate)
-        });
-      }
+      this.setState({
+        startDate,
+        endDate,
+        leftDate: moment(startDate),
+        rightDate: moment(endDate),
+        startDays: getDaysArrayFromMomentDate(startDate),
+        endDays: getDaysArrayFromMomentDate(endDate)
+      });
     }
   }
 
@@ -276,8 +264,6 @@ export class RangePickerPanel extends Component {
   }
 
   onDayMouseOut(e, date) {
-    console.log('out');
-
     this.setState({
       hovered: null
     });

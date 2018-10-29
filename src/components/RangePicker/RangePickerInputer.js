@@ -74,8 +74,6 @@ export class RangePickerInputer extends Component {
   }
 
   onFromInputChange(e) {
-    console.log("onFromInputChange");
-
     this.setState({
       editingFromValue: e.target.value
     });
@@ -243,6 +241,8 @@ export class RangePickerInputer extends Component {
             isError={this.props.isError}
             theme={this.props.theme}
             isSaved={this.props.savePlaceholder}
+            fromValue={this.getFromInputValue()}
+            toValue={this.getToInputValue()}
           >
             {this.props.placeholder || "Дата"}
           </Placeholder>
