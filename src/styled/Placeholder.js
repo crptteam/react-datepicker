@@ -5,7 +5,10 @@ import { getThemeAsPlainTextByKeys, innerMerge } from "../utils";
 import defaultTheme from "../theme/defaultTheme";
 
 const Elem = styled.div`
-  display: ${props => (props.focused && !props.isSaved) ? "none" : "block"};
+  display: ${props =>
+    props.isSaved
+      ? "block"
+      : props.focused || props.fromValue || props.toValue ? "none" : "block"};
   position: absolute;
   height: ${props => props.height};
   line-height: ${props => props.height};
@@ -29,7 +32,10 @@ const Placeholder = props => {
   const mergedPlaceholder = innerMerge(
     {},
     defaultTheme.DatePicker.Placeholder,
-    (props.theme && props.theme.DatePicker && props.theme.DatePicker.Placeholder) || {}
+    (props.theme &&
+      props.theme.DatePicker &&
+      props.theme.DatePicker.Placeholder) ||
+      {}
   );
 
   const key = props.disabled ? "disabled" : props.isError ? "error" : "main";
@@ -39,7 +45,7 @@ const Placeholder = props => {
     getThemeAsPlainTextByKeys(
       mergedPlaceholder,
       key,
-      props.focused ? "focused" : "normal",
+      props.focused || props.fromValue || props.toValue ? "focused" : "normal"
     )
   );
 

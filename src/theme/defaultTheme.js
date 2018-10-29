@@ -66,7 +66,7 @@ export default {
     Placeholder: {
       fontWeight: 200,
       main: {
-        color: "#abadb6"
+        color: "#abadb6",
       },
       error: {
         color: "#abadb6"

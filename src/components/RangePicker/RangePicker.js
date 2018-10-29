@@ -24,7 +24,7 @@ class RangePicker extends Component {
 
     const end = this.props.to
       ? moment(this.props.to, this.props.format)
-      : moment(start).add(1, 'month');
+      : moment(start);
 
     this.state = {
       isLeftOpen: false,
@@ -142,7 +142,6 @@ class RangePicker extends Component {
       isRightOpen: true
     });
 
-    console.log('onLeftSelected', this.inputer);
     this.inputer.focusRight();
   }
 
