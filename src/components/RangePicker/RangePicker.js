@@ -15,6 +15,7 @@ class RangePicker extends Component {
   im;
   main;
   inputer;
+  open;
 
   constructor(props) {
     super(props);
@@ -65,6 +66,11 @@ class RangePicker extends Component {
       isLeftOpen: false,
       isRightOpen: false
     });
+
+    if (this.open) {
+      this.open = false;
+      this.props.onTogglePanel(false);
+    }
   }
 
   clear() {
@@ -84,11 +90,15 @@ class RangePicker extends Component {
   }
 
   onLeftFocus(e) {
-
     this.setState({
       isLeftOpen: true,
       isRightOpen: false
     });
+
+    if (!this.open) {
+      this.open = true;
+      this.props.onTogglePanel(true);
+    }
 
     if (this.blurTimeout) clearTimeout(this.blurTimeout);
   }
@@ -98,6 +108,11 @@ class RangePicker extends Component {
       isRightOpen: true,
       isLeftOpen: false
     });
+
+    if (!this.open) {
+      this.open = true;
+      this.props.onTogglePanel(true);
+    }
 
     if (this.blurTimeout) clearTimeout(this.blurTimeout);
   }
@@ -121,6 +136,11 @@ class RangePicker extends Component {
         isLeftOpen: false,
         isRightOpen: false
       });
+
+      if (this.open) {
+        this.open = false;
+        this.props.onTogglePanel(false);
+      }
     }
   }
 
@@ -142,6 +162,11 @@ class RangePicker extends Component {
       isRightOpen: true
     });
 
+    if (!this.open) {
+      this.open = true;
+      this.props.onTogglePanel(true);
+    }
+
     this.inputer.focusRight();
   }
 
@@ -150,7 +175,14 @@ class RangePicker extends Component {
       isLeftOpen: false,
       isRightOpen: false
     });
+
+    if (this.open) {
+      this.open = false;
+      this.props.onTogglePanel(false);
+    }
   }
+
+  onPanelRef = (extRef) => { this.optionsPanel = extRef; };
 
   render() {
     const name = this.props.name;
@@ -177,6 +209,7 @@ class RangePicker extends Component {
         format={this.props.format}
       >
         <RangePickerPanel
+          onRef={this.onPanelRef}
           onLeftSelected={this.onLeftSelected}
           onRightSelected={this.onRightSelected}
           from={this.state.from}
@@ -214,6 +247,7 @@ RangePicker.propTypes = {
   controls: PropTypes.bool,
   acceptText: PropTypes.string,
   resetText: PropTypes.string,
+  onTogglePanel: PropTypes.func,
 };
 
 RangePicker.defaultProps = {
@@ -230,6 +264,7 @@ RangePicker.defaultProps = {
   controls: false,
   acceptText: "Accept",
   resetText: "Reset",
+  onTogglePanel: () => {},
 };
 
 RangePicker.displayName = 'RangePicker';

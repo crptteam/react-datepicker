@@ -65,18 +65,21 @@ class DatePicker extends Component {
   }
 
   onFocus(e) {
+    const { isOpen } = this.state;
+
     this.setState({
       isOpen: true
-    });
+    }, () => !isOpen && this.props.onTogglePanel(true));
 
     if (this.blurTimeout) clearTimeout(this.blurTimeout);
   }
 
   onBlur(e) {
+    const { isOpen } = this.state;
     this.blurTimeout = setTimeout(() => {
       this.setState({
         isOpen: false
-      });
+      }, () => isOpen && this.props.onTogglePanel(false));
 
       this.props.onUpdate({ date: this.state.date });
     }, 200);
@@ -84,7 +87,7 @@ class DatePicker extends Component {
 
   select(date) {
     const isOpen = !date;
-    this.setState({ date, isOpen });
+    this.setState({ date, isOpen }, () => this.props.onTogglePanel(isOpen));
     this.props.onChange({ date });
   }
 
@@ -99,6 +102,8 @@ class DatePicker extends Component {
   onMouseDown(e) {
     if (this.blurTimeout) clearTimeout(this.blurTimeout);
   }
+
+  onPanelRef = (extRef) => { this.optionsPanel = extRef; };
 
   render() {
     const name = this.props.name;
@@ -121,6 +126,7 @@ class DatePicker extends Component {
         format={this.props.format}
       >
         <DatePickerPanel
+          onRef={this.onPanelRef}
           date={this.state.date}
           visible={this.state.isOpen}
           theme={this.props.theme}
@@ -152,7 +158,8 @@ DatePicker.propTypes = {
   format: PropTypes.string,
   controls: PropTypes.bool,
   acceptText: PropTypes.string,
-  resetText: PropTypes.string
+  resetText: PropTypes.string,
+  onTogglePanel: PropTypes.func,
 };
 
 DatePicker.defaultProps = {
@@ -166,7 +173,8 @@ DatePicker.defaultProps = {
   format: null,
   controls: false,
   acceptText: 'Accept',
-  resetText: 'Reset'
+  resetText: 'Reset',
+  onTogglePanel: () => {},
 };
 
 DatePicker.displayName = 'DatePicker';
