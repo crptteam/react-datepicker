@@ -178,7 +178,8 @@ export class DatePickerPanel extends Component {
       positionX,
       positionY,
       monthView,
-      controls
+      controls,
+      onRef,
     } = this.props;
 
     const monthes = [
@@ -193,6 +194,7 @@ export class DatePickerPanel extends Component {
 
     return (
       <DatePickerPanelWrap
+        innerRef={onRef}
         theme={theme}
         visible={visible}
         positionX={positionX}

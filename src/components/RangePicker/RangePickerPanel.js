@@ -397,7 +397,8 @@ export class RangePickerPanel extends Component {
       controls,
       monthView,
       isRightOpen,
-      isLeftOpen
+      isLeftOpen,
+      onRef,
     } = this.props;
     const { leftDate, rightDate, startDays, endDays } = this.state;
 
@@ -423,6 +424,7 @@ export class RangePickerPanel extends Component {
 
     return (
       <DatePickerPanelWrap
+        innerRef={onRef}
         theme={theme}
         visible={isRightOpen || isLeftOpen}
         positionX={positionX}

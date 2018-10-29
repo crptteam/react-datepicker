@@ -35,6 +35,7 @@ import { DatePicker, RangePicker } from  "@crpt/react-datepicker";
 | controls: bool | Show panel Accept and Reset buttons | |
 | acceptText: string | Accept control text. Default: 'Accept' | |
 | resetText: string | Reset control text. Default: 'Reset' | |
+| onTogglePanel: Function | Callback on toggle OptionsPanel visibility | |
 
 
 ### RangePicker
@@ -53,6 +54,7 @@ import { DatePicker, RangePicker } from  "@crpt/react-datepicker";
 | controls: bool | Show panel Accept and Reset buttons | |
 | acceptText: string | Accept control text. Default: 'Accept' | |
 | resetText: string | Reset control text. Default: 'Reset' | |
+| onTogglePanel: Function | Callback on toggle OptionsPanel visibility | |
 
 
 [build-badge]: https://img.shields.io/travis/user/repo/master.png?style=flat-square
