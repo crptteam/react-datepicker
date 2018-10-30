@@ -10,13 +10,14 @@ const Elem = styled.div`
       ? "block"
       : props.focused || props.fromValue || props.toValue ? "none" : "block"};
   position: absolute;
-  height: ${props => props.height};
   line-height: ${props => props.height};
   font-size: ${props => props.fontSize};
   color: ${props => props.color};
   font-weight: ${props => props.fontWeight};
-  top: ${props => props.top};
   font-family: ${props => props.fontFamily};
+  top: ${props => props.focused ? '30' : '50'}%;
+  transform: translateY(-50%);
+  text-align: left;
   transition: all 0.3s ease;
 `;
 
