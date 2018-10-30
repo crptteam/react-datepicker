@@ -140,7 +140,7 @@ class Demo extends Component {
           date="09.10.2018"
           positionX="left"
           positionY="bottom"
-          placeholder="Date"
+          placeholder="Очень длинный плейсхолдер, который должен вместиться в инпут"
           savePlaceholder
           isError={true}
           theme={customTheme}
@@ -151,6 +151,7 @@ class Demo extends Component {
           positionX="left"
           positionY="bottom"
           theme={customTheme}
+          placeholder="Очень длинный плейсхолдер, который должен вместиться в инпут"
           monthView={true}
           controls={true}
           acceptText="Применить"
@@ -162,7 +163,7 @@ class Demo extends Component {
           positionX="left"
           positionY="bottom"
           theme={customTheme}
-          placeholder={'Что не так?'}
+          placeholder="Очень длинный плейсхолдер, который должен вместиться в инпут"
           acceptText="Применить"
           resetText="Сбросить"
           savePlaceholder
@@ -176,7 +177,7 @@ class Demo extends Component {
           positionY="bottom"
           theme={customTheme}
           isError={true}
-          placeholder="Date"
+          placeholder="Очень длинный плейсхолдер, который должен вместиться в инпут"
           savePlaceholder
           onChange={vals => console.log('VALS', vals)}
         />

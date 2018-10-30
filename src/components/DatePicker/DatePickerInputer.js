@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import PropTypes from 'prop-types';
 import { getValidMomentFromISOStringOrNull } from "../../utils";
 import Inputmask from "inputmask";
 
@@ -10,6 +11,14 @@ import Placeholder from "../../styled/Placeholder";
 import { CalendarIcon } from "../../svg";
 
 export class DatePickerInputer extends Component {
+  static propTypes = {
+    inline: PropTypes.bool,
+  };
+
+  static defaultProps = {
+    inline: false,
+  };
+
   dateInput;
   dateMask;
   mask;
@@ -104,7 +113,6 @@ export class DatePickerInputer extends Component {
         inline={this.props.inline === false ? this.props.inline : true}
         disabled={this.props.disabled}
         isError={this.props.isError}
-        width={"256px"}
         onFocus={this.props.onFocus}
         onBlur={this.props.onBlur}
         onMouseDown={this.props.onMouseDown}

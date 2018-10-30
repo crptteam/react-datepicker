@@ -21,7 +21,7 @@ const Elem = styled.input`
   border: 0;
   overflow: hidden;
   padding: 0;
-  top: ${props => (props.centered ? '0' : '8px')};
+  top: ${props => (props.centered ? '0' : '10px')};
   background: ${props => props.background};
   cursor: ${props => props.cursor};
   color: ${props => (props.noCaret ? 'rgba(0,0,0,0)' : props.color)};
