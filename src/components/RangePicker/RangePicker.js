@@ -10,6 +10,7 @@ import Placeholder from "../../styled/Placeholder";
 import OptionsPointer from "../../styled/OptionsPointer";
 import { DatePickerInputer } from "../DatePicker/DatePickerInputer";
 import { DatePickerPanel } from "../DatePicker/DatePickerPanel";
+import PanelWrap from "../../styled/PanelWrap";
 
 moment.locale('ru');
 
@@ -219,27 +220,31 @@ class RangePicker extends Component {
         format={this.props.format}
         onClear={this.onClear}
       >
-        {(isLeftOpen || isRightOpen) && showPointer && (
-          <OptionsPointer theme={theme} />
-        )}
-        <RangePickerPanel
-          onRef={this.onPanelRef}
-          showPointer={showPointer}
-          onLeftSelected={this.onLeftSelected}
-          onRightSelected={this.onRightSelected}
-          from={this.state.from}
-          to={this.state.to}
-          isLeftOpen={this.state.isLeftOpen}
-          isRightOpen={this.state.isRightOpen}
-          theme={theme}
-          monthView={this.props.monthView}
+        <PanelWrap
+          innerRef={this.onPanelRef}
           positionX={this.props.positionX}
           positionY={this.props.positionY}
-          reset={this.reset}
-          accept={this.select}
-          acceptText={this.props.acceptText}
-          resetText={this.props.resetText}
-        />
+          visible={this.state.isLeftOpen || this.state.isRightOpen}
+        >
+          {(isLeftOpen || isRightOpen) && showPointer && (
+            <OptionsPointer theme={theme} />
+          )}
+          <RangePickerPanel
+            showPointer={showPointer}
+            onLeftSelected={this.onLeftSelected}
+            onRightSelected={this.onRightSelected}
+            from={this.state.from}
+            to={this.state.to}
+            isLeftOpen={this.state.isLeftOpen}
+            isRightOpen={this.state.isRightOpen}
+            theme={theme}
+            monthView={this.props.monthView}
+            reset={this.reset}
+            accept={this.select}
+            acceptText={this.props.acceptText}
+            resetText={this.props.resetText}
+          />
+        </PanelWrap>
       </RangePickerInputer>
     );
   }

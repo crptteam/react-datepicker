@@ -1,22 +1,26 @@
 import styled from 'styled-components';
-import { getThemeAsPlainTextByKeys, innerMerge } from '../utils';
-import defaultTheme from '../theme/defaultTheme';
-import React from 'react';
+import React from "react";
+import { getThemeAsPlainTextByKeys, innerMerge } from "../utils";
+import defaultTheme from "../theme/defaultTheme";
 
 
 const Elem = styled.div`
   position: absolute;
-  right: 20px;
-  width: 20px;
-  height: 20px;
-  transform: rotate(58deg) skew(30deg);
-  border-top-left-radius: 25%;
-  background: ${props => props.background};
-  top: 9px;
-  box-shadow: ${props => props.boxShadow};
+  right: 0;
+  z-index: 9999;
+
+  ${props => (props.positionX && props.positionX === 'left'
+    ? 'right: -1px'
+    : 'left: -1px')};
+  ${props => (props.positionY && props.positionY === 'top'
+    ? `bottom: ${props.bottom}`
+    : `top: ${props.top}`)};
+  display: ${props => (props.visible ? "block" : "none")};
+
 `;
 
-const SelectOptionsPointer = props => {
+const PanelWrap = props => {
+
   const merged = innerMerge(
     {},
     defaultTheme.DatePicker,
@@ -33,4 +37,4 @@ const SelectOptionsPointer = props => {
   return <Elem {...theme} {...props} />;
 };
 
-export default SelectOptionsPointer;
+export default PanelWrap;

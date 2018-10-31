@@ -9,6 +9,7 @@ import moment from 'moment';
 import defaultTheme from '../../theme/defaultTheme';
 import OptionsPointer from "../../styled/OptionsPointer";
 import DatePickerPanelWrap from "../../styled/DatePickerPanelWrap";
+import PanelWrap from "../../styled/PanelWrap";
 
 moment.locale('ru');
 
@@ -47,7 +48,7 @@ class DatePicker extends Component {
     format: null,
     acceptText: 'Применить',
     resetText: 'Сбросить',
-    showPointer: true,
+    showPointer: false,
   };
 
   blurTimeout;
@@ -203,21 +204,24 @@ class DatePicker extends Component {
         monthView={monthView}
         format={format}
       >
-        {isOpen && showPointer && <OptionsPointer theme={theme} />}
-        <DatePickerPanel
-          onRef={this.onPanelRef}
-          showPointer={showPointer}
-          date={date}
-          visible={isOpen}
-          theme={theme}
+        <PanelWrap
+          innerRef={this.onPanelRef}
           positionX={positionX}
           positionY={positionY}
-          monthView={monthView}
-          reset={this.reset}
-          accept={this.select}
-          acceptText={acceptText}
-          resetText={resetText}
-        />
+          visible={isOpen}
+        >
+          {isOpen && showPointer && <OptionsPointer theme={theme} />}
+          <DatePickerPanel
+            showPointer={showPointer}
+            date={date}
+            theme={theme}
+            monthView={monthView}
+            reset={this.reset}
+            accept={this.select}
+            acceptText={acceptText}
+            resetText={resetText}
+          />
+        </PanelWrap>
       </DatePickerInputer>
     );
   }
