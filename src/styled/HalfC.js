@@ -6,7 +6,7 @@ import defaultTheme from '../theme/defaultTheme';
 
 const Elem = styled.div`
   display: ${props => props.hidden ? 'none' : 'inline-block'};
-  width: 208px;
+  width: 188px;
   font-size: ${props => props.fontSize};
   vertical-align: top;
 `;

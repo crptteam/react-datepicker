@@ -30,6 +30,18 @@ const Elem = styled.div`
   -ms-user-select: none;
   background: ${props => props.background};
   border: ${props => props.border};
+  box-shadow: ${props => props.boxShadow};
+  margin-top: ${props => props.marginTop};
+  
+  &:before {
+    ${props => props.marginTop && 'content: \' \';'};
+    position: absolute;
+    right: 21px;
+    background: ${props => props.background};
+    width: 18px;
+    height: 2px;
+    bottom: calc(100% - 1px);
+  }
 `;
 
 const DatePickerPanelWrap = props => {

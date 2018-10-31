@@ -7,6 +7,9 @@ import 'datejs';
 import moment from 'moment';
 import defaultTheme from '../../theme/defaultTheme';
 import Placeholder from "../../styled/Placeholder";
+import OptionsPointer from "../../styled/OptionsPointer";
+import { DatePickerInputer } from "../DatePicker/DatePickerInputer";
+import { DatePickerPanel } from "../DatePicker/DatePickerPanel";
 
 moment.locale('ru');
 
@@ -31,19 +34,23 @@ class RangePicker extends Component {
       isLeftOpen: false,
       isRightOpen: false,
       from: this.props.from ? moment(start) : null,
-      to: this.props.to ? moment(end) : null
+      to: this.props.to ? moment(end) : null,
+      initialFrom: this.props.from,
+      initialTo: this.props.to,
     };
+  }
 
-    this.onRightFocus = this.onRightFocus.bind(this);
-    this.onLeftFocus = this.onLeftFocus.bind(this);
-    this.onBlur = this.onBlur.bind(this);
-    this.onMouseDown = this.onMouseDown.bind(this);
-    this.select = this.select.bind(this);
-    this.onValidUpdate = this.onValidUpdate.bind(this);
-    this.reset = this.reset.bind(this);
-    this.onLeftSelected = this.onLeftSelected.bind(this);
-    this.onRightSelected = this.onRightSelected.bind(this);
-    this.handleClick = this.handleClick.bind(this);
+  static getDerivedStateFromProps(props, state) {
+    if (props.from !== state.initialFrom || props.to !== state.initialTo) {
+      return {
+        from: props.from ? moment(props.from, props.format) : null,
+        to: props.to ? moment(props.to, props.format) : null,
+        initialFrom: props.from,
+        initialTo: props.to,
+      }
+    }
+
+    return null;
   }
 
   componentDidMount() {
@@ -54,10 +61,9 @@ class RangePicker extends Component {
   componentWillUnmount() {
     this.props.onRef && this.props.onRef(undefined);
     document.removeEventListener('mousedown', this.handleClick, true);
-
   }
 
-  handleClick(e) {
+  handleClick = (e) => {
     if (this.main.contains(e.target)) {
       return;
     }
@@ -71,9 +77,11 @@ class RangePicker extends Component {
       this.open = false;
       this.props.onTogglePanel(false);
     }
-  }
+  };
 
-  clear() {
+  onClear = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
     this.setState({
       from: null,
       to: null
@@ -81,15 +89,15 @@ class RangePicker extends Component {
 
     this.props.onUpdate && this.props.onUpdate({ from: null, to: null });
     this.props.onChange && this.props.onChange({ from: null, to: null });
-  }
+  };
 
-  onValidUpdate(state) {
+  onValidUpdate = (state) => {
     this.setState(state);
     this.props.onChange({ ...this.state, ...state });
     this.props.onUpdate({ ...this.state, ...state });
-  }
+  };
 
-  onLeftFocus(e) {
+  onLeftFocus = (e) => {
     this.setState({
       isLeftOpen: true,
       isRightOpen: false
@@ -101,9 +109,9 @@ class RangePicker extends Component {
     }
 
     if (this.blurTimeout) clearTimeout(this.blurTimeout);
-  }
+  };
 
-  onRightFocus(e) {
+  onRightFocus = (e) => {
     this.setState({
       isRightOpen: true,
       isLeftOpen: false
@@ -115,9 +123,9 @@ class RangePicker extends Component {
     }
 
     if (this.blurTimeout) clearTimeout(this.blurTimeout);
-  }
+  };
 
-  onBlur(e) {
+  onBlur = (e) => {
     this.blurTimeout = setTimeout(() => {
       this.setState({
         isOpen: false
@@ -125,9 +133,9 @@ class RangePicker extends Component {
 
       this.props.onUpdate({ to: this.state.to, from: this.state.from });
     }, 200);
-  }
+  };
 
-  select(from, to, close) {
+  select = (from, to, close) => {
     const isOpen = !(from && to);
     this.setState({ from, to, isOpen });
     this.props.onChange({ from, to });
@@ -142,21 +150,21 @@ class RangePicker extends Component {
         this.props.onTogglePanel(false);
       }
     }
-  }
+  };
 
-  reset() {
+  reset = () => {
     const from = null;
     const to = null;
     this.setState({ from, to });
     this.props.onChange({ from, to });
     this.inputer.focusLeft();
-  }
+  };
 
-  onMouseDown(e) {
+  onMouseDown = (e) => {
     if (this.blurTimeout) clearTimeout(this.blurTimeout);
-  }
+  };
 
-  onLeftSelected() {
+  onLeftSelected = () => {
     this.setState({
       isLeftOpen: false,
       isRightOpen: true
@@ -168,9 +176,9 @@ class RangePicker extends Component {
     }
 
     this.inputer.focusRight();
-  }
+  };
 
-  onRightSelected() {
+  onRightSelected = () => {
     this.setState({
       isLeftOpen: false,
       isRightOpen: false
@@ -180,12 +188,14 @@ class RangePicker extends Component {
       this.open = false;
       this.props.onTogglePanel(false);
     }
-  }
+  };
 
   onPanelRef = (extRef) => { this.optionsPanel = extRef; };
 
   render() {
     const name = this.props.name;
+    const { showPointer, theme } = this.props;
+    const { isLeftOpen, isRightOpen } = this.state;
 
     return (
       <RangePickerInputer
@@ -202,27 +212,31 @@ class RangePicker extends Component {
         to={this.state.to}
         name={name}
         mainRef={el => this.main = el}
-        theme={this.props.theme}
+        theme={theme}
         placeholder={this.props.placeholder}
         savePlaceholder={this.props.savePlaceholder}
         monthView={this.props.monthView}
         format={this.props.format}
+        onClear={this.onClear}
       >
+        {(isLeftOpen || isRightOpen) && showPointer && (
+          <OptionsPointer theme={theme} />
+        )}
         <RangePickerPanel
           onRef={this.onPanelRef}
+          showPointer={showPointer}
           onLeftSelected={this.onLeftSelected}
           onRightSelected={this.onRightSelected}
           from={this.state.from}
           to={this.state.to}
           isLeftOpen={this.state.isLeftOpen}
           isRightOpen={this.state.isRightOpen}
-          theme={this.props.theme}
+          theme={theme}
           monthView={this.props.monthView}
           positionX={this.props.positionX}
           positionY={this.props.positionY}
           reset={this.reset}
           accept={this.select}
-          controls={this.props.controls}
           acceptText={this.props.acceptText}
           resetText={this.props.resetText}
         />
@@ -244,7 +258,6 @@ RangePicker.propTypes = {
   positionalX: PropTypes.string,
   positionalY: PropTypes.string,
   format: PropTypes.string,
-  controls: PropTypes.bool,
   acceptText: PropTypes.string,
   resetText: PropTypes.string,
   onTogglePanel: PropTypes.func,
@@ -261,7 +274,6 @@ RangePicker.defaultProps = {
   onChange: val => null,
   onUpdate: val => null,
   format: null,
-  controls: false,
   acceptText: "Accept",
   resetText: "Reset",
   onTogglePanel: () => {},
