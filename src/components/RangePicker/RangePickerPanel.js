@@ -375,12 +375,9 @@ export class RangePickerPanel extends Component {
   render() {
     const {
       theme,
-      positionX,
-      positionY,
       monthView,
       isRightOpen,
       isLeftOpen,
-      onRef,
       resetText,
       acceptText,
       showPointer,
@@ -411,11 +408,7 @@ export class RangePickerPanel extends Component {
 
     return (
       <DatePickerPanelWrap
-        innerRef={onRef}
         theme={theme}
-        visible={isRightOpen || isLeftOpen}
-        positionX={positionX}
-        positionY={positionY}
         marginTop={panelMargin}
         onClick={this.onTopLevelClick}
       >

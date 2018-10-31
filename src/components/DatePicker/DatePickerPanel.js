@@ -165,11 +165,7 @@ export class DatePickerPanel extends Component {
   render() {
     const {
       theme,
-      visible,
-      positionX,
-      positionY,
       monthView,
-      onRef,
       resetText,
       acceptText,
       showPointer,
@@ -180,12 +176,8 @@ export class DatePickerPanel extends Component {
 
     return (
       <DatePickerPanelWrap
-        innerRef={onRef}
         theme={theme}
         marginTop={panelMargin}
-        visible={visible}
-        positionX={positionX}
-        positionY={positionY}
       >
         <HalfC theme={theme}>
           <TopWithPickers>

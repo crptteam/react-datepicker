@@ -6,22 +6,13 @@ import defaultTheme from "../theme/defaultTheme";
 
 const Elem = styled.div`
   font-family: ${props => props.fontFamily};
-  position: absolute;
-  z-index: 9999;
   border-radius: ${props => props.borderRadius};
   padding-top: ${props => props.paddingTop};
   padding-left: ${props => props.paddingLeft};
   padding-right: ${props => props.paddingRight};
   padding-bottom: ${props => props.paddingBottom};
-  ${props => (props.positionX && props.positionX === 'left'
-    ? 'right: -1px'
-    : 'left: -1px')};
-  ${props => (props.positionY && props.positionY === 'top'
-  ? `bottom: ${props.bottom}`
-  : `top: ${props.top}`)};
-  
-  display: ${props => (props.visible ? "block" : "none")};
   font-size: 0px;
+  position: relative;
   white-space: nowrap;
   box-sizing: border-box;
   -webkit-user-select: none;
