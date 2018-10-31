@@ -4,23 +4,21 @@ import { themes } from '@crpt/react-button';
 export default {
   DatePicker: {
     height: "64px",
+    fontFamily: 'SegoeUI, sans-serif',
     main: {
       background: "#FFFFFF",
-      border: "1px solid #ABADB5",
-      color: "#212C42",
-      placeholder: "#ACADB5"
+      color: "#52535A",
+      placeholder: "#868686"
     },
     disabled: {
       background: "#FFFFFF",
-      border: "1px solid #ABADB5",
       color: "#212C42",
-      placeholder: "#ACADB5"
+      placeholder: "#868686"
     },
     error: {
       background: "#FFEBEB",
-      border: "1px solid #FF3C21",
       color: "#212C42",
-      placeholder: "#ACADB5"
+      placeholder: "#868686"
     },
     borderRadius: "2px",
     fontSize: "16px",
@@ -28,33 +26,28 @@ export default {
     DayWrap: {
       width: '28px',
       height: '28px',
-      hoverBackground: "#1A99F4",
-      hoverColor: "#FFFFFF",
+      hoverBackground: "#F8EC31",
       hovered: {
-        background: chroma("#1A99F4")
+        background: chroma("#F8EC31")
           .brighten(0.8)
           .css(),
-        color: "#FFFFFF"
       },
     },
     Day: {
       width: "24px",
       height: "24px",
       borderRadius: "2px",
-      hoverBackground: "#1A99F4",
-      hoverColor: "#FFFFFF",
+      hoverBackground: "#F8EC31",
       hovered: {
-        background: chroma("#1A99F4")
+        background: chroma("#F8EC31")
           .brighten(0.8)
           .css(),
-        color: "#FFFFFF"
       },
       selected: {
-        background: "#1A99F4",
-        color: "#FFFFFF"
+        background: "#F8EC31",
       },
       main: {
-        color: "#212C42",
+        color: "#52535A",
         background: "rgba(0,0,0,0)"
       }
     },
@@ -133,23 +126,61 @@ export default {
     DatePickerPanelWrap: {
       top: '62px',
       bottom: '62px',
-      borderRadius: '2px',
-      paddingTop: '30px',
-      paddingLeft: '30px',
-      paddingRight: '30px',
-      paddingBottom: '25px',
-      main: {
-        border: '1px solid #ABADB5'
-      },
+      borderRadius: '3px',
+      paddingTop: '50px',
+      paddingLeft: '16px',
+      paddingRight: '16px',
+      paddingBottom: '16px',
+      border: '0',
+      boxShadow: '0 3px 4px rgba(0, 0, 0, 0.13), 0 1px 3px rgba(0, 0, 0, 0.1)',
       Accept: {
         Button: {
-          ...themes.bgWhiteTheme.Button,
+          fontSize: "16px",
+          fontWeight: 400,
+          normal: {
+            paddingLeft: "35px",
+            paddingRight: "35px",
+            height: "40px"
+          },
+          main: {
+            border: "0",
+            color: "#52535A",
+            background: "#ffffff"
+          },
+          disabled: {
+            border: "0",
+            color: "#ABADB6",
+            background: "#ffffff"
+          },
+          minWidth: "108px",
+          borderTopLeftRadius: "3px",
+          borderBottomLeftRadius: "3px",
+          borderTopRightRadius: "3px",
+          borderBottomRightRadius: "3px",
+          boxShadow: '0 3px 4px rgba(0, 0, 0, 0.13), 0 1px 3px rgba(0, 0, 0, 0.1)',
         }
       },
       Reset: {
         Button: {
-          ...themes.whiteTheme.Button,
-          marginRight: 30,
+          fontSize: "16px",
+          fontWeight: 400,
+          cursor: "normal",
+          normal: {
+            paddingLeft: "22px",
+            paddingRight: "37px",
+            height: "40px"
+          },
+          main: {
+            border: "0",
+            color: "#52535A",
+            background: "#ffffff"
+          },
+          disabled: {
+            border: "0",
+            color: "#2d3d5b",
+            background: "#b9b9b9"
+          },
+          minWidth: "0px",
         }
       }
     }

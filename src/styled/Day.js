@@ -21,7 +21,6 @@ export const Elem = styled.div`
   pointer-events: none;
   :hover {
     background: ${props => props.hoverBackground};
-    color: ${props => props.hoverColor};
   }
 `;
 

@@ -2,11 +2,11 @@ import React from 'react';
 import styled from 'styled-components';
 
 const BottomWithDays = styled.div`
-  display: block;
-  font-size: 0px;
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
   white-space: normal;
-  margin-top: 20px;
-  text-align: left;
+  margin-bottom: 45px;
 `;
 
 export default BottomWithDays;

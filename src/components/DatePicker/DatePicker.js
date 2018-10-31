@@ -7,13 +7,52 @@ import { DatePickerInputer } from './DatePickerInputer';
 
 import moment from 'moment';
 import defaultTheme from '../../theme/defaultTheme';
-import { RangePickerPanel } from '../RangePicker/RangePickerPanel';
+import OptionsPointer from "../../styled/OptionsPointer";
+import DatePickerPanelWrap from "../../styled/DatePickerPanelWrap";
 
 moment.locale('ru');
 
 class DatePicker extends Component {
+  static displayName = 'DatePicker';
+
+  static propTypes = {
+    onRef: PropTypes.func,
+    onUpdate: PropTypes.func,
+    onChange: PropTypes.func,
+    onTogglePanel: PropTypes.func,
+    className: PropTypes.string,
+    theme: PropTypes.object,
+    disabled: PropTypes.bool,
+    isError: PropTypes.bool,
+    date: PropTypes.string,
+    positionalX: PropTypes.string,
+    positionalY: PropTypes.string,
+    monthView: PropTypes.bool,
+    format: PropTypes.string,
+    acceptText: PropTypes.string,
+    resetText: PropTypes.string,
+    showPointer: PropTypes.bool,
+  };
+
+  static defaultProps = {
+    onUpdate: () => {},
+    onChange: () => {},
+    onRef: () => {},
+    onTogglePanel: () => {},
+    disabled: false,
+    isError: false,
+    theme: defaultTheme,
+    positionX: '',
+    positionY: '',
+    format: null,
+    acceptText: 'Применить',
+    resetText: 'Сбросить',
+    showPointer: true,
+  };
+
   blurTimeout;
   im;
+  optionsPanel;
 
   constructor(props) {
     super(props);
@@ -24,159 +63,164 @@ class DatePicker extends Component {
 
     this.state = {
       isOpen: false,
-      date: date
+      date: date,
+      defaultDate: this.props.date,
     };
-
-    this.onFocus = this.onFocus.bind(this);
-    this.onBlur = this.onBlur.bind(this);
-    this.onMouseDown = this.onMouseDown.bind(this);
-    this.select = this.select.bind(this);
-    this.onValidUpdate = this.onValidUpdate.bind(this);
-    this.reset = this.reset.bind(this);
   }
 
   componentDidMount() {
-    this.props.onRef && this.props.onRef(this);
+    const { onRef } = this.props;
+    onRef(this);
   }
 
   componentWillUnmount() {
-    this.props.onRef && this.props.onRef(undefined);
-  }
-
-  componentDidUpdate(prevProps) {
-    const { defaultValue } = this.props;
-    if (defaultValue !== prevProps.defaultValue) {
-      this.setState({ date: defaultValue });
-    }
-  }
-
-  clear() {
-    this.setState({
-      date: null
-    });
-
-    this.props.onUpdate && this.props.onUpdate({ date: null });
-    this.props.onChange && this.props.onChange({ date: null });
-  }
-
-  onValidUpdate(state) {
-    this.setState(state);
-    this.props.onUpdate(state);
-  }
-
-  onFocus(e) {
-    const { isOpen } = this.state;
-
-    this.setState({
-      isOpen: true
-    }, () => !isOpen && this.props.onTogglePanel(true));
-
+    const { onRef } = this.props;
+    onRef(undefined);
     if (this.blurTimeout) clearTimeout(this.blurTimeout);
   }
 
-  onBlur(e) {
+  static getDerivedStateFromProps(props, state) {
+    if (props.date !== state.defaultDate) {
+      const date = props.date
+        ? moment(props.date, props.format)
+        : null;
+
+      return {
+        date,
+        defaultDate: props.date,
+      }
+    }
+
+    return null;
+  }
+
+  onClear = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    const { onUpdate, onChange } = this.props;
+    this.setState({ date: null });
+    onUpdate({ date: null });
+    onChange({ date: null });
+  };
+
+  onValidUpdate = (state) => {
+    const { onUpdate } = this.props;
+    this.setState(state);
+    onUpdate(state);
+  };
+
+  onFocus = () => {
+    const { onTogglePanel } = this.props;
     const { isOpen } = this.state;
+
+    this.setState(
+      { isOpen: true },
+      () => !isOpen && onTogglePanel(true)
+    );
+
+    if (this.blurTimeout) clearTimeout(this.blurTimeout);
+  };
+
+  onBlur = () => {
     this.blurTimeout = setTimeout(() => {
-      this.setState({
-        isOpen: false
-      }, () => isOpen && this.props.onTogglePanel(false));
+      const { onUpdate, onTogglePanel } = this.props;
+      const { isOpen, date } = this.state;
 
-      this.props.onUpdate({ date: this.state.date });
+      this.setState(
+        { isOpen: false },
+        () => isOpen && onTogglePanel(false)
+      );
+
+      onUpdate({ date });
     }, 200);
-  }
+  };
 
-  select(date) {
+  select = (date) => {
+    const { onChange, onTogglePanel } = this.props;
     const isOpen = !date;
-    this.setState({ date, isOpen }, () => this.props.onTogglePanel(isOpen));
-    this.props.onChange({ date });
-  }
 
-  reset() {
-    const date = this.props.date
-      ? moment(this.props.date, this.props.format)
+    this.setState(
+      { date, isOpen },
+      () => onTogglePanel(isOpen)
+    );
+
+    onChange({ date });
+  };
+
+  reset = () => {
+    const { date: propsDate, format } = this.props;
+
+    const date = propsDate
+      ? moment(propsDate, format)
       : null;
 
     this.setState({ date });
-  }
+  };
 
-  onMouseDown(e) {
+  onMouseDown = () => {
     if (this.blurTimeout) clearTimeout(this.blurTimeout);
-  }
+  };
 
-  onPanelRef = (extRef) => { this.optionsPanel = extRef; };
+  onPanelRef = (extRef) => {
+    this.optionsPanel = extRef;
+  };
 
   render() {
-    const name = this.props.name;
+    const {
+      name,
+      disabled,
+      isError,
+      inline,
+      theme,
+      placeholder,
+      savePlaceholder,
+      monthView,
+      format,
+      positionX,
+      positionY,
+      acceptText,
+      resetText,
+      showPointer,
+    } = this.props;
+    const { date, isOpen } = this.state;
+
 
     return (
       <DatePickerInputer
-        disabled={this.props.disabled}
-        isError={this.props.isError}
+        disabled={disabled}
+        isError={isError}
         onFocus={this.onFocus}
         onBlur={this.onBlur}
         onMouseDown={this.onMouseDown}
         onValidUpdate={this.onValidUpdate}
-        date={this.state.date}
+        onClear={this.onClear}
+        date={date}
         name={name}
-        inline={this.props.inline}
-        theme={this.props.theme}
-        placeholder={this.props.placeholder}
-        savePlaceholder={this.props.savePlaceholder}
-        monthView={this.props.monthView}
-        format={this.props.format}
+        inline={inline}
+        theme={theme}
+        placeholder={placeholder}
+        savePlaceholder={savePlaceholder}
+        monthView={monthView}
+        format={format}
       >
+        {isOpen && showPointer && <OptionsPointer theme={theme} />}
         <DatePickerPanel
           onRef={this.onPanelRef}
-          date={this.state.date}
-          visible={this.state.isOpen}
-          theme={this.props.theme}
-          positionX={this.props.positionX}
-          positionY={this.props.positionY}
-          monthView={this.props.monthView}
+          showPointer={showPointer}
+          date={date}
+          visible={isOpen}
+          theme={theme}
+          positionX={positionX}
+          positionY={positionY}
+          monthView={monthView}
           reset={this.reset}
           accept={this.select}
-          controls={this.props.controls}
-          acceptText={this.props.acceptText}
-          resetText={this.props.resetText}
+          acceptText={acceptText}
+          resetText={resetText}
         />
       </DatePickerInputer>
     );
   }
 }
-
-DatePicker.propTypes = {
-  className: PropTypes.string,
-  theme: PropTypes.object,
-  disabled: PropTypes.bool,
-  isError: PropTypes.bool,
-  date: PropTypes.string,
-  onChange: PropTypes.func,
-  onUpdate: PropTypes.func,
-  positionalX: PropTypes.string,
-  positionalY: PropTypes.string,
-  monthView: PropTypes.bool,
-  format: PropTypes.string,
-  controls: PropTypes.bool,
-  acceptText: PropTypes.string,
-  resetText: PropTypes.string,
-  onTogglePanel: PropTypes.func,
-};
-
-DatePicker.defaultProps = {
-  disabled: false,
-  isError: false,
-  theme: defaultTheme,
-  positionX: '',
-  positionY: '',
-  onChange: val => null,
-  onUpdate: val => null,
-  format: null,
-  controls: false,
-  acceptText: 'Accept',
-  resetText: 'Reset',
-  onTogglePanel: () => {},
-};
-
-DatePicker.displayName = 'DatePicker';
 
 export default withTheme(DatePicker);

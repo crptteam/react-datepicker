@@ -3,20 +3,11 @@ import styled from 'styled-components';
 
 import { getThemeAsPlainTextByKeys, innerMerge } from '../utils';
 import defaultTheme from '../theme/defaultTheme';
-import {Elem as DayElem} from './Day';
 
 const Elem = styled.div`
   width: ${props => props.width};
-  height: ${props => props.height};
+  height: 0;
   display: inline-flex;
-  vertical-align: top;
-  align-items: center;
-  justify-content: center;
-  cursor: ${props => (props.value ? 'pointer' : 'none')};
-  pointer-events: ${props => (props.disabled ? 'none' : props.children ? 'all' : 'none')};
-  :hover ${DayElem} {
-    background: ${props => props.hoverBackground};
-  }
 `;
 
 const DayWrap = props => {

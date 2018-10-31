@@ -7,10 +7,9 @@ import defaultTheme from '../theme/defaultTheme';
 const Elem = styled.div`
   display: flex;
   flex-direction: column;
-  width: 70px;
   align-items: center;
   box-sizing: border-box;
-  padding-left: 41px;
+  margin-bottom: 45px;
 `;
 
 const Months = props => {

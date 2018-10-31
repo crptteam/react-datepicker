@@ -8,16 +8,12 @@ import TopWithPickers from "../../styled/TopWithPickers";
 import PickerWrap from "../../styled/PickerWrap";
 import MonthValueWrap from "../../styled/MonthValueWrap";
 import YearValueWrap from "../../styled/YearValueWrap";
-import BottomWithDays from "../../styled/BottomWithDays";
 import IconWrap from "../../styled/IconWrap";
-import Day from "../../styled/Day";
-import DayWrap from "../../styled/DayWrap";
-import Months from "../../styled/Months";
-import Month from "../../styled/Month";
 import { LeftDatepickerArrow } from "../../svg";
 import { RightDatepickerArrow } from "../../svg";
-import ActionsWrapper from "../../styled/ActionsWrapper";
-import { Button } from "@crpt/react-button";
+import Actions from "../Actions";
+import MonthView from "../MonthView";
+import DaysView from "../DaysView";
 
 moment.locale("ru");
 
@@ -33,15 +29,6 @@ export class DatePickerPanel extends Component {
       days: getDaysArrayFromMomentDate(date),
       hovered: null
     };
-
-    this.decreaseMonth = this.decreaseMonth.bind(this);
-    this.increaseMonth = this.increaseMonth.bind(this);
-    this.decreaseYear = this.decreaseYear.bind(this);
-    this.increaseYear = this.increaseYear.bind(this);
-    this.onMonthClick = this.onMonthClick.bind(this);
-    this.accept = this.accept.bind(this);
-    this.reset = this.reset.bind(this);
-    this.onSelect = this.onSelect.bind(this);
   }
 
   componentWillReceiveProps(props) {
@@ -50,7 +37,7 @@ export class DatePickerPanel extends Component {
     }
   }
 
-  updateSelectedDatesToSeeSelectedDays(nextProps) {
+  updateSelectedDatesToSeeSelectedDays = (nextProps) => {
     const props = nextProps || this.props;
     if (props.date) {
       let date = moment(props.date);
@@ -61,9 +48,9 @@ export class DatePickerPanel extends Component {
         days: getDaysArrayFromMomentDate(date)
       });
     }
-  }
+  };
 
-  transformAndUpdateDate(name, days, step, granularity, compare) {
+  transformAndUpdateDate = (name, days, step, granularity, compare) => {
     const newDate = moment(this.state[name]).add(step, granularity);
     if (compare(newDate)) return;
 
@@ -73,9 +60,11 @@ export class DatePickerPanel extends Component {
     });
 
     return newDate;
-  }
+  };
 
-  decreaseMonth() {
+  decreaseMonth = () => {
+    const { monthView, accept } = this.props;
+
     const newDate = this.transformAndUpdateDate(
       "monthDate",
       "days",
@@ -83,10 +72,13 @@ export class DatePickerPanel extends Component {
       "month",
       newDate => false
     );
-    if (this.props.monthView) this.props.accept(newDate);
-  }
 
-  increaseMonth() {
+    if (monthView) accept(newDate);
+  };
+
+  increaseMonth = () => {
+    const { monthView, accept } = this.props;
+
     const newDate = this.transformAndUpdateDate(
       "monthDate",
       "days",
@@ -94,10 +86,11 @@ export class DatePickerPanel extends Component {
       "month",
       newDate => false
     );
-    if (this.props.monthView) this.props.accept(newDate);
-  }
+    if (monthView) accept(newDate);
+  };
 
-  decreaseYear() {
+  decreaseYear = () => {
+    const { monthView, accept } = this.props;
     const newDate = this.transformAndUpdateDate(
       "monthDate",
       "days",
@@ -105,10 +98,11 @@ export class DatePickerPanel extends Component {
       "year",
       newDate => false
     );
-    if (this.props.monthView) this.props.accept(newDate);
-  }
+    if (monthView) accept(newDate);
+  };
 
-  increaseYear() {
+  increaseYear = () => {
+    const { monthView, accept } = this.props;
     const newDate = this.transformAndUpdateDate(
       "monthDate",
       "days",
@@ -116,43 +110,43 @@ export class DatePickerPanel extends Component {
       "year",
       newDate => false
     );
-    if (this.props.monthView) this.props.accept(newDate);
-  }
+    if (monthView) accept(newDate);
+  };
 
-  onDayMouseEnter(e, date) {
+  onDayMouseEnter = (e, date) => {
     this.setState({
       hovered: moment(date)
     });
-  }
+  };
 
-  onDayMouseOut(e, date) {
+  onDayMouseOut = (e, date) => {
     this.setState({
       hovered: null
     });
-  }
+  };
 
-  onMonthClick(date) {
-    this.setState({ date }, () => {
-      if (!this.props.controls) {
-        this.props.accept(date);
-      }
-    });
-  }
+  onMonthClick = (date) => {
+    this.setState({ date });
+  };
 
-  reset() {
-    this.props.reset();
-  }
+  onReset = () => {
+    const { reset } = this.props;
+    reset();
+  };
 
-  accept() {
-    this.props.accept(this.state.date);
-  }
+  onAccept = () => {
+    const { accept } = this.props;
+    const { date } = this.state;
+    accept(date);
+  };
 
-  onSelect(day) {
+  onSelect = (day) => {
+    const { monthView } = this.props;
     let date = this.state.date;
 
     if (date) {
       if (day.date.isSame(date, "day")) {
-        if (!this.props.monthView) date = null;
+        if (!monthView) date = null;
       } else {
         date = moment(day.date);
       }
@@ -160,16 +154,13 @@ export class DatePickerPanel extends Component {
       date = moment(day.date);
     }
 
-    this.setState({ date }, () => {
-      if (!this.props.controls) {
-        this.props.accept(date);
-      }
-    });
-  }
+    this.setState({ date });
+  };
 
-  isOneOfSelected(date) {
-    return this.state.date && this.state.date.isSame(date, "day");
-  }
+  isOneOfSelected = (newDate) => {
+    const { date } = this.state;
+    return date && date.isSame(newDate, "day");
+  };
 
   render() {
     const {
@@ -178,112 +169,76 @@ export class DatePickerPanel extends Component {
       positionX,
       positionY,
       monthView,
-      controls,
       onRef,
+      resetText,
+      acceptText,
+      showPointer,
     } = this.props;
+    const { date, monthDate } = this.state;
 
-    const monthes = [
-      moment(this.state.date).add(-3, "month"),
-      moment(this.state.date).add(-2, "month"),
-      moment(this.state.date).add(-1, "month"),
-      moment(this.state.date),
-      moment(this.state.date).add(1, "month"),
-      moment(this.state.date).add(2, "month"),
-      moment(this.state.date).add(3, "month")
-    ];
+    const panelMargin = showPointer ? '15px' : undefined;
 
     return (
       <DatePickerPanelWrap
         innerRef={onRef}
         theme={theme}
+        marginTop={panelMargin}
         visible={visible}
         positionX={positionX}
         positionY={positionY}
       >
-        <HalfC theme={this.props.theme}>
+        <HalfC theme={theme}>
           <TopWithPickers>
             <PickerWrap>
-              <IconWrap onClick={this.decreaseMonth}>
-                <LeftDatepickerArrow />
-              </IconWrap>
-              <MonthValueWrap theme={this.props.theme}>
-                {this.state.monthDate.format("MMMM")}
-              </MonthValueWrap>
-              <IconWrap onClick={this.increaseMonth}>
-                <RightDatepickerArrow />
-              </IconWrap>
-            </PickerWrap>
-
-            <PickerWrap right>
               <IconWrap onClick={this.decreaseYear}>
                 <LeftDatepickerArrow />
               </IconWrap>
-              <YearValueWrap theme={this.props.theme}>
-                {this.state.monthDate.format("YYYY")}
+              <YearValueWrap theme={theme}>
+                {monthDate.format("YYYY")}
               </YearValueWrap>
               <IconWrap onClick={this.increaseYear}>
                 <RightDatepickerArrow />
               </IconWrap>
             </PickerWrap>
+
+            {!monthView && (
+              <PickerWrap>
+                <IconWrap onClick={this.decreaseMonth}>
+                  <LeftDatepickerArrow />
+                </IconWrap>
+                <MonthValueWrap theme={theme}>
+                  {monthDate.format("MMMM")}
+                </MonthValueWrap>
+                <IconWrap onClick={this.increaseMonth}>
+                  <RightDatepickerArrow />
+                </IconWrap>
+              </PickerWrap>
+            )}
           </TopWithPickers>
 
-          {monthView ? (
-            <Months>
-              {monthes.map((m, i) => (
-                <Month
-                  onClick={e => this.onMonthClick(m)}
-                  key={i}
-                  selected={this.state.date.isSame(m, "month")}
-                >
-                  {m.format("MMMM")}
-                </Month>
-              ))}
-            </Months>
-          ) : (
-            <BottomWithDays>
-              {this.state.days.map(
-                (d, i) =>
-                  d.val === 0 ? (
-                    <DayWrap key={i}>
-                      <Day theme={this.props.theme} />
-                    </DayWrap>
-                  ) : (
-                    <DayWrap
-                      key={i}
-                      value={d.val}
-                      theme={this.props.theme}
-                      onMouseDown={e => this.onSelect(d)}
-                      onMouseEnter={e => this.onDayMouseEnter(e, d.date)}
-                      onMouseOut={e => this.onDayMouseOut(e, d.date)}
-                    >
-                      <Day
-                        theme={this.props.theme}
-                        selected={this.isOneOfSelected(d.date)}
-                      >
-                        {d.val}
-                      </Day>
-                    </DayWrap>
-                  )
-              )}
-            </BottomWithDays>
+          {monthView && (
+            <MonthView date={date} onMonthClick={this.onMonthClick}/>
+          )}
+
+          {!monthView && (
+            <DaysView
+              days={this.state.days}
+              onDayMouseOut={this.onDayMouseOut}
+              theme={theme}
+              onDayMouseEnter={this.onDayMouseEnter}
+              selected={this.isOneOfSelected}
+              onSelect={this.onSelect}
+            />
           )}
         </HalfC>
-        {controls && (
-          <ActionsWrapper>
-            <Button
-              onClick={this.reset}
-              theme={theme.DatePicker.DatePickerPanelWrap.Reset}
-            >
-              {this.props.resetText}
-            </Button>
-            <Button
-              onClick={this.accept}
-              theme={theme.DatePicker.DatePickerPanelWrap.Accept}
-            >
-              {this.props.acceptText}
-            </Button>
-          </ActionsWrapper>
-        )}
+
+        <Actions
+          onAccept={this.onAccept}
+          onReset={this.onReset}
+          acceptText={acceptText}
+          resetText={resetText}
+          theme={theme}
+        />
       </DatePickerPanelWrap>
     );
   }
