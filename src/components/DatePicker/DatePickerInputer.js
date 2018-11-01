@@ -7,8 +7,6 @@ import InputWrap from "../../styled/InputWrap";
 import InputContentWrap from "../../styled/InputContentWrap";
 import InputElem from "../../styled/InputElem";
 import Placeholder from "../../styled/Placeholder";
-
-import { CalendarIcon, CrossIcon } from "../../svg";
 import InputerIcon from "../InputerIcon";
 
 export class DatePickerInputer extends Component {
@@ -50,18 +48,26 @@ export class DatePickerInputer extends Component {
       };
     }
 
+    if (!props.date && !props.isOpen) {
+      return {
+        isFocused: false,
+      };
+    }
+
     return null;
   }
 
   componentDidMount() {
-    if (this.dateInput && !this.props.monthView) this.dateMask = this.im.mask(this.dateInput);
+    if (this.dateInput && !this.props.monthView) {
+      this.dateMask = this.im.mask(this.dateInput);
+    }
   }
 
   onChange = (e) => {
-    if (this.props.monthView) {
-      this.setState({
-        isFocused: true
-      });
+    const { monthView, format, date, onValidUpdate } = this.props;
+
+    if (monthView) {
+      this.setState({ isFocused: true });
       return;
     }
 
@@ -69,28 +75,27 @@ export class DatePickerInputer extends Component {
       editingValue: e.target.value
     });
 
-    let date = getValidMomentFromISOStringOrNull(e.target.value, this.props.format);
+    let newDate = getValidMomentFromISOStringOrNull(e.target.value, format);
 
-    this.setState({ date });
+    this.setState({ date: newDate });
 
-    if (
-      date !== this.props.date ||
-      (date && !date.isSame(this.props.date, "day"))
-    ) {
-      this.props.onValidUpdate({
-        date
-      });
+    if (newDate !== date || (newDate && !newDate.isSame(date, "day"))) {
+      onValidUpdate({ date: newDate });
     }
   };
 
   getValue = () => {
-    if (this.state.editingValue !== null) return this.state.editingValue;
-    const format = this.props.monthView
-      ? "MMMM YYYY"
-      : (this.props.format || "YYYY.MM.DD");
+    const { monthView, format, date } = this.props;
+    const { editingValue } = this.state;
 
-    return this.props.date
-      ? this.props.date.format(format)
+    if (editingValue !== null) return editingValue;
+
+    const preparedFormat = monthView
+      ? "MMMM YYYY"
+      : (format || "YYYY.MM.DD");
+
+    return date
+      ? date.format(preparedFormat)
       : "";
   };
 
@@ -116,7 +121,7 @@ export class DatePickerInputer extends Component {
     const { onClear } = this.props;
     this.setState({ isFocused: false });
     onClear(e);
-  }
+  };
 
   render() {
     const {
@@ -134,9 +139,7 @@ export class DatePickerInputer extends Component {
       children,
     } = this.props;
 
-    const {
-      isFocused,
-    } = this.state;
+    const { isFocused } = this.state;
 
     return (
       <InputWrap

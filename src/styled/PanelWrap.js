@@ -6,7 +6,7 @@ import defaultTheme from "../theme/defaultTheme";
 
 const Elem = styled.div`
   position: absolute;
-  right: 0;
+  min-width: 310px;
   z-index: 9999;
 
   ${props => (props.positionX && props.positionX === 'left'

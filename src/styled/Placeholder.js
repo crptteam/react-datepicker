@@ -46,7 +46,7 @@ const Placeholder = props => {
     getThemeAsPlainTextByKeys(
       mergedPlaceholder,
       key,
-      props.focused || props.fromValue || props.toValue ? "focused" : "normal"
+      props.focused ? "focused" : "normal"
     )
   );
 

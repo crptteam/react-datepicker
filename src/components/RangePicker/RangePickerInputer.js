@@ -54,6 +54,12 @@ export class RangePickerInputer extends Component {
       };
     }
 
+    if (!props.from && !props.to && !props.isOpen) {
+      return {
+        isFocused: false,
+      };
+    }
+
     return null;
   }
 
@@ -65,6 +71,113 @@ export class RangePickerInputer extends Component {
     if (this.props.onRef) this.props.onRef(this);
   }
 
+  onFromInputChange = (e) => {
+    const { monthView, format, onValidUpdate, from, to } = this.props;
+
+    if (monthView) {
+      this.setState({ isFocused: true });
+      return;
+    }
+
+    this.setState({
+      editingFromValue: e.target.value
+    });
+
+    let newDate = getValidMomentFromISOStringOrNull(e.target.value, format);
+
+    if (newDate && to && newDate.isAfter(to, "day")) {
+      newDate = null;
+
+      this.setState({ editingFromValue: "" });
+    }
+
+    if (newDate !== from || (newDate && !newDate.isSame(from, 'day'))) {
+      onValidUpdate({ from: newDate });
+    }
+
+    if (newDate) {
+      if (this.fromMask.isComplete()) {
+        this.toInput.focus();
+      }
+
+      this.setState({ isFocused: true });
+    }
+  };
+
+  onToInputChange = (e) => {
+    const { monthView, format, onValidUpdate, from, to } = this.props;
+
+    if (monthView) {
+      this.setState({ isFocused: true });
+      return;
+    }
+
+    this.setState({
+      editingToValue: e.target.value
+    });
+
+    let newDate = getValidMomentFromISOStringOrNull(e.target.value, format);
+
+    if (newDate && from) {
+      if (e.target.value.indexOf("_") === -1 && newDate.isBefore(from)) {
+        newDate = null;
+        this.setState({ editingToValue: "" });
+      }
+    }
+
+    if (newDate !== to || (newDate && !newDate.isSame(to, 'day'))) {
+      onValidUpdate({ to: newDate });
+    }
+
+    this.setState(oldState => ({
+      isFocused: !!newDate || oldState.isFocused
+    }));
+  };
+
+  getFromInputValue = () => {
+    const { monthView, format, from } = this.props;
+    const { editingFromValue } = this.state;
+
+    if (editingFromValue !== null) return editingFromValue;
+
+    const preparedFormat = monthView
+      ? "MM.YYYY"
+      : (format || "YYYY.MM.DD");
+
+    return from
+      ? from.format(preparedFormat)
+      : "";
+  };
+
+  getToInputValue = () => {
+    const { monthView, format, to } = this.props;
+    const { editingToValue } = this.state;
+
+    if (editingToValue !== null) return editingToValue;
+
+    const preparedFormat = monthView
+      ? "MM.YYYY"
+      : format || "YYYY.MM.DD";
+
+    return to
+      ? to.format(preparedFormat)
+      : "";
+  };
+
+  onFocus = () => {
+    this.setState({ isFocused: true });
+  };
+
+  onLeftFocus = () => {
+    this.onFocus();
+    this.props.onLeftFocus();
+  };
+
+  onRightFocus = () => {
+    this.onFocus();
+    this.props.onRightFocus();
+  };
+
   focusRight = () => {
     setTimeout(() => this.toInput.focus(), 0);
   };
@@ -73,74 +186,34 @@ export class RangePickerInputer extends Component {
     setTimeout(() => this.fromInput.focus(), 0);
   };
 
+  onFromInputBlur = () => {
+    const { from, to } = this.props;
+
+    this.setState({ editingFromValue: null });
+    if (!from && !to) this.setState({ isFocused: false });
+  };
+
+  onToInputBlur = () => {
+    const { from, to } = this.props;
+
+    this.setState({ editingToValue: null });
+    if (!from && !to) this.setState({ isFocused: false });
+  };
+
+  onClear = (e) => {
+    const { onClear } = this.props;
+    this.setState({ isFocused: false });
+    onClear(e);
+  };
 
   isDividerVisible = () => {
+    const { from, to } = this.props;
+
     return (
-      (this.props.from && this.props.to) ||
-      (this.props.from && this.toInput === document.activeElement) ||
-      (this.props.to && this.fromInput === document.activeElement)
+      (from && to) ||
+      (from && this.toInput === document.activeElement) ||
+      (to && this.fromInput === document.activeElement)
     );
-  };
-
-  onFromInputChange = (e) => {
-    this.setState({
-      editingFromValue: e.target.value
-    });
-
-    let from = getValidMomentFromISOStringOrNull(
-      e.target.value,
-      this.props.format
-    );
-
-    if (from && this.props.to && from.isAfter(this.props.to, "day")) {
-      from = null;
-
-      this.setState({
-        editingFromValue: ""
-      });
-    }
-
-    this.props.onValidUpdate({
-      from
-    });
-
-    if (from) {
-      if (this.fromMask.isComplete()) {
-        this.toInput.focus();
-      }
-
-      this.setState({
-        isFocused: true
-      });
-    }
-  };
-
-  onToInputChange = (e) => {
-    this.setState({
-      editingToValue: e.target.value
-    });
-
-    let to = getValidMomentFromISOStringOrNull(
-      e.target.value,
-      this.props.format
-    );
-
-    if (to && this.props.from) {
-      if (e.target.value.indexOf("_") === -1 && to.isBefore(this.props.from)) {
-        to = null;
-        this.setState({
-          editingToValue: ""
-        });
-      }
-    }
-
-    this.props.onValidUpdate({
-      to
-    });
-
-    this.setState(oldState => ({
-      isFocused: !!to || oldState.isFocused
-    }));
   };
 
   onKeyFromDown = (e) => {
@@ -162,156 +235,101 @@ export class RangePickerInputer extends Component {
     }
   };
 
-  getFromInputValue = () => {
-    if (this.state.editingFromValue !== null)
-      return this.state.editingFromValue;
-
-    const format = this.props.monthView
-      ? "MM.YYYY"
-      : this.props.format || "YYYY.MM.DD";
-
-    return this.props.from ? this.props.from.format(format) : "";
-  };
-
-  onFromInputBlur = (e) => {
-    this.setState({
-      editingFromValue: null
-    });
-
-    if (!this.props.from && !this.props.to) {
-      this.setState({
-        isFocused: false
-      });
-    }
-  };
-
-  onToInputBlur = (e) => {
-    this.setState({
-      editingToValue: null
-    });
-
-    if (!this.props.from && !this.props.to) {
-      this.setState({
-        isFocused: false
-      });
-    }
-  };
-
-  onFocus = (e) => {
-    this.setState({
-      isFocused: true
-    });
-  };
-
-  onLeftFocus = (e) => {
-    this.onFocus(e);
-    this.props.onLeftFocus();
-  };
-
-  onRightFocus = (e) => {
-    this.onFocus(e);
-    this.props.onRightFocus();
-  };
-
-  onClear = (e) => {
-    const { onClear } = this.props;
-    this.setState({ isFocused: false });
-    onClear(e);
-  }
-
-  getToInputValue = () => {
-    if (this.state.editingToValue !== null) return this.state.editingToValue;
-
-    const format = this.props.monthView
-      ? "MM.YYYY"
-      : this.props.format || "YYYY.MM.DD";
-
-    return this.props.to ? this.props.to.format(format) : "";
-  };
-
   render() {
-    const { name, mainRef } = this.props;
+    const {
+      theme,
+      inline,
+      name,
+      disabled,
+      isError,
+      onFocus,
+      onBlur,
+      onMouseDown,
+      placeholder,
+      savePlaceholder,
+      monthView,
+      children,
+      mainRef,
+    } = this.props;
+
     const { isFocused } = this.state;
 
     return (
       <InputWrap
-        inline={this.props.inline === false ? this.props.inline : true}
-        disabled={this.props.disabled}
-        isError={this.props.isError}
-        onFocus={this.props.onFocus}
-        onBlur={this.props.onBlur}
-        onMouseDown={this.props.onMouseDown}
-        theme={this.props.theme}
-        innerRef={el => mainRef(el)}
+        inline={inline}
+        disabled={disabled}
+        isError={isError}
+        onFocus={onFocus}
+        onBlur={onBlur}
+        onClick={onMouseDown}
+        theme={theme}
         component="DatePicker"
       >
         <InputContentWrap
-          theme={this.props.theme}
-          disabled={this.props.disabled}
-          isError={this.props.isError}
+          innerRef={el => mainRef(el)}
+          theme={theme}
+          disabled={disabled}
+          isError={isError}
         >
           <Placeholder
             focused={isFocused}
-            disabled={this.props.disabled}
-            isError={this.props.isError}
-            theme={this.props.theme}
-            isSaved={this.props.savePlaceholder}
-            fromValue={this.getFromInputValue()}
-            toValue={this.getToInputValue()}
+            disabled={disabled}
+            isError={isError}
+            theme={theme}
+            isSaved={savePlaceholder}
           >
-            {this.props.placeholder || "Дата"}
+            {placeholder || "Дата"}
           </Placeholder>
 
           <FlexWrap>
             <InputElem
-              centered={!this.props.savePlaceholder}
-              disabled={this.props.disabled}
+              centered={!savePlaceholder}
+              disabled={disabled}
               onFocus={this.onLeftFocus}
               onChange={this.onFromInputChange}
               onKeyDown={this.onKeyFromDown}
               value={this.getFromInputValue()}
               onBlur={this.onFromInputBlur}
-              noCaret={this.props.monthView}
               innerRef={el => (this.fromInput = el)}
               name={name}
               width="85px"
-              theme={this.props.theme}
+              noCaret={monthView}
+              theme={theme}
               component="DatePicker"
             />
 
             <BetweenDates
-              theme={this.props.theme}
+              theme={theme}
               visible={this.isDividerVisible()}
-              centered={!this.props.savePlaceholder}
+              centered={!savePlaceholder}
             >
               -
             </BetweenDates>
 
             <InputElem
-              centered={!this.props.savePlaceholder}
-              disabled={this.props.disabled}
+              centered={!savePlaceholder}
+              disabled={disabled}
               onFocus={this.onRightFocus}
               onChange={this.onToInputChange}
-              noCaret={this.props.monthView}
               onKeyDown={this.onKeyToDown}
               value={this.getToInputValue()}
               onBlur={this.onToInputBlur}
               innerRef={el => (this.toInput = el)}
-              width="85px"
               name={name}
-              theme={this.props.theme}
+              width="85px"
+              noCaret={monthView}
+              theme={theme}
               component="DatePicker"
             />
           </FlexWrap>
 
           <InputerIcon
             isFocused={isFocused}
-            disabled={this.props.disabled}
+            disabled={disabled}
             onClear={this.onClear}
           />
         </InputContentWrap>
-
-        {this.props.children}
+        {children}
       </InputWrap>
     );
   }
