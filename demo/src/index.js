@@ -18,7 +18,6 @@ class Demo extends Component {
         <h1>react-datepicker Demo</h1>
         <DatePicker
           format="DD.MM.YYYY"
-          date={this.state.date}
           positionX="left"
           positionY="bottom"
           placeholder="Очень длинный плейсхолдер, который должен вместиться в инпут"
@@ -29,7 +28,6 @@ class Demo extends Component {
         />
         <h1>react-datepicker Demo</h1>
         <DatePicker
-          date="2018-10-01"
           positionX="left"
           positionY="bottom"
           placeholder="Очень длинный плейсхолдер, который должен вместиться в инпут"
@@ -42,8 +40,6 @@ class Demo extends Component {
         <RangePicker
           format="DD.MM.YYYY"
           positionX="left"
-          from={this.state.from}
-          to={this.state.to}
           positionY="bottom"
           placeholder="Очень длинный плейсхолдер, который должен вместиться в инпут"
           acceptText="Применить"
@@ -52,8 +48,6 @@ class Demo extends Component {
         />
         <h1>react-datepicker Demo</h1>
         <RangePicker
-          from="09.10.2018"
-          to="10.12.2018"
           positionX="left"
           positionY="bottom"
           isError={true}
