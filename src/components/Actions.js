@@ -2,6 +2,19 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import ActionsWrapper from "../styled/ActionsWrapper";
 import { Button } from "@crpt/react-button";
+import defaultTheme from "../theme/defaultTheme";
+import { innerMerge } from "../utils";
+
+
+const getButtonTheme = (name, theme) => {
+  const passedTheme = theme
+    && theme.DatePicker
+    && theme.DatePicker.DatePickerPanelWrap
+    && theme.DatePicker.DatePickerPanelWrap[name] || {};
+
+  const defTheme = defaultTheme.DatePicker.DatePickerPanelWrap[name];
+  return innerMerge({}, defTheme, { Button: passedTheme } );
+};
 
 const Actions = ({
   onReset,
@@ -13,13 +26,13 @@ const Actions = ({
   <ActionsWrapper>
     <Button
       onClick={onReset}
-      theme={theme.DatePicker.DatePickerPanelWrap.Reset}
+      theme={getButtonTheme('Reset', theme)}
     >
       {resetText}
     </Button>
     <Button
       onClick={onAccept}
-      theme={theme.DatePicker.DatePickerPanelWrap.Accept}
+      theme={getButtonTheme('Accept', theme)}
     >
       {acceptText}
     </Button>
