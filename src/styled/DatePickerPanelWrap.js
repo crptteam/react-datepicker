@@ -13,6 +13,9 @@ const Elem = styled.div`
   padding-bottom: ${props => props.paddingBottom};
   font-size: 0px;
   position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   white-space: nowrap;
   box-sizing: border-box;
   -webkit-user-select: none;
@@ -23,7 +26,7 @@ const Elem = styled.div`
   border: ${props => props.border};
   box-shadow: ${props => props.boxShadow};
   margin-top: ${props => props.marginTop};
-  
+
   &:before {
     ${props => props.marginTop && 'content: \' \';'};
     position: absolute;
