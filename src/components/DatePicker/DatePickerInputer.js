@@ -9,6 +9,7 @@ import InputElem from "../../styled/InputElem";
 import Placeholder from "../../styled/Placeholder";
 
 import { CalendarIcon, CrossIcon } from "../../svg";
+import InputerIcon from "../InputerIcon";
 
 export class DatePickerInputer extends Component {
   static propTypes = {
@@ -47,12 +48,6 @@ export class DatePickerInputer extends Component {
       return {
         isFocused: true,
       };
-    }
-
-    if (state.isFocused && !props.date) {
-      return {
-        isFocused: false,
-      }
     }
 
     return null;
@@ -117,6 +112,12 @@ export class DatePickerInputer extends Component {
     }
   };
 
+  onClear = (e) => {
+    const { onClear } = this.props;
+    this.setState({ isFocused: false });
+    onClear(e);
+  }
+
   render() {
     const {
       theme,
@@ -131,7 +132,6 @@ export class DatePickerInputer extends Component {
       savePlaceholder,
       monthView,
       children,
-      onClear,
     } = this.props;
 
     const {
@@ -178,11 +178,11 @@ export class DatePickerInputer extends Component {
             component="DatePicker"
           />
 
-          {isFocused ? (
-            <CrossIcon onClick={onClear} />
-          ) : (
-            <CalendarIcon />
-          )}
+          <InputerIcon
+            isFocused={isFocused}
+            disabled={disabled}
+            onClear={this.onClear}
+          />
         </InputContentWrap>
         {children}
       </InputWrap>

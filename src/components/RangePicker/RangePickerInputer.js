@@ -8,9 +8,8 @@ import InputContentWrap from "../../styled/InputContentWrap";
 import InputElem from "../../styled/InputElem";
 import BetweenDates from "../../styled/BetweenDates";
 import Placeholder from "../../styled/Placeholder";
+import InputerIcon from "../InputerIcon";
 import "datejs";
-
-import { CalendarIcon, CrossIcon } from "../../svg";
 import FlexWrap from "../../styled/FlexWrap";
 
 export class RangePickerInputer extends Component {
@@ -53,12 +52,6 @@ export class RangePickerInputer extends Component {
       return {
         isFocused: true,
       };
-    }
-
-    if (state.isFocused && !props.from && !props.to) {
-      return {
-        isFocused: false,
-      }
     }
 
     return null;
@@ -220,6 +213,12 @@ export class RangePickerInputer extends Component {
     this.props.onRightFocus();
   };
 
+  onClear = (e) => {
+    const { onClear } = this.props;
+    this.setState({ isFocused: false });
+    onClear(e);
+  }
+
   getToInputValue = () => {
     if (this.state.editingToValue !== null) return this.state.editingToValue;
 
@@ -231,7 +230,7 @@ export class RangePickerInputer extends Component {
   };
 
   render() {
-    const { name, mainRef, onClear } = this.props;
+    const { name, mainRef } = this.props;
     const { isFocused } = this.state;
 
     return (
@@ -304,11 +303,12 @@ export class RangePickerInputer extends Component {
               component="DatePicker"
             />
           </FlexWrap>
-          {isFocused ? (
-            <CrossIcon onClick={onClear} />
-          ) : (
-            <CalendarIcon />
-          )}
+
+          <InputerIcon
+            isFocused={isFocused}
+            disabled={this.props.disabled}
+            onClear={this.onClear}
+          />
         </InputContentWrap>
 
         {this.props.children}
