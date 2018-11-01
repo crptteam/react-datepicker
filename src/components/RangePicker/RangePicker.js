@@ -6,20 +6,62 @@ import { RangePickerInputer } from './RangePickerInputer';
 import 'datejs';
 import moment from 'moment';
 import defaultTheme from '../../theme/defaultTheme';
-import Placeholder from "../../styled/Placeholder";
 import OptionsPointer from "../../styled/OptionsPointer";
-import { DatePickerInputer } from "../DatePicker/DatePickerInputer";
-import { DatePickerPanel } from "../DatePicker/DatePickerPanel";
 import PanelWrap from "../../styled/PanelWrap";
 
 moment.locale('ru');
 
+export const PickerStep = {
+  NONE: 0,
+  LEFT: 1,
+  RIGHT: 2,
+};
+
 class RangePicker extends Component {
+  static displayName = 'RangePicker';
+
+  static propTypes = {
+    className: PropTypes.string,
+    theme: PropTypes.object,
+    disabled: PropTypes.bool,
+    isError: PropTypes.bool,
+    from: PropTypes.string,
+    to: PropTypes.string,
+    onChange: PropTypes.func,
+    onUpdate: PropTypes.func,
+    monthView: PropTypes.bool,
+    positionalX: PropTypes.string,
+    positionalY: PropTypes.string,
+    format: PropTypes.string,
+    acceptText: PropTypes.string,
+    resetText: PropTypes.string,
+    onTogglePanel: PropTypes.func,
+  };
+
+  static defaultProps = {
+    onUpdate: () => {},
+    onChange: () => {},
+    onRef: () => {},
+    onTogglePanel: () => {},
+    disabled: false,
+    isError: false,
+    theme: defaultTheme,
+    from: null,
+    to: null,
+    positionX: '',
+    positionY: '',
+    format: null,
+    acceptText: "Применить",
+    resetText: "Сбросить",
+    showPointer: false,
+  };
+
   blurTimeout;
   im;
   main;
   inputer;
   open;
+  optionsPanel;
 
   constructor(props) {
     super(props);
@@ -32,8 +74,7 @@ class RangePicker extends Component {
       : moment(start);
 
     this.state = {
-      isLeftOpen: false,
-      isRightOpen: false,
+      step: PickerStep.NONE,
       from: this.props.from ? moment(start) : null,
       to: this.props.to ? moment(end) : null,
       initialFrom: this.props.from,
@@ -43,9 +84,17 @@ class RangePicker extends Component {
 
   static getDerivedStateFromProps(props, state) {
     if (props.from !== state.initialFrom || props.to !== state.initialTo) {
+      const fromDate = props.from
+        ? moment(props.from, props.format)
+        : null;
+
+      const toDate = props.to
+        ? moment(props.to, props.format)
+        : null;
+
       return {
-        from: props.from ? moment(props.from, props.format) : null,
-        to: props.to ? moment(props.to, props.format) : null,
+        from: fromDate,
+        to: toDate,
         initialFrom: props.from,
         initialTo: props.to,
       }
@@ -55,194 +104,170 @@ class RangePicker extends Component {
   }
 
   componentDidMount() {
-    this.props.onRef && this.props.onRef(this);
+    const { onRef } = this.props;
+    onRef(this);
     document.addEventListener('mousedown', this.handleClick, true);
   }
 
   componentWillUnmount() {
-    this.props.onRef && this.props.onRef(undefined);
+    const { onRef } = this.props;
+    onRef(undefined);
     document.removeEventListener('mousedown', this.handleClick, true);
+    if (this.blurTimeout) clearTimeout(this.blurTimeout);
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+    const { onTogglePanel } = this.props;
+    const { step } = this.state;
+    if (prevState.step !== step) {
+      if (step === PickerStep.NONE) onTogglePanel(false);
+      else onTogglePanel(true);
+    }
   }
 
   handleClick = (e) => {
-    if (this.main.contains(e.target)) {
+    if (this.optionsPanel.contains(e.target)) {
+      e.preventDefault();
       return;
-    }
-
-    this.setState({
-      isLeftOpen: false,
-      isRightOpen: false
-    });
-
-    if (this.open) {
-      this.open = false;
-      this.props.onTogglePanel(false);
     }
   };
 
   onClear = (e) => {
     e.preventDefault();
     e.stopPropagation();
-    this.setState({
-      from: null,
-      to: null
-    });
+    const { onUpdate, onChange } = this.props;
+    const { step } = this.state;
+    this.setState({ from: null, to: null });
 
-    this.props.onUpdate && this.props.onUpdate({ from: null, to: null });
-    this.props.onChange && this.props.onChange({ from: null, to: null });
-  };
+    onUpdate({ from: null, to: null });
+    onChange({ from: null, to: null });
 
-  onValidUpdate = (state) => {
-    this.setState(state);
-    this.props.onChange({ ...this.state, ...state });
-    this.props.onUpdate({ ...this.state, ...state });
-  };
-
-  onLeftFocus = (e) => {
-    this.setState({
-      isLeftOpen: true,
-      isRightOpen: false
-    });
-
-    if (!this.open) {
-      this.open = true;
-      this.props.onTogglePanel(true);
-    }
-
-    if (this.blurTimeout) clearTimeout(this.blurTimeout);
-  };
-
-  onRightFocus = (e) => {
-    this.setState({
-      isRightOpen: true,
-      isLeftOpen: false
-    });
-
-    if (!this.open) {
-      this.open = true;
-      this.props.onTogglePanel(true);
-    }
-
-    if (this.blurTimeout) clearTimeout(this.blurTimeout);
-  };
-
-  onBlur = (e) => {
-    this.blurTimeout = setTimeout(() => {
-      this.setState({
-        isOpen: false
-      });
-
-      this.props.onUpdate({ to: this.state.to, from: this.state.from });
-    }, 200);
-  };
-
-  select = (from, to, close) => {
-    const isOpen = !(from && to);
-    this.setState({ from, to, isOpen });
-    this.props.onChange({ from, to });
-    if (close) {
-      this.setState({
-        isLeftOpen: false,
-        isRightOpen: false
-      });
-
-      if (this.open) {
-        this.open = false;
-        this.props.onTogglePanel(false);
-      }
+    if (step === PickerStep.RIGHT) {
+      this.inputer.focusLeft();
     }
   };
 
-  reset = () => {
-    const from = null;
-    const to = null;
-    this.setState({ from, to });
-    this.props.onChange({ from, to });
-    this.inputer.focusLeft();
+  onAccept = () => {
+    this.setState({ step: PickerStep.NONE });
   };
 
-  onMouseDown = (e) => {
-    if (this.blurTimeout) clearTimeout(this.blurTimeout);
-  };
+  onLeftSelect = (date) => {
+    const { onChange, onUpdate } = this.props;
+    const { to } = this.state;
 
-  onLeftSelected = () => {
-    this.setState({
-      isLeftOpen: false,
-      isRightOpen: true
-    });
-
-    if (!this.open) {
-      this.open = true;
-      this.props.onTogglePanel(true);
-    }
-
+    this.setState({ from: date, step: PickerStep.RIGHT });
+    onChange({ from: date, to });
+    onUpdate({ from: date, to });
     this.inputer.focusRight();
   };
 
-  onRightSelected = () => {
-    this.setState({
-      isLeftOpen: false,
-      isRightOpen: false
-    });
+  onRightSelect = (date) => {
+    const { onChange, onUpdate } = this.props;
+    const { from } = this.state;
 
-    if (this.open) {
-      this.open = false;
-      this.props.onTogglePanel(false);
-    }
+    this.setState({ to: date });
+    onChange({ from, to: date });
+    onUpdate({ from, to: date });
   };
 
-  onPanelRef = (extRef) => { this.optionsPanel = extRef; };
+  onValidUpdate = (state) => {
+    const { onUpdate } = this.props;
+    this.setState(state);
+    onUpdate({ ...this.state, ...state });
+  };
+
+  onLeftFocus = () => {
+    if (this.blurTimeout) clearTimeout(this.blurTimeout);
+    this.setState({ step: PickerStep.LEFT });
+  };
+
+  onRightFocus = () => {
+    if (this.blurTimeout) clearTimeout(this.blurTimeout);
+    this.setState({ step: PickerStep.RIGHT });
+  };
+
+  onBlur = () => {
+    if (this.blurTimeout) clearTimeout(this.blurTimeout);
+
+    this.blurTimeout = setTimeout(() => {
+      const { onUpdate } = this.props;
+      const { from, to } = this.state;
+      onUpdate({ to, from });
+      this.setState({ step: PickerStep.NONE });
+    }, 200);
+  };
+
+  onMouseDown = () => {
+    if (this.blurTimeout) clearTimeout(this.blurTimeout);
+  };
+
+  onPanelRef = (extRef) => {
+    this.optionsPanel = extRef;
+  };
 
   render() {
-    const name = this.props.name;
-    const { showPointer, theme } = this.props;
-    const { isLeftOpen, isRightOpen } = this.state;
+    const {
+      name,
+      disabled,
+      isError,
+      inline,
+      theme,
+      placeholder,
+      savePlaceholder,
+      monthView,
+      format,
+      positionX,
+      positionY,
+      acceptText,
+      resetText,
+      showPointer,
+    } = this.props;
+    const { from, to, step } = this.state;
+    const isOpen = step !== PickerStep.NONE;
 
     return (
       <RangePickerInputer
-        inline={this.props.inline}
-        disabled={this.props.disabled}
-        isError={this.props.isError}
+        disabled={disabled}
+        isError={isError}
         onLeftFocus={this.onLeftFocus}
         onRightFocus={this.onRightFocus}
         onBlur={this.onBlur}
         onMouseDown={this.onMouseDown}
         onValidUpdate={this.onValidUpdate}
-        onRef={inputer => this.inputer = inputer}
-        from={this.state.from}
-        to={this.state.to}
-        name={name}
-        mainRef={el => this.main = el}
-        theme={theme}
-        placeholder={this.props.placeholder}
-        savePlaceholder={this.props.savePlaceholder}
-        monthView={this.props.monthView}
-        format={this.props.format}
         onClear={this.onClear}
+        from={from}
+        to={to}
+        name={name}
+        inline={inline}
+        theme={theme}
+        onRef={inputer => this.inputer = inputer}
+        mainRef={el => this.main = el}
+        placeholder={placeholder}
+        savePlaceholder={savePlaceholder}
+        monthView={monthView}
+        format={format}
+        isOpen={isOpen}
       >
         <PanelWrap
           innerRef={this.onPanelRef}
-          positionX={this.props.positionX}
-          positionY={this.props.positionY}
-          visible={this.state.isLeftOpen || this.state.isRightOpen}
+          positionX={positionX}
+          positionY={positionY}
+          visible={isOpen}
         >
-          {(isLeftOpen || isRightOpen) && showPointer && (
-            <OptionsPointer theme={theme} />
-          )}
+          {isOpen && showPointer && (<OptionsPointer theme={theme} />)}
           <RangePickerPanel
             showPointer={showPointer}
-            onLeftSelected={this.onLeftSelected}
-            onRightSelected={this.onRightSelected}
-            from={this.state.from}
-            to={this.state.to}
-            isLeftOpen={this.state.isLeftOpen}
-            isRightOpen={this.state.isRightOpen}
+            from={from}
+            to={to}
             theme={theme}
-            monthView={this.props.monthView}
-            reset={this.reset}
-            accept={this.select}
-            acceptText={this.props.acceptText}
-            resetText={this.props.resetText}
+            monthView={monthView}
+            onReset={this.onClear}
+            onAccept={this.onAccept}
+            onLeftSelect={this.onLeftSelect}
+            onRightSelect={this.onRightSelect}
+            step={step}
+            acceptText={acceptText}
+            resetText={resetText}
           />
         </PanelWrap>
       </RangePickerInputer>
@@ -250,40 +275,5 @@ class RangePicker extends Component {
   }
 }
 
-RangePicker.propTypes = {
-  className: PropTypes.string,
-  theme: PropTypes.object,
-  disabled: PropTypes.bool,
-  isError: PropTypes.bool,
-  from: PropTypes.string,
-  to: PropTypes.string,
-  onChange: PropTypes.func,
-  onUpdate: PropTypes.func,
-  monthView: PropTypes.bool,
-  positionalX: PropTypes.string,
-  positionalY: PropTypes.string,
-  format: PropTypes.string,
-  acceptText: PropTypes.string,
-  resetText: PropTypes.string,
-  onTogglePanel: PropTypes.func,
-};
-
-RangePicker.defaultProps = {
-  disabled: false,
-  isError: false,
-  theme: defaultTheme,
-  from: null,
-  to: null,
-  positionX: '',
-  positionY: '',
-  onChange: val => null,
-  onUpdate: val => null,
-  format: null,
-  acceptText: "Accept",
-  resetText: "Reset",
-  onTogglePanel: () => {},
-};
-
-RangePicker.displayName = 'RangePicker';
 
 export default withTheme(RangePicker);

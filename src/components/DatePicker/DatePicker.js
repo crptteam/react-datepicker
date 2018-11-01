@@ -8,7 +8,6 @@ import { DatePickerInputer } from './DatePickerInputer';
 import moment from 'moment';
 import defaultTheme from '../../theme/defaultTheme';
 import OptionsPointer from "../../styled/OptionsPointer";
-import DatePickerPanelWrap from "../../styled/DatePickerPanelWrap";
 import PanelWrap from "../../styled/PanelWrap";
 
 moment.locale('ru');
@@ -65,8 +64,23 @@ class DatePicker extends Component {
     this.state = {
       isOpen: false,
       date: date,
-      defaultDate: this.props.date,
+      initialDate: this.props.date,
     };
+  }
+
+  static getDerivedStateFromProps(props, state) {
+    if (props.date !== state.initialDate) {
+      const date = props.date
+        ? moment(props.date, props.format)
+        : null;
+
+      return {
+        date,
+        initialDate: props.date,
+      }
+    }
+
+    return null;
   }
 
   componentDidMount() {
@@ -80,21 +94,6 @@ class DatePicker extends Component {
     if (this.blurTimeout) clearTimeout(this.blurTimeout);
   }
 
-  static getDerivedStateFromProps(props, state) {
-    if (props.date !== state.defaultDate) {
-      const date = props.date
-        ? moment(props.date, props.format)
-        : null;
-
-      return {
-        date,
-        defaultDate: props.date,
-      }
-    }
-
-    return null;
-  }
-
   onClear = (e) => {
     e.preventDefault();
     e.stopPropagation();
@@ -102,6 +101,22 @@ class DatePicker extends Component {
     this.setState({ date: null });
     onUpdate({ date: null });
     onChange({ date: null });
+  };
+
+  onAccept = () => {
+    const { onTogglePanel } = this.props;
+
+    this.setState(
+      { isOpen: false },
+      () => onTogglePanel(false),
+    );
+  };
+
+  onSelect = (date) => {
+    const { onChange, onUpdate } = this.props;
+    this.setState({ date });
+    onChange({ date });
+    onUpdate({ date })
   };
 
   onValidUpdate = (state) => {
@@ -136,28 +151,6 @@ class DatePicker extends Component {
     }, 200);
   };
 
-  select = (date) => {
-    const { onChange, onTogglePanel } = this.props;
-    const isOpen = !date;
-
-    this.setState(
-      { date, isOpen },
-      () => onTogglePanel(isOpen)
-    );
-
-    onChange({ date });
-  };
-
-  reset = () => {
-    const { date: propsDate, format } = this.props;
-
-    const date = propsDate
-      ? moment(propsDate, format)
-      : null;
-
-    this.setState({ date });
-  };
-
   onMouseDown = () => {
     if (this.blurTimeout) clearTimeout(this.blurTimeout);
   };
@@ -190,6 +183,7 @@ class DatePicker extends Component {
       <DatePickerInputer
         disabled={disabled}
         isError={isError}
+        isOpen={isOpen}
         onFocus={this.onFocus}
         onBlur={this.onBlur}
         onMouseDown={this.onMouseDown}
@@ -216,8 +210,9 @@ class DatePicker extends Component {
             date={date}
             theme={theme}
             monthView={monthView}
-            reset={this.reset}
-            accept={this.select}
+            onReset={this.onClear}
+            onAccept={this.onAccept}
+            onSelect={this.onSelect}
             acceptText={acceptText}
             resetText={resetText}
           />
