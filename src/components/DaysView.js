@@ -4,6 +4,7 @@ import BottomWithDays from "../styled/BottomWithDays";
 import EmptyDay from "../styled/EmptyDay";
 import DayWrap from "../styled/DayWrap";
 import Day from "../styled/Day";
+import WeekDay from '../styled/WeekDay';
 
 
 const DaysView = ({
@@ -19,6 +20,13 @@ const DaysView = ({
 }) => {
   return (
     <BottomWithDays innerRef={onRef}>
+      <WeekDay>ПН</WeekDay>
+      <WeekDay>ВТ</WeekDay>
+      <WeekDay>СР</WeekDay>
+      <WeekDay>ЧТ</WeekDay>
+      <WeekDay>ПТ</WeekDay>
+      <WeekDay>СБ</WeekDay>
+      <WeekDay>ВС</WeekDay>
       {days.map(
         (d, i) =>
           d.val === 0 ? (

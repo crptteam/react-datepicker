@@ -5,7 +5,7 @@ import { getThemeAsPlainTextByKeys, innerMerge } from '../utils';
 import defaultTheme from '../theme/defaultTheme';
 
 const Elem = styled.div`
-  width: ${props => props.width};
+  flex-basis: calc(100% / 7);
   height: 0;
   display: inline-flex;
 `;
