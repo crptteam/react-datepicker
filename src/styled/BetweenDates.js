@@ -11,7 +11,7 @@ const Elem = styled.span`
   text-align: center;
   font-family: ${props => props.fontFamily};
   font-weight: ${props => props.bodyWeight};
-  top: ${props => (props.centered ? '0' : '8px')};
+  top: ${props => (props.centered ? '0' : '12px')};
   opacity: ${props => (props.visible ? 1 : 0)};
 `;
 

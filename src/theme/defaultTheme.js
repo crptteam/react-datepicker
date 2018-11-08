@@ -24,8 +24,8 @@ export default {
     fontSize: "16px",
     fontWeight: 200,
     DayWrap: {
-      width: '28px',
-      height: '28px',
+      width: '20px',
+      height: '20px',
       hoverBackground: "#F8EC31",
       hovered: {
         background: chroma("#F8EC31")
@@ -34,8 +34,8 @@ export default {
       },
     },
     Day: {
-      width: "24px",
-      height: "24px",
+      width: "20px",
+      height: "20px",
       borderRadius: "2px",
       hoverBackground: "#F8EC31",
       hovered: {

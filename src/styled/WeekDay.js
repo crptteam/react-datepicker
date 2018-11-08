@@ -1,29 +1,19 @@
-import React from 'react';
 import styled from 'styled-components';
-
 import { getThemeAsPlainTextByKeys, innerMerge } from '../utils';
 import defaultTheme from '../theme/defaultTheme';
+import React from 'react';
 
-export const Elem = styled.div`
-  width: ${props => props.width};
-  min-width: ${props => props.width};
-  height: ${props => props.height};
-  border-radius: ${props => props.borderRadius};
-  padding: 0 2px 2px;
-  font-size: ${props => props.fontSize};
-  text-align: center;
-  line-height: 24px;
-  font-weight: ${props => props.fontWeight};
-  background: ${props => props.background};
+const Elem = styled.div`
+  flex-basis: calc(100% / 7);
+  margin-bottom: 8px;
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 14px;
   color: ${props => props.color};
-  cursor: ${props => (props.children ? 'pointer' : 'none')};
-  pointer-events: none;
-  :hover {
-    background: ${props => props.hoverBackground};
-  }
 `;
 
-const Day = props => {
+const WeekDay = props => {
 
   const merged = innerMerge(
     {},
@@ -50,4 +40,4 @@ const Day = props => {
   return <Elem {...theme} {...props} />;
 };
 
-export default Day;
+export default WeekDay;

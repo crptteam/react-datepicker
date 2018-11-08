@@ -6,8 +6,8 @@ import defaultTheme from '../theme/defaultTheme';
 import {Elem as DayElem} from './Day';
 
 const Elem = styled.div`
-  width: ${props => props.width};
-  height: ${props => props.height};
+  flex-basis: calc(100% / 7);
+  margin-bottom: 8px;
   display: inline-flex;
   vertical-align: top;
   align-items: center;
