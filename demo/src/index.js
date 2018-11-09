@@ -33,6 +33,7 @@ class Demo extends Component {
           placeholder="Очень длинный плейсхолдер, который должен вместиться в инпут"
           savePlaceholder
           monthView={true}
+          format={'YYYY'}
           acceptText="Применить"
           resetText="Сбросить"
           onTogglePanel={console.log}

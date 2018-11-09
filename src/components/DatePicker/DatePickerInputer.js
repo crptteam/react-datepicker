@@ -91,7 +91,7 @@ export class DatePickerInputer extends Component {
     if (editingValue !== null) return editingValue;
 
     const preparedFormat = monthView
-      ? "MMMM YYYY"
+      ? (format || "MMMM YYYY")
       : (format || "YYYY.MM.DD");
 
     return date
