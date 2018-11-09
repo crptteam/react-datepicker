@@ -85,13 +85,13 @@ export class DatePickerInputer extends Component {
   };
 
   getValue = () => {
-    const { monthView, format, date } = this.props;
+    const { monthView, format, outFormat, date } = this.props;
     const { editingValue } = this.state;
 
     if (editingValue !== null) return editingValue;
 
     const preparedFormat = monthView
-      ? (format || "MMMM YYYY")
+      ? (outFormat || "MMMM YYYY")
       : (format || "YYYY.MM.DD");
 
     return date
