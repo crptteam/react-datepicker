@@ -29,6 +29,7 @@ class DatePicker extends Component {
     positionalY: PropTypes.string,
     monthView: PropTypes.bool,
     format: PropTypes.string,
+    outFormat: PropTypes.string,
     acceptText: PropTypes.string,
     resetText: PropTypes.string,
     showPointer: PropTypes.bool,
@@ -170,6 +171,7 @@ class DatePicker extends Component {
       savePlaceholder,
       monthView,
       format,
+      outFormat,
       positionX,
       positionY,
       acceptText,
@@ -197,6 +199,7 @@ class DatePicker extends Component {
         savePlaceholder={savePlaceholder}
         monthView={monthView}
         format={format}
+        outFormat={outFormat}
       >
         <PanelWrap
           innerRef={this.onPanelRef}
