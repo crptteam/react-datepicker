@@ -135,20 +135,20 @@ class RangePicker extends Component {
   onClear = (e) => {
     e.preventDefault();
     e.stopPropagation();
-    const { onUpdate, onChange } = this.props;
-    const { step } = this.state;
-    this.setState({ from: null, to: null });
-
-    onUpdate({ from: null, to: null });
-    onChange({ from: null, to: null });
+    this.clear();
 
     if (step === PickerStep.RIGHT) {
       this.inputer.focusLeft();
     }
   };
 
-  clear = e => {
-    this.onClear(e);
+  clear = () => {
+    const { onUpdate, onChange } = this.props;
+    const { step } = this.state;
+    this.setState({ from: null, to: null });
+
+    onUpdate({ from: null, to: null });
+    onChange({ from: null, to: null });
   };
 
   onAccept = () => {
