@@ -104,6 +104,10 @@ class DatePicker extends Component {
     onChange({ date: null });
   };
 
+  clear = e => {
+    this.onClear(e);
+  }
+
   onAccept = () => {
     const { onTogglePanel } = this.props;
 
