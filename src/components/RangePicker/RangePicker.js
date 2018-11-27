@@ -147,6 +147,10 @@ class RangePicker extends Component {
     }
   };
 
+  clear = e => {
+    this.onClear(e);
+  };
+
   onAccept = () => {
     this.setState({ step: PickerStep.NONE });
   };
