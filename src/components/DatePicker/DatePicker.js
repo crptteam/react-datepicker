@@ -98,15 +98,15 @@ class DatePicker extends Component {
   onClear = (e) => {
     e.preventDefault();
     e.stopPropagation();
+    this.clear();
+  };
+
+  clear = () => {
     const { onUpdate, onChange } = this.props;
     this.setState({ date: null });
     onUpdate({ date: null });
     onChange({ date: null });
   };
-
-  clear = e => {
-    this.onClear(e);
-  }
 
   onAccept = () => {
     const { onTogglePanel } = this.props;
