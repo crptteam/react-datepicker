@@ -36,6 +36,9 @@ import { DatePicker, RangePicker } from  "@crpt/react-datepicker";
 | resetText: string | Reset control text. Default: 'Reset' | |
 | onTogglePanel: Function | Callback on toggle OptionsPanel visibility | |
 | showPointer: bool | show dialogue pointer | |
+| minDate: string | Minimal date | |
+| maxDate: string | Maximal date | |
+
 
 
 ### RangePicker
@@ -55,6 +58,8 @@ import { DatePicker, RangePicker } from  "@crpt/react-datepicker";
 | resetText: string | Reset control text. Default: 'Reset' | |
 | onTogglePanel: Function | Callback on toggle OptionsPanel visibility | |
 | showPointer: bool | show dialogue pointer | |
+| minDate: string | Minimal date | |
+| maxDate: string | Maximal date | |
 
 
 [build-badge]: https://img.shields.io/travis/user/repo/master.png?style=flat-square

@@ -32,6 +32,9 @@ export default {
           .brighten(0.8)
           .css(),
       },
+      disabled: {
+        background: '#abadb6',
+      }
     },
     Day: {
       width: "20px",

@@ -65,20 +65,20 @@ class RangePicker extends Component {
 
   constructor(props) {
     super(props);
-    const start = this.props.from
-      ? moment(this.props.from, this.props.format)
-      : moment();
 
-    const end = this.props.to
-      ? moment(this.props.to, this.props.format)
-      : moment(start);
+    const { from, to, format, minDate, maxDate } = this.props;
+
+    const start = from ? moment(from, format) : moment();
+    const end = to ? moment(to, format) : moment(start);
 
     this.state = {
       step: PickerStep.NONE,
-      from: this.props.from ? moment(start) : null,
-      to: this.props.to ? moment(end) : null,
-      initialFrom: this.props.from,
-      initialTo: this.props.to,
+      from: from ? moment(start) : null,
+      to: to ? moment(end) : null,
+      initialFrom: from,
+      initialTo: to,
+      minDate: minDate ? moment(minDate, format) : undefined,
+      maxDate: maxDate ? moment(maxDate, format) : undefined,
     };
   }
 
@@ -133,6 +133,7 @@ class RangePicker extends Component {
   };
 
   onClear = (e) => {
+    const { step } = this.state;
     e.preventDefault();
     e.stopPropagation();
     this.clear();
@@ -157,7 +158,9 @@ class RangePicker extends Component {
 
   onLeftSelect = (date) => {
     const { onChange, onUpdate } = this.props;
-    const { to } = this.state;
+    const { to, minDate, maxDate } = this.state;
+
+    if (date < minDate || date > maxDate) return;
 
     this.setState({ from: date, step: PickerStep.RIGHT });
     onChange({ from: date, to });
@@ -167,7 +170,9 @@ class RangePicker extends Component {
 
   onRightSelect = (date) => {
     const { onChange, onUpdate } = this.props;
-    const { from } = this.state;
+    const { from, minDate, maxDate } = this.state;
+
+    if (date < minDate || date > maxDate) return;
 
     this.setState({ to: date });
     onChange({ from, to: date });
@@ -226,7 +231,7 @@ class RangePicker extends Component {
       resetText,
       showPointer,
     } = this.props;
-    const { from, to, step } = this.state;
+    const { from, to, step, minDate, maxDate } = this.state;
     const isOpen = step !== PickerStep.NONE;
 
     return (
@@ -251,6 +256,8 @@ class RangePicker extends Component {
         monthView={monthView}
         format={format}
         isOpen={isOpen}
+        minDate={minDate}
+        maxDate={maxDate}
       >
         <PanelWrap
           innerRef={this.onPanelRef}
@@ -272,6 +279,8 @@ class RangePicker extends Component {
             step={step}
             acceptText={acceptText}
             resetText={resetText}
+            minDate={minDate}
+            maxDate={maxDate}
           />
         </PanelWrap>
       </RangePickerInputer>

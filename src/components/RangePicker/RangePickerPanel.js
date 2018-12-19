@@ -69,10 +69,13 @@ export class RangePickerPanel extends Component {
   changeLeftDate = (e, amount, unit) => {
     e.preventDefault();
     e.stopPropagation();
-    const { monthView, onLeftSelect } = this.props;
+    const { monthView, onLeftSelect, minDate, maxDate } = this.props;
     const { leftDate } = this.state;
 
-    const newDate = moment(leftDate).add(amount, unit);
+    let newDate = moment(leftDate).add(amount, unit);
+    if (minDate && newDate < minDate) newDate = minDate;
+    if (maxDate && newDate > maxDate) newDate = maxDate;
+
     if (monthView) onLeftSelect(newDate);
     else {
       this.setState({
@@ -93,10 +96,13 @@ export class RangePickerPanel extends Component {
   changeRightDate = (e, amount, unit) => {
     e.preventDefault();
     e.stopPropagation();
-    const { monthView, onRightSelect } = this.props;
+    const { monthView, onRightSelect, minDate, maxDate } = this.props;
     const { rightDate } = this.state;
 
-    const newDate = moment(rightDate).add(amount, unit);
+    let newDate = moment(rightDate).add(amount, unit);
+    if (minDate && newDate < minDate) newDate = minDate;
+    if (maxDate && newDate > maxDate) newDate = maxDate;
+
     if (monthView) onRightSelect(newDate);
     else {
       this.setState({
@@ -195,8 +201,10 @@ export class RangePickerPanel extends Component {
   };
 
   onLeftSelect = (date) => {
-    const { onLeftSelect } = this.props;
+    const { onLeftSelect, minDate, maxDate } = this.props;
     let { startDate, endDate } = this.state;
+    if (minDate && date.date < minDate) return;
+    if (maxDate && date.date > maxDate) return;
 
     if (startDate && startDate.isSame(date.date, "day")) {
       startDate = null;
@@ -217,14 +225,29 @@ export class RangePickerPanel extends Component {
   };
 
   isRightDisabled = (date) => {
+    const { minDate, maxDate } = this.props;
     const { startDate } = this.state;
+
+    if (minDate && date < minDate) return true;
+    if (maxDate && date > maxDate) return true;
 
     return startDate && date.isBefore(startDate, "day");
   };
 
+  isLeftDisabled = (date) => {
+    const { minDate, maxDate } = this.props;
+    if (minDate && date < minDate) return true;
+    if (maxDate && date > maxDate) return true;
+
+    return false;
+  };
+
   onRightSelect = (date) => {
-    const { onRightSelect } = this.props;
+    const { onRightSelect, minDate, maxDate } = this.props;
     let { startDate, endDate } = this.state;
+
+    if (minDate && date.date < minDate) return;
+    if (maxDate && date.date > maxDate) return;
 
     if (endDate && endDate.isSame(date.date, "day")) {
       endDate = null;
@@ -332,6 +355,7 @@ export class RangePickerPanel extends Component {
               onDayMouseEnter={this.onDayMouseEnter}
               onDayMouseOut={this.onDayMouseOut}
               theme={theme}
+              disabled={this.isLeftDisabled}
               hovered={this.isLeftHovered}
               selected={this.isLeftSelected}
               onSelect={this.onLeftSelect}

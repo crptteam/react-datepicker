@@ -21,12 +21,13 @@ export class DatePickerPanel extends Component {
   constructor(props) {
     super(props);
 
-    const date = this.props.date ? moment(this.props.date) : moment();
+    const { date } = this.props;
+    const monthDate = date ? moment(date) : moment();
 
     this.state = {
-      monthDate: date,
+      monthDate: monthDate,
       initialDate: this.props.date,
-      days: getDaysArrayFromMomentDate(date),
+      days: getDaysArrayFromMomentDate(monthDate),
       hovered: null
     };
   }
@@ -47,10 +48,12 @@ export class DatePickerPanel extends Component {
   }
 
   decreaseMonth = () => {
-    const { monthView, onSelect } = this.props;
+    const { monthView, onSelect, minDate } = this.props;
     const { monthDate } = this.state;
 
-    const newDate = moment(monthDate).add(-1, 'month');
+    let newDate = moment(monthDate).add(-1, 'month');
+    if (minDate && newDate < minDate) newDate = minDate;
+
     if (monthView) onSelect(newDate);
     else {
       this.setState({
@@ -61,10 +64,12 @@ export class DatePickerPanel extends Component {
   };
 
   increaseMonth = () => {
-    const { monthView, onSelect } = this.props;
+    const { monthView, onSelect, maxDate } = this.props;
     const { monthDate } = this.state;
 
-    const newDate = moment(monthDate).add(1, 'month');
+    let newDate = moment(monthDate).add(1, 'month');
+    if (maxDate && newDate > maxDate) newDate = maxDate;
+
     if (monthView) onSelect(newDate);
     else {
       this.setState({
@@ -75,10 +80,12 @@ export class DatePickerPanel extends Component {
   };
 
   decreaseYear = () => {
-    const { monthView, onSelect } = this.props;
+    const { monthView, onSelect, minDate } = this.props;
     const { monthDate } = this.state;
 
-    const newDate = moment(monthDate).add(-1, 'year');
+    let newDate = moment(monthDate).add(-1, 'year');
+    if (minDate && newDate < minDate) newDate = minDate;
+
     if (monthView) onSelect(newDate);
     else {
       this.setState({
@@ -89,10 +96,12 @@ export class DatePickerPanel extends Component {
   };
 
   increaseYear = () => {
-    const { monthView, onSelect } = this.props;
+    const { monthView, onSelect, maxDate } = this.props;
     const { monthDate } = this.state;
 
-    const newDate = moment(monthDate).add(1, 'year');
+    let newDate = moment(monthDate).add(1, 'year');
+    if (maxDate && newDate > maxDate) newDate = maxDate;
+
     if (monthView) onSelect(newDate);
     else {
       this.setState({
@@ -103,7 +112,12 @@ export class DatePickerPanel extends Component {
   };
 
   onDayMouseEnter = (e, date) => {
-    this.setState({ hovered: moment(date) });
+    const { minDate, maxDate } = this.props;
+    let preparedDate = moment(date);
+    if (minDate && preparedDate < minDate) return;
+    if (maxDate && preparedDate > maxDate) return;
+
+    this.setState({ hovered: preparedDate });
   };
 
   onDayMouseOut = () => {
@@ -116,7 +130,7 @@ export class DatePickerPanel extends Component {
   };
 
   onSelect = (day) => {
-    const { monthView, onSelect } = this.props;
+    const { monthView, onSelect, minDate, maxDate } = this.props;
     let { date } = this.props;
 
     if (date) {
@@ -129,12 +143,23 @@ export class DatePickerPanel extends Component {
       date = moment(day.date);
     }
 
+    if (minDate && date < minDate) return;
+    if (maxDate && date > maxDate) return;
+
     onSelect(date);
   };
 
   isOneOfSelected = (newDate) => {
     const { date } = this.props;
     return date && date.isSame(newDate, 'day');
+  };
+
+  isOneOfDisabled = (date) => {
+    const { minDate, maxDate } = this.props;
+    if (minDate && date < minDate) return true;
+    if (maxDate && date > maxDate) return true;
+
+    return false;
   };
 
   render() {
@@ -197,6 +222,7 @@ export class DatePickerPanel extends Component {
               onDayMouseOut={this.onDayMouseOut}
               theme={theme}
               selected={this.isOneOfSelected}
+              disabled={this.isOneOfDisabled}
               onSelect={this.onSelect}
             />
           )}

@@ -14,6 +14,7 @@ const Elem = styled.div`
   justify-content: center;
   cursor: ${props => (props.value ? 'pointer' : 'none')};
   pointer-events: ${props => (props.disabled ? 'none' : props.children ? 'all' : 'none')};
+  background: ${props => props.background};
   :hover ${DayElem} {
     background: ${props => props.hoverBackground};
   }
@@ -39,7 +40,13 @@ const DayWrap = props => {
     theme,
     getThemeAsPlainTextByKeys(
       mergedDay,
-      props.selected ? 'selected' : props.hovered ? 'hovered' : 'main'
+      props.selected
+        ? 'selected'
+        : props.hovered
+          ? 'hovered'
+          : props.disabled
+            ? 'disabled'
+            : 'main'
     )
   );
 
