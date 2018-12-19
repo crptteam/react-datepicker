@@ -18,6 +18,8 @@ class Demo extends Component {
         <h1>react-datepicker Demo</h1>
         <DatePicker
           format="DD.MM.YYYY"
+          minDate="20.01.2013"
+          maxDate="01.01.2020"
           positionX="left"
           positionY="bottom"
           placeholder="Очень длинный плейсхолдер, который должен вместиться в инпут"
@@ -41,6 +43,8 @@ class Demo extends Component {
         <h1>react-datepicker Demo</h1>
         <RangePicker
           format="DD.MM.YYYY"
+          minDate="20.01.2013"
+          maxDate="01.01.2020"
           positionX="left"
           positionY="bottom"
           placeholder="Очень длинный плейсхолдер, который должен вместиться в инпут"

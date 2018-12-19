@@ -72,7 +72,7 @@ export class RangePickerInputer extends Component {
   }
 
   onFromInputChange = (e) => {
-    const { monthView, format, onValidUpdate, from, to } = this.props;
+    const { monthView, format, onValidUpdate, from, to, minDate, maxDate } = this.props;
 
     if (monthView) {
       this.setState({ isFocused: true });
@@ -84,6 +84,8 @@ export class RangePickerInputer extends Component {
     });
 
     let newDate = getValidMomentFromISOStringOrNull(e.target.value, format);
+    if (minDate && newDate < minDate) newDate = minDate;
+    if (maxDate && newDate > maxDate) newDate = maxDate;
 
     if (newDate && to && newDate.isAfter(to, "day")) {
       newDate = null;
@@ -105,7 +107,7 @@ export class RangePickerInputer extends Component {
   };
 
   onToInputChange = (e) => {
-    const { monthView, format, onValidUpdate, from, to } = this.props;
+    const { monthView, format, onValidUpdate, from, to, minDate, maxDate } = this.props;
 
     if (monthView) {
       this.setState({ isFocused: true });
@@ -117,6 +119,8 @@ export class RangePickerInputer extends Component {
     });
 
     let newDate = getValidMomentFromISOStringOrNull(e.target.value, format);
+    if (minDate && newDate < minDate) newDate = minDate;
+    if (maxDate && newDate > maxDate) newDate = maxDate;
 
     if (newDate && from) {
       if (e.target.value.indexOf("_") === -1 && newDate.isBefore(from)) {
