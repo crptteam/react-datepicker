@@ -178,8 +178,13 @@ export class RangePickerInputer extends Component {
   };
 
   onRightFocus = () => {
-    this.onFocus();
-    this.props.onRightFocus();
+    if (this.props.from === null) {
+      this.focusLeft();
+      this.onLeftFocus();
+    } else {
+      this.onFocus();
+      this.props.onRightFocus();
+    }
   };
 
   focusRight = () => {
