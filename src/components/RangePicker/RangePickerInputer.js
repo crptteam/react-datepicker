@@ -15,6 +15,8 @@ import FlexWrap from "../../styled/FlexWrap";
 export class RangePickerInputer extends Component {
   static propTypes = {
     inline: PropTypes.bool,
+    onLeftFocus: PropTypes.func.isRequired,
+    onRightFocus: PropTypes.func.isRequired,
   };
 
   static defaultProps = {
@@ -34,7 +36,8 @@ export class RangePickerInputer extends Component {
     this.state = {
       editingFromValue: null,
       editingToValue: null,
-      isFocused: !!this.props.from || !!this.props.to
+      isFocused: !!this.props.from || !!this.props.to,
+      firstFocused: true,
     };
 
     if (!this.props.monthView) {
@@ -173,17 +176,24 @@ export class RangePickerInputer extends Component {
   };
 
   onLeftFocus = () => {
-    this.onFocus();
-    this.props.onLeftFocus();
+    const { onLeftFocus } = this.props;
+
+    this.setState({ firstFocused: false }, () => {
+      this.onFocus();
+      onLeftFocus();
+    });
   };
 
   onRightFocus = () => {
-    if (this.props.from === null) {
+    const { from, onRightFocus } = this.props;
+    const { firstFocused } = this.state;
+
+    if (from === null && firstFocused) {
       this.focusLeft();
       this.onLeftFocus();
     } else {
       this.onFocus();
-      this.props.onRightFocus();
+      onRightFocus();
     }
   };
 
