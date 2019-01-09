@@ -92,6 +92,11 @@ class RangePicker extends Component {
         ? moment(props.to, props.format)
         : null;
 
+
+      const { onUpdate, onChange } = props;
+      onUpdate({ from: fromDate, to: toDate });
+      onChange({ from: fromDate, to: toDate });
+
       return {
         from: fromDate,
         to: toDate,
