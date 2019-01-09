@@ -93,10 +93,6 @@ class RangePicker extends Component {
         : null;
 
 
-      const { onUpdate, onChange } = props;
-      onUpdate({ from: fromDate, to: toDate });
-      onChange({ from: fromDate, to: toDate });
-
       return {
         from: fromDate,
         to: toDate,
@@ -122,7 +118,19 @@ class RangePicker extends Component {
   }
 
   componentDidUpdate(prevProps, prevState) {
-    const { onTogglePanel } = this.props;
+    const { onTogglePanel, onUpdate, onChange, to, from, format } = this.props;
+    if (prevProps.to !== to || prevProps.from !== from) {
+      const fromDate = from
+        ? moment(from, format)
+        : null;
+
+      const toDate = to
+        ? moment(to, format)
+        : null;
+      onUpdate && onUpdate({ from: fromDate, to: toDate });
+      onChange && onChange({ from: fromDate, to: toDate });
+    }
+
     const { step } = this.state;
     if (prevState.step !== step) {
       if (step === PickerStep.NONE) onTogglePanel(false);
