@@ -64,7 +64,7 @@ export class DatePickerInputer extends Component {
   }
 
   onChange = (e) => {
-    const { monthView, format, date, onValidUpdate } = this.props;
+    const { monthView, format, date, onValidUpdate, minDate, maxDate } = this.props;
 
     if (monthView) {
       this.setState({ isFocused: true });
@@ -76,6 +76,9 @@ export class DatePickerInputer extends Component {
     });
 
     let newDate = getValidMomentFromISOStringOrNull(e.target.value, format);
+
+    if (minDate && newDate < minDate) newDate = minDate;
+    if (maxDate && newDate > maxDate) newDate = maxDate;
 
     this.setState({ date: newDate });
 

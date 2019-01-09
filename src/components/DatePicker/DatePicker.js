@@ -33,6 +33,8 @@ class DatePicker extends Component {
     acceptText: PropTypes.string,
     resetText: PropTypes.string,
     showPointer: PropTypes.bool,
+    minDate: PropTypes.string,
+    maxDate: PropTypes.string,
   };
 
   static defaultProps = {
@@ -49,6 +51,8 @@ class DatePicker extends Component {
     acceptText: 'Применить',
     resetText: 'Сбросить',
     showPointer: false,
+    minDate: undefined,
+    maxDate: undefined,
   };
 
   blurTimeout;
@@ -58,14 +62,16 @@ class DatePicker extends Component {
   constructor(props) {
     super(props);
 
-    const date = this.props.date
-      ? moment(this.props.date, this.props.format)
-      : null;
+    const { date, format, minDate, maxDate } = this.props;
+
+    const preparedDate = date ? moment(date, format) : null;
 
     this.state = {
       isOpen: false,
-      date: date,
-      initialDate: this.props.date,
+      date: preparedDate,
+      initialDate: date,
+      minDate: minDate ? moment(minDate, format) : undefined,
+      maxDate: maxDate ? moment(maxDate, format) : undefined,
     };
   }
 
@@ -182,7 +188,12 @@ class DatePicker extends Component {
       resetText,
       showPointer,
     } = this.props;
-    const { date, isOpen } = this.state;
+    const {
+      date,
+      isOpen,
+      minDate,
+      maxDate,
+    } = this.state;
 
 
     return (
@@ -204,6 +215,8 @@ class DatePicker extends Component {
         monthView={monthView}
         format={format}
         outFormat={outFormat}
+        minDate={minDate}
+        maxDate={maxDate}
       >
         <PanelWrap
           innerRef={this.onPanelRef}
@@ -222,6 +235,8 @@ class DatePicker extends Component {
             onSelect={this.onSelect}
             acceptText={acceptText}
             resetText={resetText}
+            minDate={minDate}
+            maxDate={maxDate}
           />
         </PanelWrap>
       </DatePickerInputer>

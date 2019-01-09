@@ -15,6 +15,8 @@ import FlexWrap from "../../styled/FlexWrap";
 export class RangePickerInputer extends Component {
   static propTypes = {
     inline: PropTypes.bool,
+    onLeftFocus: PropTypes.func.isRequired,
+    onRightFocus: PropTypes.func.isRequired,
   };
 
   static defaultProps = {
@@ -34,7 +36,8 @@ export class RangePickerInputer extends Component {
     this.state = {
       editingFromValue: null,
       editingToValue: null,
-      isFocused: !!this.props.from || !!this.props.to
+      isFocused: !!this.props.from || !!this.props.to,
+      firstFocused: true,
     };
 
     if (!this.props.monthView) {
@@ -72,7 +75,7 @@ export class RangePickerInputer extends Component {
   }
 
   onFromInputChange = (e) => {
-    const { monthView, format, onValidUpdate, from, to } = this.props;
+    const { monthView, format, onValidUpdate, from, to, minDate, maxDate } = this.props;
 
     if (monthView) {
       this.setState({ isFocused: true });
@@ -84,6 +87,8 @@ export class RangePickerInputer extends Component {
     });
 
     let newDate = getValidMomentFromISOStringOrNull(e.target.value, format);
+    if (minDate && newDate < minDate) newDate = minDate;
+    if (maxDate && newDate > maxDate) newDate = maxDate;
 
     if (newDate && to && newDate.isAfter(to, "day")) {
       newDate = null;
@@ -105,7 +110,7 @@ export class RangePickerInputer extends Component {
   };
 
   onToInputChange = (e) => {
-    const { monthView, format, onValidUpdate, from, to } = this.props;
+    const { monthView, format, onValidUpdate, from, to, minDate, maxDate } = this.props;
 
     if (monthView) {
       this.setState({ isFocused: true });
@@ -117,6 +122,8 @@ export class RangePickerInputer extends Component {
     });
 
     let newDate = getValidMomentFromISOStringOrNull(e.target.value, format);
+    if (minDate && newDate < minDate) newDate = minDate;
+    if (maxDate && newDate > maxDate) newDate = maxDate;
 
     if (newDate && from) {
       if (e.target.value.indexOf("_") === -1 && newDate.isBefore(from)) {
@@ -169,13 +176,25 @@ export class RangePickerInputer extends Component {
   };
 
   onLeftFocus = () => {
-    this.onFocus();
-    this.props.onLeftFocus();
+    const { onLeftFocus } = this.props;
+
+    this.setState({ firstFocused: false }, () => {
+      this.onFocus();
+      onLeftFocus();
+    });
   };
 
   onRightFocus = () => {
-    this.onFocus();
-    this.props.onRightFocus();
+    const { from, onRightFocus } = this.props;
+    const { firstFocused } = this.state;
+
+    if (from === null && firstFocused) {
+      this.focusLeft();
+      this.onLeftFocus();
+    } else {
+      this.onFocus();
+      onRightFocus();
+    }
   };
 
   focusRight = () => {
