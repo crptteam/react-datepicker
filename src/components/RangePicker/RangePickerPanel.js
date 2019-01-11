@@ -47,8 +47,20 @@ export class RangePickerPanel extends Component {
       const startDate = props.from ? moment(props.from) : null;
       const endDate = props.to ? moment(props.to) : null;
 
-      const leftDate = startDate ? moment(startDate) : moment();
-      const rightDate = endDate ? moment(endDate) : moment();
+      let leftDate;
+
+      if (startDate === null && endDate !== null) {
+        leftDate = moment(endDate);
+      } else {
+        leftDate = startDate ? moment(startDate) : moment();
+      }
+
+      let rightDate;
+      if (endDate === null && startDate !== null) {
+        rightDate = moment(startDate);
+      } else {
+        rightDate = endDate ? moment(endDate) : moment();
+      }
 
       return {
         startDate,
