@@ -292,6 +292,7 @@ class RangePicker extends Component {
           positionX={positionX}
           positionY={positionY}
           visible={isOpen}
+          theme={theme}
         >
           {isOpen && showPointer && (<OptionsPointer theme={theme} />)}
           <RangePickerPanel
