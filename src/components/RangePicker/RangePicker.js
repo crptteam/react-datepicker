@@ -171,40 +171,43 @@ class RangePicker extends Component {
 
   onLeftSelect = (date) => {
     const { onChange, onUpdate } = this.props;
-    const { to, minDate, maxDate } = this.state;
-
-    let newDate = date;
+    const { minDate, maxDate } = this.state;
+    let { to } = this.state;
+    const from = date;
 
     if (date !== null) {
       if ((minDate && date < minDate) || (maxDate && date > maxDate)) return;
       if (date.isSame(to, 'day')) {
-        newDate = moment(date).add(1, 'day').add(-1, 'millisecond');
+        to = moment(date).add(1, 'day').add(-1, 'millisecond');
+      } else if (date.isAfter(to)) {
+        to = null;
       }
     }
 
-    this.setState({ from: newDate, step: PickerStep.RIGHT });
-    onChange({ from: newDate, to });
-    onUpdate({ from: newDate, to });
-
+    this.setState({ from, to, step: PickerStep.RIGHT });
+    onChange({ from, to });
+    onUpdate({ from, to });
     this.inputer.focusRight();
   };
 
   onRightSelect = (date) => {
     const { onChange, onUpdate } = this.props;
-    const { from, minDate, maxDate } = this.state;
-
-    let newDate = date;
+    const { minDate, maxDate } = this.state;
+    let { from } = this.state;
+    let to = date;
 
     if (date !== null) {
       if ((minDate && date < minDate) || (maxDate && date > maxDate)) return;
       if (date.isSame(from, 'day')) {
-        newDate = moment(date).add(1, 'day').add(-1, 'millisecond');
+        to = moment(date).add(1, 'day').add(-1, 'millisecond');
+      } else if (date.isBefore(from)) {
+        from = null;
       }
     }
 
-    this.setState({ to: newDate });
-    onChange({ from, to: newDate });
-    onUpdate({ from, to: newDate });
+    this.setState({ from, to });
+    onChange({ from, to });
+    onUpdate({ from, to });
   };
 
   onValidUpdate = (state) => {

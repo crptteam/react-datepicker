@@ -214,40 +214,35 @@ export class RangePickerPanel extends Component {
 
   onLeftSelect = (date) => {
     const { onLeftSelect, minDate, maxDate } = this.props;
-    let { startDate, endDate } = this.state;
+    let { startDate } = this.state;
+
     if (minDate && date.date < minDate) return;
     if (maxDate && date.date > maxDate) return;
 
     if (startDate && startDate.isSame(date.date, "day")) {
       startDate = null;
-    } else if (
-      (endDate && endDate.isSame(date.date, "day")) ||
-      (endDate && endDate.isBefore(date.date, "day"))
-    ) {
-      startDate = moment(date.date);
-      endDate = null;
     } else {
       startDate = moment(date.date);
     }
 
     this.setState(
-      { startDate, endDate },
+      { startDate },
       () => onLeftSelect(startDate),
     );
   };
 
   isRightDisabled = (date) => {
     const { minDate, maxDate } = this.props;
-    const { startDate } = this.state;
 
     if (minDate && date < minDate) return true;
     if (maxDate && date > maxDate) return true;
 
-    return startDate && date.isBefore(startDate, "day");
+    return false;
   };
 
   isLeftDisabled = (date) => {
     const { minDate, maxDate } = this.props;
+
     if (minDate && date < minDate) return true;
     if (maxDate && date > maxDate) return true;
 
@@ -256,7 +251,7 @@ export class RangePickerPanel extends Component {
 
   onRightSelect = (date) => {
     const { onRightSelect, minDate, maxDate } = this.props;
-    let { startDate, endDate } = this.state;
+    let { endDate } = this.state;
 
     if (minDate && date.date < minDate) return;
     if (maxDate && date.date > maxDate) return;
@@ -268,7 +263,7 @@ export class RangePickerPanel extends Component {
     }
 
     this.setState(
-      { startDate, endDate },
+      { endDate },
       () => onRightSelect(endDate),
     );
   };

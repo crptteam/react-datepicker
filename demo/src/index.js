@@ -51,7 +51,6 @@ class Demo extends Component {
           acceptText="Применить"
           resetText="Сбросить"
           savePlaceholder
-          onTogglePanel={console.log}
         />
         <h1>react-datepicker Demo</h1>
         <RangePicker
@@ -61,7 +60,6 @@ class Demo extends Component {
           placeholder="Очень длинный плейсхолдер, который должен вместиться в инпут"
           savePlaceholder
           onChange={vals => console.log('VALS', vals)}
-          onTogglePanel={console.log}
         />
       </div>
     );
