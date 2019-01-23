@@ -27,6 +27,8 @@ class RangePicker extends Component {
     isError: PropTypes.bool,
     from: PropTypes.string,
     to: PropTypes.string,
+    onClearFrom: PropTypes.string,
+    onClearTo: PropTypes.string,
     onChange: PropTypes.func,
     onUpdate: PropTypes.func,
     monthView: PropTypes.bool,
@@ -156,13 +158,36 @@ class RangePicker extends Component {
     }
   };
 
-  clear = () => {
-    const { onUpdate, onChange } = this.props;
-    const { step } = this.state;
-    this.setState({ from: null, to: null });
 
-    onUpdate({ from: null, to: null });
-    onChange({ from: null, to: null });
+  clear = () => {
+    const { onUpdate, onChange, onClearTo, onClearFrom, format } = this.props;
+    const { step } = this.state;
+
+    let from, to;
+
+    if (onClearFrom) {
+      const start = onClearFrom && moment(onClearFrom, format);
+      from = start ? start : null;
+    } else {
+      from = null;
+    }
+
+    if (onClearTo) {
+      const end = onClearTo && moment(onClearTo, format);
+      to = end ? end : null;
+    } else {
+      to = null;
+    }
+
+
+
+    this.setState({
+      from: from,
+      to: to
+    });
+
+    onUpdate({ from: from, to: to });
+    onChange({ from: from, to: to });
   };
 
   onAccept = () => {
