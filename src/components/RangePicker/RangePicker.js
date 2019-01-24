@@ -163,11 +163,12 @@ class RangePicker extends Component {
     const { onUpdate, onChange, onClearTo, onClearFrom, format } = this.props;
     const { step } = this.state;
 
-    let from, to;
+    let from, to, returnValue;
 
     if (onClearFrom) {
       const start = onClearFrom && moment(onClearFrom, format);
       from = start ? start : null;
+      returnValue = {from, to: null, _type: 'RangePicker'};
     } else {
       from = null;
     }
@@ -175,11 +176,10 @@ class RangePicker extends Component {
     if (onClearTo) {
       const end = onClearTo && moment(onClearTo, format);
       to = end ? end : null;
+      returnValue = returnValue ? {...returnValue, to} : {from: null, to, _type: 'RangePicker'};
     } else {
       to = null;
     }
-
-
 
     this.setState({
       from: from,
@@ -188,6 +188,8 @@ class RangePicker extends Component {
 
     onUpdate({ from: from, to: to });
     onChange({ from: from, to: to });
+
+    return returnValue;
   };
 
   onAccept = () => {
