@@ -212,23 +212,28 @@ export class RangePickerPanel extends Component {
     }
   };
 
+  selectionTimeout = undefined;
+
   onLeftSelect = (date) => {
     const { onLeftSelect, minDate, maxDate } = this.props;
     let { startDate } = this.state;
 
-    if (minDate && date.date < minDate) return;
-    if (maxDate && date.date > maxDate) return;
+    clearTimeout(this.selectionTimeout);
+    this.selectionTimeout = setTimeout(() => {
+      if (minDate && date.date < minDate) return;
+      if (maxDate && date.date > maxDate) return;
 
-    if (startDate && startDate.isSame(date.date, "day")) {
-      startDate = null;
-    } else {
-      startDate = moment(date.date);
-    }
+      if (startDate && startDate.isSame(date.date, "day")) {
+        startDate = null;
+      } else {
+        startDate = moment(date.date);
+      }
 
-    this.setState(
-      { startDate },
-      () => onLeftSelect(startDate),
-    );
+      this.setState(
+        { startDate },
+        () => onLeftSelect(startDate),
+      );
+    }, 200);
   };
 
   isRightDisabled = (date) => {
@@ -253,19 +258,22 @@ export class RangePickerPanel extends Component {
     const { onRightSelect, minDate, maxDate } = this.props;
     let { endDate } = this.state;
 
-    if (minDate && date.date < minDate) return;
-    if (maxDate && date.date > maxDate) return;
+    clearTimeout(this.selectionTimeout);
+    this.selectionTimeout = setTimeout(() => {
+      if (minDate && date.date < minDate) return;
+      if (maxDate && date.date > maxDate) return;
 
-    if (endDate && endDate.isSame(date.date, "day")) {
-      endDate = null;
-    } else {
-      endDate = moment(date.date);
-    }
+      if (endDate && endDate.isSame(date.date, "day")) {
+        endDate = null;
+      } else {
+        endDate = moment(date.date);
+      }
 
-    this.setState(
-      { endDate },
-      () => onRightSelect(endDate),
-    );
+      this.setState(
+        { endDate },
+        () => onRightSelect(endDate),
+      );
+    }, 200);
   };
 
   render() {
