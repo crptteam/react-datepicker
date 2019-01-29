@@ -38,6 +38,7 @@ import { DatePicker, RangePicker } from  "@crpt/react-datepicker";
 | showPointer: bool | show dialogue pointer | |
 | minDate: string | Minimal date | |
 | maxDate: string | Maximal date | |
+| rightIconReplacer: element | JSX to replace both icons at once | |
 
 
 

@@ -35,6 +35,7 @@ class DatePicker extends Component {
     showPointer: PropTypes.bool,
     minDate: PropTypes.string,
     maxDate: PropTypes.string,
+    rightIconReplacer: PropTypes.element,
   };
 
   static defaultProps = {
@@ -187,6 +188,7 @@ class DatePicker extends Component {
       acceptText,
       resetText,
       showPointer,
+      rightIconReplacer,
     } = this.props;
     const {
       date,
@@ -217,6 +219,7 @@ class DatePicker extends Component {
         outFormat={outFormat}
         minDate={minDate}
         maxDate={maxDate}
+        rightIconReplacer={rightIconReplacer}
       >
         <PanelWrap
           innerRef={this.onPanelRef}
