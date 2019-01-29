@@ -35,6 +35,7 @@ class Demo extends Component {
           placeholder="Очень длинный плейсхолдер, который должен вместиться в инпут"
           savePlaceholder
           monthView={true}
+          rightIconReplacer={<div>1</div>}
           format={'YYYY'}
           acceptText="Применить"
           resetText="Сбросить"

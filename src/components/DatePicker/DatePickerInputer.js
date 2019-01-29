@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import PropTypes from 'prop-types';
+import PropTypes from "prop-types";
 import { getValidMomentFromISOStringOrNull } from "../../utils";
 import Inputmask from "inputmask";
 
@@ -11,11 +11,11 @@ import InputerIcon from "../InputerIcon";
 
 export class DatePickerInputer extends Component {
   static propTypes = {
-    inline: PropTypes.bool,
+    inline: PropTypes.bool
   };
 
   static defaultProps = {
-    inline: false,
+    inline: false
   };
 
   dateInput;
@@ -33,7 +33,7 @@ export class DatePickerInputer extends Component {
 
     if (!this.props.monthView) {
       const mask = this.props.format
-        ? this.props.format.replace(/\w/g, '9')
+        ? this.props.format.replace(/\w/g, "9")
         : "9999.99.99";
 
       this.mask = mask;
@@ -44,13 +44,13 @@ export class DatePickerInputer extends Component {
   static getDerivedStateFromProps(props, state) {
     if (!state.isFocused && props.date) {
       return {
-        isFocused: true,
+        isFocused: true
       };
     }
 
     if (!props.date && !props.isOpen) {
       return {
-        isFocused: false,
+        isFocused: false
       };
     }
 
@@ -63,8 +63,15 @@ export class DatePickerInputer extends Component {
     }
   }
 
-  onChange = (e) => {
-    const { monthView, format, date, onValidUpdate, minDate, maxDate } = this.props;
+  onChange = e => {
+    const {
+      monthView,
+      format,
+      date,
+      onValidUpdate,
+      minDate,
+      maxDate
+    } = this.props;
 
     if (monthView) {
       this.setState({ isFocused: true });
@@ -94,12 +101,10 @@ export class DatePickerInputer extends Component {
     if (editingValue !== null) return editingValue;
 
     const preparedFormat = monthView
-      ? (outFormat || "MMMM YYYY")
-      : (format || "YYYY.MM.DD");
+      ? outFormat || "MMMM YYYY"
+      : format || "YYYY.MM.DD";
 
-    return date
-      ? date.format(preparedFormat)
-      : "";
+    return date ? date.format(preparedFormat) : "";
   };
 
   onFocus = () => {
@@ -108,7 +113,7 @@ export class DatePickerInputer extends Component {
     });
   };
 
-  onBlur = (e) => {
+  onBlur = e => {
     this.setState({
       editingValue: null
     });
@@ -120,7 +125,7 @@ export class DatePickerInputer extends Component {
     }
   };
 
-  onClear = (e) => {
+  onClear = e => {
     const { onClear } = this.props;
     this.setState({ isFocused: false });
     onClear(e);
@@ -140,6 +145,7 @@ export class DatePickerInputer extends Component {
       savePlaceholder,
       monthView,
       children,
+      rightIconReplacer
     } = this.props;
 
     const { isFocused } = this.state;
@@ -155,11 +161,7 @@ export class DatePickerInputer extends Component {
         theme={theme}
         component="DatePicker"
       >
-        <InputContentWrap
-          theme={theme}
-          disabled={disabled}
-          isError={isError}
-        >
+        <InputContentWrap theme={theme} disabled={disabled} isError={isError}>
           <Placeholder
             focused={isFocused}
             disabled={disabled}
@@ -184,11 +186,15 @@ export class DatePickerInputer extends Component {
             component="DatePicker"
           />
 
-          <InputerIcon
-            isFocused={isFocused}
-            disabled={disabled}
-            onClear={this.onClear}
-          />
+          {rightIconReplacer ? (
+            rightIconReplacer
+          ) : (
+            <InputerIcon
+              isFocused={isFocused}
+              disabled={disabled}
+              onClear={this.onClear}
+            />
+          )}
         </InputContentWrap>
         {children}
       </InputWrap>
