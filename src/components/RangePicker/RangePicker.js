@@ -312,6 +312,7 @@ class RangePicker extends Component {
       acceptText,
       resetText,
       showPointer,
+      noActions,
     } = this.props;
     const { from, to, step, minDate, maxDate } = this.state;
     const isOpen = step !== PickerStep.NONE;
@@ -354,6 +355,7 @@ class RangePicker extends Component {
           <RangePickerPanel
             showPointer={showPointer}
             from={from}
+            noActions={noActions}
             to={to}
             theme={theme}
             monthView={monthView}
@@ -364,6 +366,7 @@ class RangePicker extends Component {
             step={step}
             acceptText={acceptText}
             resetText={resetText}
+            onBlur={this.onBlur}
             minDate={minDate}
             maxDate={maxDate}
           />

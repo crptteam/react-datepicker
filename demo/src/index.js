@@ -184,6 +184,7 @@ class Demo extends Component {
           acceptText="Применить"
           resetText="Сбросить"
           savePlaceholder
+          noActions
           theme={{ DatePicker: theme }}
         />
         <h1>RangePicker Demo</h1>

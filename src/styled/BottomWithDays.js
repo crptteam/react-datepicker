@@ -6,7 +6,7 @@ const BottomWithDays = styled.div`
   justify-content: space-between;
   flex-wrap: wrap;
   white-space: normal;
-  margin-bottom: 45px;
+  margin-bottom: 20px;
 `;
 
 export default BottomWithDays;
