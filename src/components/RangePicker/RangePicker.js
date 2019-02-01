@@ -40,6 +40,7 @@ class RangePicker extends Component {
     onTogglePanel: PropTypes.func,
     leftPlaceholder: PropTypes.string,
     rightPlaceholder: PropTypes.string,
+    noActions: PropTypes.bool,
   };
 
   static defaultProps = {
