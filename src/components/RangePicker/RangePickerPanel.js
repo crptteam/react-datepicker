@@ -255,7 +255,7 @@ export class RangePickerPanel extends Component {
   };
 
   onRightSelect = (date) => {
-    const { onRightSelect, minDate, maxDate } = this.props;
+    const { onRightSelect, minDate, maxDate, noActions, onAccept, onBlur } = this.props;
     let { endDate } = this.state;
 
     clearTimeout(this.selectionTimeout);
@@ -269,9 +269,16 @@ export class RangePickerPanel extends Component {
         endDate = moment(date.date);
       }
 
+      if (noActions) {
+        onAccept();
+        onBlur();
+      }
+
       this.setState(
         { endDate },
-        () => onRightSelect(endDate),
+        () => {
+          onRightSelect(endDate);
+        }
       );
     }, 200);
   };
@@ -286,6 +293,7 @@ export class RangePickerPanel extends Component {
       showPointer,
       onAccept,
       onReset,
+      noActions,
     } = this.props;
     const { leftDate, rightDate, startDays, endDays } = this.state;
 
@@ -437,13 +445,13 @@ export class RangePickerPanel extends Component {
           )}
         </HalfC>
 
-        <Actions
+        {!noActions && <Actions
           onAccept={onAccept}
           onReset={onReset}
           acceptText={acceptText}
           resetText={resetText}
           theme={theme}
-        />
+        />}
       </DatePickerPanelWrap>
     );
   }

@@ -217,17 +217,17 @@ export class RangePickerInputer extends Component {
   };
 
   onFromInputBlur = () => {
-    const { from, to } = this.props;
+    const { from } = this.props;
 
     this.setState({ editingFromValue: null });
-    if (!from && !to) this.setState({ isLeftFocused: false });
+    if (!from) this.setState({ isLeftFocused: false });
   };
 
   onToInputBlur = () => {
-    const { from, to } = this.props;
+    const { to } = this.props;
 
     this.setState({ editingToValue: null });
-    if (!from && !to) this.setState({ isRightFocused: false });
+    if (!to) this.setState({ isRightFocused: false });
   };
 
   onLeftClear = e => {

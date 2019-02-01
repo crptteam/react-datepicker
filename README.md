@@ -51,7 +51,8 @@ import { DatePicker, RangePicker } from  "@crpt/react-datepicker";
 | format: string | Date input format | `<RangePicker from="10.09.2014" to="20.09.2014" format="DD.MM.YYYY">` |
 | onChange: Function | Вызывается, когда меняется значение в DatePicker, параметром принимает объект с полями to и from. |  `<RangePicker onChange={val => alert(val)} />` |
 | onUpdate: Function | Вызывается, когда RangePicker теряет фокус или пользователь нажимает Enter. |  `<RangePicker onUpdate={val => alert(val)} />` |
-| placeholder: String | Set placeholder | `<RangePicker placeholder="Order date" />` |
+| leftPlaceholder: String | Set placeholder for left input | `<RangePicker leftPlaceholder="Order date" />` |
+| rightPlaceholder: String | Set placeholder for right input | `<RangePicker rightPlaceholder="Order date" />` |
 | savePlaceholder: Boolean | Don't hide placeholder | `<RangePicker savePlaceholder />` |
 | positionX: string | if value is "left" calendar is showed at the left, otherwise - right | | 
 | positionY: string | if value is "top" calendar is showed at the top, otherwise - bottom | | 
@@ -61,6 +62,8 @@ import { DatePicker, RangePicker } from  "@crpt/react-datepicker";
 | showPointer: bool | show dialogue pointer | |
 | minDate: string | Minimal date | |
 | maxDate: string | Maximal date | |
+| noActions: bool | Remove buttons accept/clear | |
+
 
 
 [build-badge]: https://img.shields.io/travis/user/repo/master.png?style=flat-square
