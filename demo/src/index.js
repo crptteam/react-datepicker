@@ -3,13 +3,145 @@ import { render } from "react-dom";
 
 import { DatePicker, RangePicker } from "../../src";
 
+const theme = {
+  height: "38px",
+  borderRadius: "2px",
+  fontSize: "16px",
+  fontWeight: 200,
+  Day: {
+    width: "24px",
+    height: "24px",
+    borderRadius: "2px",
+    hoverBackground: "#F8EC31",
+    hoverColor: "#434343",
+    hovered: {
+      background: "#f8f27a",
+      color: "#434343"
+    },
+    selected: {
+      background: "#F8EC31",
+      color: "#434343",
+      fontWeight: 600
+    },
+    main: {
+      color: "#212C42",
+      background: "rgba(0,0,0,0)"
+    }
+  },
+  DayWrap: {
+    width: "28px",
+    height: "28px",
+    hoverBackground: "#F8EC31",
+    hoverColor: "#434343",
+    hovered: {
+      background: "#f8f27a",
+      color: "#434343"
+    }
+  },
+  placeholder: {
+    normal: "#ACADB5",
+    disabled: "#ACADB5",
+    error: "#ACADB5"
+  },
+  Placeholder: {
+    fontWeight: 200,
+    main: {
+      color: "#abadb6"
+    },
+    error: {
+      color: "#abadb6"
+    },
+    disabled: {
+      color: "#abadb6"
+    },
+    normal: {
+      fontSize: "16px",
+      height: "24px",
+      top: "11px"
+    },
+    focused: {
+      top: "4px",
+      fontSize: "12px",
+      height: "14px"
+    }
+  },
+  InputWrap: {
+    main: {
+      background: "#FFFFFF",
+      border: "1px solid rgba(196, 196, 196, 0.25)",
+      cursor: "normal"
+    },
+    disabled: {
+      background: "#FFFFFF",
+      border: "1px solid #ABADB5",
+      cursor: "not-allowed"
+    },
+    error: {
+      background: "#FFEBEB",
+      border: "1px solid #FF3C21",
+      cursor: "normal"
+    },
+    height: "38px",
+    borderRadius: "3px",
+    paddingLeft: "16px",
+    paddingRight: "16px"
+  },
+  InputElem: {
+    main: {
+      color: "#212C42",
+      placeholderColor: "#ACADB5",
+      cursor: "text",
+      background: "rgba(0,0,0,0)"
+    },
+    normal: {
+      top: '8px'
+    },
+    disabled: {
+      color: "#212C42",
+      placeholderColor: "#ACADB5",
+      cursor: "not-allowed",
+      background: "rgba(0,0,0,0)"
+    },
+    error: {
+      color: "#212C42",
+      placeholderColor: "#ACADB5",
+      cursor: "text",
+      background: "rgba(0,0,0,0)"
+    },
+    height: "24px"
+  },
+  InputContentWrap: {
+    width: "calc(100% - 32px)"
+  },
+  DatePickerPanelWrap: {
+    top: "35px",
+    bottom: "36px",
+    borderRadius: "3px",
+    paddingTop: "15px",
+    paddingLeft: "23px",
+    paddingRight: "23px",
+    paddingBottom: "15px",
+    main: {
+      border: "1px solid rgba(196, 196, 196, 0.25)"
+    },
+  }
+};
+
 class Demo extends Component {
   state = {
-    date: '',
+    date: ""
   };
 
   componentDidMount() {
-    setTimeout(() => this.setState({ date: '09.10.2018', from: '01.01.2018', to: '01.10.2018' }), 500);
+    setTimeout(
+      () =>
+        this.setState({
+          date: "09.10.2018",
+          from: "01.01.2018",
+          to: "01.10.2018"
+        }),
+      500
+    );
   }
 
   render() {
@@ -36,7 +168,7 @@ class Demo extends Component {
           savePlaceholder
           monthView={true}
           rightIconReplacer={<div>1</div>}
-          format={'YYYY'}
+          format={"YYYY"}
           acceptText="Применить"
           resetText="Сбросить"
           onTogglePanel={console.log}
@@ -52,6 +184,7 @@ class Demo extends Component {
           acceptText="Применить"
           resetText="Сбросить"
           savePlaceholder
+          theme={{ DatePicker: theme }}
         />
         <h1>RangePicker Demo</h1>
         <RangePicker
@@ -60,7 +193,7 @@ class Demo extends Component {
           isError={true}
           placeholder="Очень длинный плейсхолдер, который должен вместиться в инпут"
           savePlaceholder
-          onChange={vals => console.log('VALS', vals)}
+          onChange={vals => console.log("VALS", vals)}
         />
       </div>
     );
