@@ -296,7 +296,7 @@ export class RangePickerInputer extends Component {
 
     return (
       <FlexWrap innerRef={el => mainRef(el)} onBlur={onBlur}>
-        <HalfInputWrap leftPanel>
+        <HalfInputWrap leftPanel theme={theme}>
           <InputContentWrap
             theme={theme}
             disabled={disabled}
@@ -337,7 +337,7 @@ export class RangePickerInputer extends Component {
 
           </InputContentWrap>
         </HalfInputWrap>
-        <HalfInputWrap>
+        <HalfInputWrap theme={theme}>
           <InputContentWrap
             theme={theme}
             disabled={disabled}
