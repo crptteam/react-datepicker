@@ -41,19 +41,19 @@ class Demo extends Component {
           resetText="Сбросить"
           onTogglePanel={console.log}
         />
-        <h1>react-datepicker Demo</h1>
+        <h1>RangePicker Demo</h1>
         <RangePicker
           format="DD.MM.YYYY"
           minDate="20.01.2013"
           maxDate="01.01.2020"
           positionX="left"
           positionY="bottom"
-          placeholder="Очень длинный плейсхолдер, который должен вместиться в инпут"
+          placeholder="Фильтр по дате"
           acceptText="Применить"
           resetText="Сбросить"
           savePlaceholder
         />
-        <h1>react-datepicker Demo</h1>
+        <h1>RangePicker Demo</h1>
         <RangePicker
           positionX="left"
           positionY="bottom"
