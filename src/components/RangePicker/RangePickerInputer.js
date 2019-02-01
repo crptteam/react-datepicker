@@ -39,7 +39,7 @@ export class RangePickerInputer extends Component {
       editingToValue: null,
       isLeftFocused: !!this.props.from,
       isRightFocused: !!this.props.to,
-      firstFocused: true
+      firstFocused: false
     };
 
     if (!this.props.monthView) {
