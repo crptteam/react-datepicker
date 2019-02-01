@@ -334,8 +334,9 @@ class RangePicker extends Component {
         theme={theme}
         onRef={inputer => this.inputer = inputer}
         mainRef={el => this.main = el}
-        placeholder={placeholder}
         savePlaceholder={savePlaceholder}
+        leftPlaceholder={leftPlaceholder}
+        rightPlaceholder={rightPlaceholder}
         monthView={monthView}
         format={format}
         isOpen={isOpen}
