@@ -37,7 +37,8 @@ export class RangePickerInputer extends Component {
     this.state = {
       editingFromValue: null,
       editingToValue: null,
-      isFocused: !!this.props.from || !!this.props.to,
+      isLeftFocused: !!this.props.from,
+      isRightFocused: !!this.props.to,
       firstFocused: true
     };
 
