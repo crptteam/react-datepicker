@@ -237,21 +237,21 @@ export class RangePickerPanel extends Component {
   };
 
   isRightDisabled = (date) => {
-    const { minDate, maxDate } = this.props;
+    const { minDate, maxDate, from } = this.props;
 
     if (minDate && date < minDate) return true;
     if (maxDate && date > maxDate) return true;
 
-    return false;
+    return from ? date < from : false;
   };
 
   isLeftDisabled = (date) => {
-    const { minDate, maxDate } = this.props;
+    const { minDate, maxDate, to } = this.props;
 
     if (minDate && date < minDate) return true;
     if (maxDate && date > maxDate) return true;
 
-    return false;
+    return to ? date > to : false;
   };
 
   onRightSelect = (date) => {

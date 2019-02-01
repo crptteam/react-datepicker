@@ -38,6 +38,8 @@ class RangePicker extends Component {
     acceptText: PropTypes.string,
     resetText: PropTypes.string,
     onTogglePanel: PropTypes.func,
+    leftPlaceholder: PropTypes.string,
+    rightPlaceholder: PropTypes.string,
   };
 
   static defaultProps = {
@@ -147,42 +149,63 @@ class RangePicker extends Component {
     }
   };
 
-  onClear = (e) => {
+  onLeftClear = (e) => {
     const { step } = this.state;
     e.preventDefault();
     e.stopPropagation();
-    this.clear();
+    this.leftClear();
+    this.inputer.focusLeft();
+  };
 
-    if (step === PickerStep.RIGHT) {
-      this.inputer.focusLeft();
-    }
+  onRightClear = (e) => {
+    const { step } = this.state;
+    e.preventDefault();
+    e.stopPropagation();
+    this.rightClear();
+
+    this.inputer.focusRight();
   };
 
 
-  clear = () => {
-    const { onUpdate, onChange, onClearTo, onClearFrom, format } = this.props;
-    const { step } = this.state;
+  leftClear = () => {
+    const { onUpdate, onChange, onClearFrom, format } = this.props;
+    const { to } = this.state;
 
-    let from, to, returnValue;
+    let from, returnValue;
 
     if (onClearFrom) {
       const start = onClearFrom && moment(onClearFrom, format);
       from = start ? start : null;
-      returnValue = {from, to: null, _type: 'RangePicker'};
+      returnValue = {from, to: to, _type: 'RangePicker'};
     } else {
       from = null;
     }
 
+    this.setState({
+      from: from,
+    });
+
+    onUpdate({ from: from, to: to });
+    onChange({ from: from, to: to });
+
+    return returnValue;
+  };
+
+  rightClear = () => {
+    const { onUpdate, onChange, onClearTo, format } = this.props;
+    const { from } = this.state;
+
+    let to, returnValue;
+
     if (onClearTo) {
       const end = onClearTo && moment(onClearTo, format);
       to = end ? end : null;
-      returnValue = returnValue ? {...returnValue, to} : {from: null, to, _type: 'RangePicker'};
+      returnValue = returnValue ? {...returnValue, to} : {from, to, _type: 'RangePicker'};
     } else {
       to = null;
     }
 
     this.setState({
-      from: from,
       to: to
     });
 
@@ -279,7 +302,8 @@ class RangePicker extends Component {
       isError,
       inline,
       theme,
-      placeholder,
+      leftPlaceholder,
+      rightPlaceholder,
       savePlaceholder,
       monthView,
       format,
@@ -301,7 +325,8 @@ class RangePicker extends Component {
         onBlur={this.onBlur}
         onMouseDown={this.onMouseDown}
         onValidUpdate={this.onValidUpdate}
-        onClear={this.onClear}
+        onLeftClear={this.onLeftClear}
+        onRightClear={this.onRightClear}
         from={from}
         to={to}
         name={name}
@@ -319,7 +344,7 @@ class RangePicker extends Component {
       >
         <PanelWrap
           innerRef={this.onPanelRef}
-          positionX={positionX}
+          positionX={step === PickerStep.LEFT ? 'right' : 'left'}
           positionY={positionY}
           visible={isOpen}
           theme={theme}
