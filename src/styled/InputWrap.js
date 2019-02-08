@@ -1,8 +1,8 @@
 import React from "react";
 import styled from "styled-components";
 
-import { getThemeAsPlainTextByKeys, innerMerge } from "../utils";
 import defaultTheme from "../theme/defaultTheme";
+import { getThemeAsPlainTextByKeys, innerMerge, toStyled } from '../utils';
 
 const Elem = styled.label`
   js-display: ${props => (props.inline ? "inline-flex" : "flex")};
@@ -12,7 +12,11 @@ const Elem = styled.label`
   height: ${props => props.height};
   box-sizing: border-box;
   background: ${props => props.background};
-  border: ${props => props.border};
+  ${toStyled('border', 'border')}
+  ${toStyled('borderLeft', 'border-left')}
+  ${toStyled('borderTop', 'border-top')}
+  ${toStyled('borderRight', 'border-right')}
+  ${toStyled('borderBottom', 'border-bottom')}
   box-sizing: border-box;
   border-radius: ${props => props.borderRadius};
   padding-left: ${props => props.paddingLeft};
