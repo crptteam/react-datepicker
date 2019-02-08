@@ -57,3 +57,7 @@ export function innerMerge(obj, ...others) {
 
   return obj;
 }
+
+export const toStyled = (name, target) => props => (
+  name in props ? `${target}: ${props[name]};` : ''
+);
