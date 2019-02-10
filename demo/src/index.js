@@ -164,11 +164,12 @@ class Demo extends Component {
         <DatePicker
           positionX="left"
           positionY="bottom"
-          placeholder="Очень длинный плейсхолдер, который должен вместиться в инпут"
+          placeholder="Выбор месяца"
           savePlaceholder
           monthView={true}
+          onClearDate={'12-2017'}
           rightIconReplacer={<div>1</div>}
-          format={"YYYY"}
+          format={"MM-YYYY"}
           acceptText="Применить"
           resetText="Сбросить"
           onTogglePanel={console.log}
