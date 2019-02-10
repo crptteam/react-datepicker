@@ -1,19 +1,19 @@
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
-import { withTheme } from 'styled-components';
+import React, { Component } from "react";
+import PropTypes from "prop-types";
+import { withTheme } from "styled-components";
 
-import { DatePickerPanel } from './DatePickerPanel';
-import { DatePickerInputer } from './DatePickerInputer';
+import { DatePickerPanel } from "./DatePickerPanel";
+import { DatePickerInputer } from "./DatePickerInputer";
 
-import moment from 'moment';
-import defaultTheme from '../../theme/defaultTheme';
+import moment from "moment";
+import defaultTheme from "../../theme/defaultTheme";
 import OptionsPointer from "../../styled/OptionsPointer";
 import PanelWrap from "../../styled/PanelWrap";
 
-moment.locale('ru');
+moment.locale("ru");
 
 class DatePicker extends Component {
-  static displayName = 'DatePicker';
+  static displayName = "DatePicker";
 
   static propTypes = {
     onRef: PropTypes.func,
@@ -36,6 +36,7 @@ class DatePicker extends Component {
     minDate: PropTypes.string,
     maxDate: PropTypes.string,
     rightIconReplacer: PropTypes.element,
+    onClearDate: PropTypes.string
   };
 
   static defaultProps = {
@@ -46,14 +47,15 @@ class DatePicker extends Component {
     disabled: false,
     isError: false,
     theme: defaultTheme,
-    positionX: '',
-    positionY: '',
+    positionX: "",
+    positionY: "",
     format: null,
-    acceptText: 'Применить',
-    resetText: 'Сбросить',
+    acceptText: "Применить",
+    resetText: "Сбросить",
     showPointer: false,
     minDate: undefined,
     maxDate: undefined,
+    onClearDate: undefined
   };
 
   blurTimeout;
@@ -72,20 +74,18 @@ class DatePicker extends Component {
       date: preparedDate,
       initialDate: date,
       minDate: minDate ? moment(minDate, format) : undefined,
-      maxDate: maxDate ? moment(maxDate, format) : undefined,
+      maxDate: maxDate ? moment(maxDate, format) : undefined
     };
   }
 
   static getDerivedStateFromProps(props, state) {
     if (props.date !== state.initialDate) {
-      const date = props.date
-        ? moment(props.date, props.format)
-        : null;
+      const date = props.date ? moment(props.date, props.format) : null;
 
       return {
         date,
-        initialDate: props.date,
-      }
+        initialDate: props.date
+      };
     }
 
     return null;
@@ -102,36 +102,37 @@ class DatePicker extends Component {
     if (this.blurTimeout) clearTimeout(this.blurTimeout);
   }
 
-  onClear = (e) => {
+  onClear = e => {
     e.preventDefault();
     e.stopPropagation();
     this.clear();
   };
 
   clear = () => {
-    const { onUpdate, onChange } = this.props;
-    this.setState({ date: null });
-    onUpdate({ date: null });
-    onChange({ date: null });
+    const { onUpdate, onChange, onClearDate, format } = this.props;
+    let date = null;
+    if (onClearDate) {
+      date = moment(onClearDate, format);
+    }
+    this.setState({ date });
+    onUpdate({ date });
+    onChange({ date });
   };
 
   onAccept = () => {
     const { onTogglePanel } = this.props;
 
-    this.setState(
-      { isOpen: false },
-      () => onTogglePanel(false),
-    );
+    this.setState({ isOpen: false }, () => onTogglePanel(false));
   };
 
-  onSelect = (date) => {
+  onSelect = date => {
     const { onChange, onUpdate } = this.props;
     this.setState({ date });
     onChange({ date });
-    onUpdate({ date })
+    onUpdate({ date });
   };
 
-  onValidUpdate = (state) => {
+  onValidUpdate = state => {
     const { onUpdate } = this.props;
     this.setState(state);
     onUpdate(state);
@@ -141,10 +142,7 @@ class DatePicker extends Component {
     const { onTogglePanel } = this.props;
     const { isOpen } = this.state;
 
-    this.setState(
-      { isOpen: true },
-      () => !isOpen && onTogglePanel(true)
-    );
+    this.setState({ isOpen: true }, () => !isOpen && onTogglePanel(true));
 
     if (this.blurTimeout) clearTimeout(this.blurTimeout);
   };
@@ -154,10 +152,7 @@ class DatePicker extends Component {
       const { onUpdate, onTogglePanel } = this.props;
       const { isOpen, date } = this.state;
 
-      this.setState(
-        { isOpen: false },
-        () => isOpen && onTogglePanel(false)
-      );
+      this.setState({ isOpen: false }, () => isOpen && onTogglePanel(false));
 
       onUpdate({ date });
     }, 200);
@@ -167,7 +162,7 @@ class DatePicker extends Component {
     if (this.blurTimeout) clearTimeout(this.blurTimeout);
   };
 
-  onPanelRef = (extRef) => {
+  onPanelRef = extRef => {
     this.optionsPanel = extRef;
   };
 
@@ -188,15 +183,9 @@ class DatePicker extends Component {
       acceptText,
       resetText,
       showPointer,
-      rightIconReplacer,
+      rightIconReplacer
     } = this.props;
-    const {
-      date,
-      isOpen,
-      minDate,
-      maxDate,
-    } = this.state;
-
+    const { date, isOpen, minDate, maxDate } = this.state;
 
     return (
       <DatePickerInputer
