@@ -146,7 +146,7 @@ class Demo extends Component {
 
   render() {
     return (
-      <div style={{ textAlign: "center" }}>
+      <div style={{ textAlign: "center", width: '400px' }}>
         <h1>react-datepicker Demo</h1>
         <DatePicker
           format="DD.MM.YYYY"
@@ -188,13 +188,24 @@ class Demo extends Component {
           noActions
           theme={{ DatePicker: theme }}
         />
-        <h1>RangePicker Demo</h1>
+        <h1>RangePicker</h1>
         <RangePicker
           positionX="left"
           positionY="bottom"
           isError={true}
           placeholder="Очень длинный плейсхолдер, который должен вместиться в инпут"
           savePlaceholder
+          onChange={vals => console.log("VALS", vals)}
+        />
+
+        <h1>RangePicker with noAutoFocus</h1>
+        <RangePicker
+          positionX="left"
+          positionY="bottom"
+          isError={true}
+          noAutoFocus
+          savePlaceholder
+          noActions
           onChange={vals => console.log("VALS", vals)}
         />
       </div>

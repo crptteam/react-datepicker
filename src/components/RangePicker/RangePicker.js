@@ -221,7 +221,7 @@ class RangePicker extends Component {
   };
 
   onLeftSelect = (date) => {
-    const { onChange, onUpdate } = this.props;
+    const { onChange, onUpdate, noAutoFocus } = this.props;
     const { minDate, maxDate } = this.state;
     let { to } = this.state;
     const from = date;
@@ -235,14 +235,25 @@ class RangePicker extends Component {
       }
     }
 
-    this.setState({ from, to, step: PickerStep.RIGHT });
+    this.setState({ from, to,  });
     onChange({ from, to });
     onUpdate({ from, to });
-    this.inputer.focusRight();
+    if (!noAutoFocus) {
+      this.setState({
+        step: PickerStep.RIGHT
+      });
+      this.inputer.focusRight();
+    }
+
+    else {
+      this.setState({
+        step: PickerStep.NONE
+      });
+    }
   };
 
   onRightSelect = (date) => {
-    const { onChange, onUpdate } = this.props;
+    const { onChange, onUpdate, noActions } = this.props;
     const { minDate, maxDate } = this.state;
     let { from } = this.state;
     let to = date;
@@ -259,6 +270,12 @@ class RangePicker extends Component {
     this.setState({ from, to });
     onChange({ from, to });
     onUpdate({ from, to });
+    if (noActions) {
+      this.setState({
+        step: PickerStep.NONE
+      })
+    }
+
   };
 
   onValidUpdate = (state) => {
