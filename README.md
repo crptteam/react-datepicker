@@ -63,6 +63,7 @@ import { DatePicker, RangePicker } from  "@crpt/react-datepicker";
 | minDate: string | Minimal date | |
 | maxDate: string | Maximal date | |
 | noActions: bool | Remove buttons accept/clear | |
+| noAutoFocus: bool | Do not focus right input after left date select | |
 
 
 
