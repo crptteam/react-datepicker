@@ -41,6 +41,7 @@ class RangePicker extends Component {
     leftPlaceholder: PropTypes.string,
     rightPlaceholder: PropTypes.string,
     noActions: PropTypes.bool,
+    noAutoFocus: PropTypes.bool,
   };
 
   static defaultProps = {
