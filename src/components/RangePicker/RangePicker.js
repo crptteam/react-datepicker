@@ -314,6 +314,11 @@ class RangePicker extends Component {
     this.optionsPanel = extRef;
   };
 
+  onClear = () => {
+    this.rightClear();
+    this.leftClear();
+  }
+
   render() {
     const {
       name,
