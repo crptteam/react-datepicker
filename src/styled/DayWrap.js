@@ -9,6 +9,8 @@ const Elem = styled.div`
   flex-basis: calc(100% / 7);
   margin-bottom: 8px;
   display: inline-flex;
+  box-sizing: border-box;
+  width: calc(100% / 7);
   vertical-align: top;
   align-items: center;
   justify-content: center;
