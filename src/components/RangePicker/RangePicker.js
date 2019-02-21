@@ -104,6 +104,7 @@ class RangePicker extends Component {
         to: toDate,
         initialFrom: props.from,
         initialTo: props.to,
+        step: PickerStep.NONE
       }
     }
 
@@ -152,12 +153,16 @@ class RangePicker extends Component {
   };
 
   clear = () => {
-    this.leftClear();
-    this.rightClear();
-    this.setState({
-      step: PickerStep.NONE
-    });
-  }
+    const { onUpdate, onChange } = this.props;
+    const leftValue = this.leftClear();
+    const rightValue = this.rightClear();
+    const value = {from: null, to: null,...leftValue, ...rightValue};
+    console.log('value clear', value);
+    onUpdate(value);
+    onChange(value);
+
+    return value;
+  };
 
   onLeftClear = (e) => {
     const { step } = this.state;
