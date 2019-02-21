@@ -53,15 +53,30 @@ export class RangePickerInputer extends Component {
   }
 
   static getDerivedStateFromProps(props, state) {
-    if (!state.isFocused && (props.from || props.to)) {
+
+    if (!state.isRightFocused && !state.isLeftFocused && props.from && props.to) {
       return {
-        isFocused: true
+        isLeftFocused: true,
+        isRightFocused: true
+      };
+    }
+
+    if (!state.isRightFocused && !state.isLeftFocused && props.from) {
+      return {
+        isLeftFocused: true
+      };
+    }
+
+    if (!state.isRightFocused && !state.isLeftFocused && props.to) {
+      return {
+        isRightFocused: true
       };
     }
 
     if (!props.from && !props.to && !props.isOpen) {
       return {
-        isFocused: false
+        isLeftFocused: false,
+        isRightFocused: false,
       };
     }
 
