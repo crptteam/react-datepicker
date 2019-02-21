@@ -154,6 +154,9 @@ class RangePicker extends Component {
   clear = () => {
     this.leftClear();
     this.rightClear();
+    this.setState({
+      step: PickerStep.NONE
+    });
   }
 
   onLeftClear = (e) => {
