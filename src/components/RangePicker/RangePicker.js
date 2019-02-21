@@ -152,12 +152,10 @@ class RangePicker extends Component {
   };
 
   clear = () => {
-    this.leftClear();
-    this.rightClear();
-    this.setState({
-      step: PickerStep.NONE
-    });
-  }
+    const leftValue = this.leftClear();
+    const rightValue = this.rightClear();
+    return {...leftValue, ...rightValue};
+  };
 
   onLeftClear = (e) => {
     const { step } = this.state;
