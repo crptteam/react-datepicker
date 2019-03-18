@@ -5,7 +5,10 @@ import EmptyDay from "../styled/EmptyDay";
 import DayWrap from "../styled/DayWrap";
 import Day from "../styled/Day";
 import WeekDay from '../styled/WeekDay';
+import moment from 'moment';
 
+
+const current = date => moment().isSame(date, 'day');
 
 const DaysView = ({
   onRef,
@@ -17,6 +20,7 @@ const DaysView = ({
   disabled,
   hovered,
   selected,
+  showCurrent,
 }) => {
   return (
     <BottomWithDays innerRef={onRef}>
@@ -42,12 +46,14 @@ const DaysView = ({
               disabled={disabled(d.date)}
               hovered={hovered(d.date)}
               selected={selected(d.date)}
+              current={showCurrent && current(d.date)}
             >
               <Day
                 theme={theme}
                 selected={selected(d.date)}
                 hovered={hovered(d.date)}
                 disabled={disabled(d.date)}
+                current={showCurrent && current(d.date)}
               >
                 {d.val}
               </Day>
@@ -74,12 +80,14 @@ DaysView.propTypes = {
   onRef: PropTypes.func,
   disabled: PropTypes.func,
   hovered: PropTypes.func,
+  showCurrent: PropTypes.bool,
 };
 
 DaysView.defaultProps = {
   onRef: () => {},
   disabled: () => false,
   hovered: () => false,
+  showCurrent: false,
 };
 
 

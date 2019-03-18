@@ -42,6 +42,7 @@ class RangePicker extends Component {
     rightPlaceholder: PropTypes.string,
     noActions: PropTypes.bool,
     noAutoFocus: PropTypes.bool,
+    showCurrent: PropTypes.bool,
   };
 
   static defaultProps = {
@@ -60,6 +61,7 @@ class RangePicker extends Component {
     acceptText: "Применить",
     resetText: "Сбросить",
     showPointer: false,
+    showCurrent: false,
   };
 
   blurTimeout;
@@ -350,6 +352,7 @@ class RangePicker extends Component {
       resetText,
       showPointer,
       noActions,
+      showCurrent,
     } = this.props;
     const { from, to, step, minDate, maxDate } = this.state;
     const isOpen = step !== PickerStep.NONE;
@@ -406,6 +409,7 @@ class RangePicker extends Component {
             onBlur={this.onBlur}
             minDate={minDate}
             maxDate={maxDate}
+            showCurrent={showCurrent}
           />
         </PanelWrap>
       </RangePickerInputer>

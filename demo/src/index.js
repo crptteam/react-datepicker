@@ -159,6 +159,7 @@ class Demo extends Component {
           onTogglePanel={console.log}
           onRef={console.log}
           isError={true}
+          showCurrent
         />
         <h1>react-datepicker Demo</h1>
         <DatePicker
@@ -206,6 +207,7 @@ class Demo extends Component {
           noAutoFocus
           savePlaceholder
           noActions
+          showCurrent
           onChange={vals => console.log("VALS", vals)}
         />
       </div>
