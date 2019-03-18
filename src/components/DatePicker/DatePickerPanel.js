@@ -172,6 +172,7 @@ export class DatePickerPanel extends Component {
       showPointer,
       onAccept,
       onReset,
+      showCurrent,
     } = this.props;
     const { monthDate } = this.state;
 
@@ -224,6 +225,7 @@ export class DatePickerPanel extends Component {
               selected={this.isOneOfSelected}
               disabled={this.isOneOfDisabled}
               onSelect={this.onSelect}
+              showCurrent={showCurrent}
             />
           )}
         </HalfC>

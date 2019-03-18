@@ -49,6 +49,9 @@ export default {
       selected: {
         background: "#F8EC31",
       },
+      current: {
+        background: '#F8EC31',
+      },
       main: {
         color: "#52535A",
         background: "rgba(0,0,0,0)"

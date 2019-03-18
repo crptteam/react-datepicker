@@ -36,7 +36,8 @@ class DatePicker extends Component {
     minDate: PropTypes.string,
     maxDate: PropTypes.string,
     rightIconReplacer: PropTypes.element,
-    onClearDate: PropTypes.string
+    onClearDate: PropTypes.string,
+    showCurrent: PropTypes.bool,
   };
 
   static defaultProps = {
@@ -55,7 +56,8 @@ class DatePicker extends Component {
     showPointer: false,
     minDate: undefined,
     maxDate: undefined,
-    onClearDate: undefined
+    onClearDate: undefined,
+    showCurrent: false,
   };
 
   blurTimeout;
@@ -183,7 +185,8 @@ class DatePicker extends Component {
       acceptText,
       resetText,
       showPointer,
-      rightIconReplacer
+      rightIconReplacer,
+      showCurrent,
     } = this.props;
     const { date, isOpen, minDate, maxDate } = this.state;
 
@@ -229,6 +232,7 @@ class DatePicker extends Component {
             resetText={resetText}
             minDate={minDate}
             maxDate={maxDate}
+            showCurrent={showCurrent}
           />
         </PanelWrap>
       </DatePickerInputer>

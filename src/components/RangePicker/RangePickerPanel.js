@@ -294,6 +294,7 @@ export class RangePickerPanel extends Component {
       onAccept,
       onReset,
       noActions,
+      showCurrent,
     } = this.props;
     const { leftDate, rightDate, startDays, endDays } = this.state;
 
@@ -382,6 +383,7 @@ export class RangePickerPanel extends Component {
               hovered={this.isLeftHovered}
               selected={this.isLeftSelected}
               onSelect={this.onLeftSelect}
+              showCurrent={showCurrent}
             />
           )}
         </HalfC>
@@ -441,6 +443,7 @@ export class RangePickerPanel extends Component {
               hovered={this.isRightHovered}
               selected={this.isRightSelected}
               onSelect={this.onRightSelect}
+              showCurrent={showCurrent}
             />
           )}
         </HalfC>

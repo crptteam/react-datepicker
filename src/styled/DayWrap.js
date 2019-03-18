@@ -44,11 +44,13 @@ const DayWrap = props => {
       mergedDay,
       props.selected
         ? 'selected'
-        : props.hovered
-          ? 'hovered'
-          : props.disabled
-            ? 'disabled'
-            : 'main'
+        : props.current
+          ? 'current'
+          : props.hovered
+            ? 'hovered'
+            : props.disabled
+              ? 'disabled'
+              : 'main'
     )
   );
 

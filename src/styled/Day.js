@@ -43,7 +43,13 @@ const Day = props => {
     theme,
     getThemeAsPlainTextByKeys(
       mergedDay,
-      props.selected ? 'selected' : props.hovered ? 'hovered' : 'main'
+      props.selected
+        ? 'selected'
+        : props.current
+          ? 'current'
+          : props.hovered
+            ? 'hovered'
+            : 'main'
     )
   );
 
