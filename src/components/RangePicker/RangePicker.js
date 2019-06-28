@@ -246,6 +246,7 @@ class RangePicker extends Component {
       if ((minDate && date < minDate) || (maxDate && date > maxDate)) return;
       if (date.isSame(to, 'day')) {
         to = moment(date).add(1, 'day').add(-1, 'millisecond');
+        if (maxDate && to > maxDate) to = moment(date);
       } else if (date.isAfter(to)) {
         to = null;
       }
