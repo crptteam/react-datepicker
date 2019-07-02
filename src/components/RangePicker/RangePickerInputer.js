@@ -366,7 +366,7 @@ export class RangePickerInputer extends Component {
               theme={theme}
               isSaved={savePlaceholder}
             >
-              {leftPlaceholder || "До"}
+              {rightPlaceholder || "До"}
             </Placeholder>
 
             <FlexWrap>
