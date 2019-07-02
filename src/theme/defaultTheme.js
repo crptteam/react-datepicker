@@ -87,12 +87,12 @@ export default {
     InputWrap: {
       main: {
         background: "#FFFFFF",
-        border: "1px solid #ABADB5",
+        border: "1px solid rgba(196, 196, 196, 0.25)",
         cursor: "normal"
       },
       disabled: {
         background: "#FFFFFF",
-        border: "1px solid #ABADB5",
+        border: "1px solid rgba(196, 196, 196, 0.25)",
         cursor: "not-allowed"
       },
       error: {

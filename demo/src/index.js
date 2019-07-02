@@ -201,6 +201,8 @@ class Demo extends Component {
 
         <h1>RangePicker with noAutoFocus</h1>
         <RangePicker
+          leftPlaceholder={"Дата регистрации от"}
+          rightPlaceholder={"Дата регистрации до"}
           positionX="left"
           positionY="bottom"
           isError={true}
