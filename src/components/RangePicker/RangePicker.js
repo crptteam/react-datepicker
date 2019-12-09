@@ -1,24 +1,24 @@
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
-import {withTheme} from 'styled-components';
-import { RangePickerPanel } from './RangePickerPanel';
-import { RangePickerInputer } from './RangePickerInputer';
-import 'datejs';
-import moment from 'moment';
-import defaultTheme from '../../theme/defaultTheme';
+import React, { Component } from "react";
+import PropTypes from "prop-types";
+import { withTheme } from "styled-components";
+import { RangePickerPanel } from "./RangePickerPanel";
+import { RangePickerInputer } from "./RangePickerInputer";
+import "datejs";
+import moment from "moment";
+import defaultTheme from "../../theme/defaultTheme";
 import OptionsPointer from "../../styled/OptionsPointer";
 import PanelWrap from "../../styled/PanelWrap";
 
-moment.locale('ru');
+moment.locale("ru");
 
 export const PickerStep = {
   NONE: 0,
   LEFT: 1,
-  RIGHT: 2,
+  RIGHT: 2
 };
 
 class RangePicker extends Component {
-  static displayName = 'RangePicker';
+  static displayName = "RangePicker";
 
   static propTypes = {
     className: PropTypes.string,
@@ -42,7 +42,7 @@ class RangePicker extends Component {
     rightPlaceholder: PropTypes.string,
     noActions: PropTypes.bool,
     noAutoFocus: PropTypes.bool,
-    showCurrent: PropTypes.bool,
+    showCurrent: PropTypes.bool
   };
 
   static defaultProps = {
@@ -55,13 +55,13 @@ class RangePicker extends Component {
     theme: defaultTheme,
     from: null,
     to: null,
-    positionX: '',
-    positionY: '',
+    positionX: "",
+    positionY: "",
     format: null,
     acceptText: "Применить",
     resetText: "Сбросить",
     showPointer: false,
-    showCurrent: false,
+    showCurrent: false
   };
 
   blurTimeout;
@@ -86,28 +86,37 @@ class RangePicker extends Component {
       initialFrom: from,
       initialTo: to,
       minDate: minDate ? moment(minDate, format) : undefined,
-      maxDate: maxDate ? moment(maxDate, format) : undefined,
+      maxDate: maxDate ? moment(maxDate, format) : undefined
     };
   }
 
   static getDerivedStateFromProps(props, state) {
-    if (props.from !== state.initialFrom || props.to !== state.initialTo) {
-      const fromDate = props.from
-        ? moment(props.from, props.format)
-        : null;
+    if (
+      props.from !== state.initialFrom ||
+      props.to !== state.initialTo ||
+      props.minDate !== moment(state.minDate, props.format) ||
+      props.maxDate !== moment(state.maxDate, props.format)
+    ) {
+      const fromDate = props.from ? moment(props.from, props.format) : null;
 
-      const toDate = props.to
-        ? moment(props.to, props.format)
-        : null;
-
+      const toDate = props.to ? moment(props.to, props.format) : null;
 
       return {
-        from: fromDate,
-        to: toDate,
+        maxDate: props.maxDate
+          ? moment(props.maxDate, props.format)
+          : undefined,
+        minDate: props.minDate
+          ? moment(props.minDate, props.format)
+          : undefined,
+        from: props.from !== state.initialFrom ? fromDate : state.from || null,
+        to: props.to !== state.initialTo ? toDate : state.to || null,
         initialFrom: props.from,
         initialTo: props.to,
-        step: PickerStep.NONE
-      }
+        step:
+          props.from !== state.initialFrom || props.to !== state.initialTo
+            ? PickerStep.NONE
+            : state.step
+      };
     }
 
     return null;
@@ -116,26 +125,22 @@ class RangePicker extends Component {
   componentDidMount() {
     const { onRef } = this.props;
     onRef(this);
-    document.addEventListener('mousedown', this.handleClick, true);
+    document.addEventListener("mousedown", this.handleClick, true);
   }
 
   componentWillUnmount() {
     const { onRef } = this.props;
     onRef(undefined);
-    document.removeEventListener('mousedown', this.handleClick, true);
+    document.removeEventListener("mousedown", this.handleClick, true);
     if (this.blurTimeout) clearTimeout(this.blurTimeout);
   }
 
   componentDidUpdate(prevProps, prevState) {
     const { onTogglePanel, onUpdate, onChange, to, from, format } = this.props;
     if (prevProps.to !== to || prevProps.from !== from) {
-      const fromDate = from
-        ? moment(from, format)
-        : null;
+      const fromDate = from ? moment(from, format) : null;
 
-      const toDate = to
-        ? moment(to, format)
-        : null;
+      const toDate = to ? moment(to, format) : null;
       onUpdate && onUpdate({ from: fromDate, to: toDate });
       onChange && onChange({ from: fromDate, to: toDate });
     }
@@ -147,7 +152,7 @@ class RangePicker extends Component {
     }
   }
 
-  handleClick = (e) => {
+  handleClick = e => {
     if (this.optionsPanel.contains(e.target)) {
       e.preventDefault();
       return;
@@ -158,15 +163,15 @@ class RangePicker extends Component {
     const { onUpdate, onChange } = this.props;
     const leftValue = this.leftClear();
     const rightValue = this.rightClear();
-    const value = {from: null, to: null,...leftValue, ...rightValue};
-    console.log('value clear', value);
+    const value = { from: null, to: null, ...leftValue, ...rightValue };
+    console.log("value clear", value);
     onUpdate(value);
     onChange(value);
 
     return value;
   };
 
-  onLeftClear = (e) => {
+  onLeftClear = e => {
     const { step } = this.state;
     e.preventDefault();
     e.stopPropagation();
@@ -174,7 +179,7 @@ class RangePicker extends Component {
     this.inputer.focusLeft();
   };
 
-  onRightClear = (e) => {
+  onRightClear = e => {
     const { step } = this.state;
     e.preventDefault();
     e.stopPropagation();
@@ -182,7 +187,6 @@ class RangePicker extends Component {
 
     this.inputer.focusRight();
   };
-
 
   leftClear = () => {
     const { onUpdate, onChange, onClearFrom, format } = this.props;
@@ -193,13 +197,13 @@ class RangePicker extends Component {
     if (onClearFrom) {
       const start = onClearFrom && moment(onClearFrom, format);
       from = start ? start : null;
-      returnValue = {from, to: to, _type: 'RangePicker'};
+      returnValue = { from, to: to, _type: "RangePicker" };
     } else {
       from = null;
     }
 
     this.setState({
-      from: from,
+      from: from
     });
 
     onUpdate({ from: from, to: to });
@@ -217,7 +221,9 @@ class RangePicker extends Component {
     if (onClearTo) {
       const end = onClearTo && moment(onClearTo, format);
       to = end ? end : null;
-      returnValue = returnValue ? {...returnValue, to} : {from, to, _type: 'RangePicker'};
+      returnValue = returnValue
+        ? { ...returnValue, to }
+        : { from, to, _type: "RangePicker" };
     } else {
       to = null;
     }
@@ -236,7 +242,7 @@ class RangePicker extends Component {
     this.setState({ step: PickerStep.NONE });
   };
 
-  onLeftSelect = (date) => {
+  onLeftSelect = date => {
     const { onChange, onUpdate, noAutoFocus } = this.props;
     const { minDate, maxDate } = this.state;
     let { to } = this.state;
@@ -244,14 +250,14 @@ class RangePicker extends Component {
 
     if (date !== null) {
       if ((minDate && date < minDate) || (maxDate && date > maxDate)) return;
-      if (date.isSame(to, 'day')) {
+      if (date.isSame(to, "day")) {
         if (maxDate && to > maxDate) to = moment(date);
       } else if (date.isAfter(to)) {
         to = null;
       }
     }
 
-    this.setState({ from, to,  });
+    this.setState({ from, to });
     onChange({ from, to });
     onUpdate({ from, to });
     if (!noAutoFocus) {
@@ -259,16 +265,14 @@ class RangePicker extends Component {
         step: PickerStep.RIGHT
       });
       this.inputer.focusRight();
-    }
-
-    else {
+    } else {
       this.setState({
         step: PickerStep.NONE
       });
     }
   };
 
-  onRightSelect = (date) => {
+  onRightSelect = date => {
     const { onChange, onUpdate, noActions } = this.props;
     const { minDate, maxDate } = this.state;
     let { from } = this.state;
@@ -276,7 +280,7 @@ class RangePicker extends Component {
 
     if (date !== null) {
       if ((minDate && date < minDate) || (maxDate && date > maxDate)) return;
-      if (date.isSame(from, 'day')) {
+      if (date.isSame(from, "day")) {
         if (minDate && from < minDate) from = moment(date);
       } else if (date.isBefore(from)) {
         from = null;
@@ -289,12 +293,11 @@ class RangePicker extends Component {
     if (noActions) {
       this.setState({
         step: PickerStep.NONE
-      })
+      });
     }
-
   };
 
-  onValidUpdate = (state) => {
+  onValidUpdate = state => {
     const { onUpdate } = this.props;
     this.setState(state);
     onUpdate({ ...this.state, ...state });
@@ -325,14 +328,14 @@ class RangePicker extends Component {
     if (this.blurTimeout) clearTimeout(this.blurTimeout);
   };
 
-  onPanelRef = (extRef) => {
+  onPanelRef = extRef => {
     this.optionsPanel = extRef;
   };
 
   onClear = () => {
     this.rightClear();
     this.leftClear();
-  }
+  };
 
   render() {
     const {
@@ -352,7 +355,7 @@ class RangePicker extends Component {
       resetText,
       showPointer,
       noActions,
-      showCurrent,
+      showCurrent
     } = this.props;
     const { from, to, step, minDate, maxDate } = this.state;
     const isOpen = step !== PickerStep.NONE;
@@ -373,8 +376,8 @@ class RangePicker extends Component {
         name={name}
         inline={inline}
         theme={theme}
-        onRef={inputer => this.inputer = inputer}
-        mainRef={el => this.main = el}
+        onRef={inputer => (this.inputer = inputer)}
+        mainRef={el => (this.main = el)}
         savePlaceholder={savePlaceholder}
         leftPlaceholder={leftPlaceholder}
         rightPlaceholder={rightPlaceholder}
@@ -386,12 +389,12 @@ class RangePicker extends Component {
       >
         <PanelWrap
           innerRef={this.onPanelRef}
-          positionX={step === PickerStep.LEFT ? 'right' : 'left'}
+          positionX={step === PickerStep.LEFT ? "right" : "left"}
           positionY={positionY}
           visible={isOpen}
           theme={theme}
         >
-          {isOpen && showPointer && (<OptionsPointer theme={theme} />)}
+          {isOpen && showPointer && <OptionsPointer theme={theme} />}
           <RangePickerPanel
             showPointer={showPointer}
             from={from}
@@ -416,6 +419,5 @@ class RangePicker extends Component {
     );
   }
 }
-
 
 export default withTheme(RangePicker);
